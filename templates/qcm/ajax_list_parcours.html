@@ -1,0 +1,29 @@
+{% load widget_tweaks %}
+{% load static %}
+{% load item_tags %}
+
+
+<div class="col-sm-12 col-md-12">
+    <h1 class="thin"> 
+    	Légende :
+        <span style="font-variant:small-caps; font-size: 20px;margin-right: 5px;color:#5d4391" ><i class="fa fa-eye"></i>  Voir le parcours </span>
+        <span style="font-variant:small-caps; font-size: 20px;margin-right: 5px;color:#5d4391" > <i class="fa fa-clone"></i> Cloner le parcours</span>     	
+        <span style="font-variant:small-caps; font-size: 20px;margin-right: 5px;color:#5d4391" > <i class="fa fa-folder"></i> Cloner le parcours et ses cours associés</span>
+    </h1>
+</div>
+
+
+<div class="col-sm-12 col-md-12">
+{% for parcours in parcourses  %} 
+
+    {% include 'qcm/parcours_shared.html' %}
+{% empty %} 
+    <div class="alert alert-danger"> Aucun résultat de votre recherche  </div> 
+
+{% endfor %} 
+</div>
+
+<script type="text/javascript"> 
+    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+</script>
+ 

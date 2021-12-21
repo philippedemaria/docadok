@@ -1,0 +1,124 @@
+{% extends 'dashboard.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% load item_tags %}
+
+{% block require %}
+ 
+    {% if parcours %}
+    <script src="{% static 'js/require.js' %}"   data-main="{% static 'js/common4_withoutMathJax.js' %}"></script>
+    {% else %}
+    <script src="{% static 'js/require.js' %}"   data-main="{% static 'js/common3_withoutMathJax.js' %}"></script>
+    {% endif %}
+
+    <script>
+        require(['script/ajax-parcours-create']);
+    </script> 
+
+    {% block require_complement %}
+        {% if not parcours %}    
+            <script>
+                require(['script/ajax-parcours-complement']);
+            </script> 
+        {% endif %}
+    {% endblock %} 
+
+{% endblock %} 
+
+
+{% block page_title %}
+
+      {% include 'qcm/breadcrumb.html' %}
+
+    <small>  
+        {% if parcours %}
+                Configuration  
+        {% else %}
+             Nouveau parcours 
+        {% endif %}
+    </small> 
+
+{% endblock %}
+
+
+ 
+
+{% block page_menu_right %}
+
+
+ 
+
+{% endblock %} 
+
+
+{% block body %}  
+<section class="content_main">
+    <form action="" method="POST" enctype='multipart/form-data'>
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                    {{ form.title.label_tag }} <label> <small>(Inférieur à 18 lettres)</small></label>
+                    {{ form.title |add_class:"form-control" }}
+                    {{ form.title.errors }}
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label> Participer à :</label>
+                    {{ form.code  }}
+                    {{ form.code.errors }}
+                </div>
+            </div>
+        </div>
+
+    <div class="row" style="margin-top:40px">
+        <div class="col-sm-12 col-md-8">
+            <div class="form-group">
+
+                <input value="Enregistrer et choisir les exercices" type="submit" name="save_and_choose" class="btn btn-primary" />                
+                <input value="Enregistrer" type="submit" name="saver" class="btn btn-default"  />
+
+                <a href="javascript:history.back()"><input type="button" value="Annuler" class="btn btn-default "/></a>
+            </div>
+        </div> 
+
+        {% block save_evaluation %}
+        <div class="col-sm-12 col-md-4">
+        {% if parcours %}
+                
+                <a href="{% url 'clone_parcours' parcours.id  1 %}" class="btn btn-info"  onclick="return TestDuplicate('ce parcours')"> 
+                    <i class="fa fa-clone"> </i>   Dupliquer
+                </a>
+ 
+                {% if parcours.is_archive %}
+                    <a href="{% url 'unarchive_parcours' parcours.id  idg  %}" class="btn btn-warning"> 
+                        <i class="fa fa-th"> </i>   Désarchiver
+                    </a>
+                {% else %}
+                    <a href="{% url 'archive_parcours' parcours.id  idg  %}" class="btn btn-warning"  onclick="return TestArchive('ce parcours')"> 
+                        <i class="fa fa-archive"> </i>   Archiver
+                    </a>
+                {% endif %}
+                <a href="{% url 'delete_parcours' parcours.id  idg  %}" class="btn btn-danger"  onclick="return TestDelete('ce parcours')"> 
+                    <i class="fa fa-trash"> </i>   Supprimer
+                </a>
+    
+        {% endif %}  
+        </div>
+        {% endblock %}
+    </div>  
+
+    </form>      
+</section>   
+
+
+
+
+
+{% endblock %}
+
+
+      
+ 
+ 

@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+{% load static %}
+{% load item_tags %}
+
+
+
+{% block body %}
+
+
+
+<section id="get_detail">
+    <div class="container"> 
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="card_recapitulatif" >  
+                    Menu  <b>{{ formule.name }}</b> <br/>
+                    Adhésion <b>{{ formule.adhesion }}</b> <br/>
+                    Nombre d'enfant : <b>{{ data_post.nb_child }}</b> <br/>
+                    Fin de l'adhésion : <b>{{ data_post.date_end }}</b>  <br/>
+                    Montant total de l'adhésion : <b>{{ data_post.total_price }}€</b> = {{ data_post.nb_month }} mois x {{ data_post.month_price }}€/mois <br/><br/>
+                    <small>Pour toute résiliation de l'adhésion avant la fin mentionnée ci-dessus, les frais de gestion s'élèvent à 5,99€.</small>
+
+               </div>
+            </div>
+
+        </div> 
+        <hr/>
+ 
+
+        <form action="{% url 'save_adhesion' %}"  >
+                {% csrf_token %}
+                <input type="hidden" name="total_price" value="{{ data_post.total_price }}" />
+                <input type="hidden" name="month_price" i value="{{ data_post.month_price  }}"  />                
+                <input type="hidden" name="nb_month" value="{{ data_post.nb_month }}"  />
+                <input type="hidden" name="date_end"   value='{{ data_post.date_end  }}'  />
+                <input type="hidden" name="menu_id" value="{{ formule.id}}" />
+                <input type="hidden" name="nb_child"  value="{{ data_post.nb_child }}" />
+            <div class="row">
+                {% for parent in parents %}
+                <div class="col-sm-12 col-md-6" style="margin-top:30px" >
+                    <div class="card_recapitulatif">
+                        <h4  class="title_page violet"><b> Parent  </b></h4>
+                        <div class="form-group">
+                             Nom : <b>{{ parent.last_name  }}</b>
+                        </div>     
+                        <div class="form-group">
+                             Prénom :  <b>{{ parent.first_name }}</b>
+                        </div>
+                        <div class="form-group">
+                           Courriel : <b>{{ parent.email }}</b> 
+                        </div>
+                        <div class="row"> 
+                            <div class="col-sm-12 col-md-11">
+                                <div class="form-group">
+                                    Identifiant : <b>{{ parent.username  }}</b> 
+                                </div>
+                            </div>
+                        </div> 
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <div class="form-group">
+                                    Ce récapitulatif vous sera envoyé à l'adresse courriel renseignée ci-dessus dès le réglement de l'adhésion effectuée.
+                                </div>
+                            </div>  
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                {% for student in students %}
+                <div class="col-sm-12 col-md-6"  style="margin-top:30px"  >
+                    <div class="card_recapitulatif">
+                        <h4  class="title_page violet"><b> Enfant </b></h4>
+                        <div class="form-group">
+                             Nom : <b>{{ student.last_name  }}</b>
+                        </div>     
+                        <div class="form-group">
+                             Prénom :  <b>{{ student.first_name }}</b>
+                        </div>
+                        <div class="form-group">
+                           Courriel : <b>{{ student.email }}</b> 
+                        </div>
+                        <div class="form-group">
+                            Niveau favori :<b> {{ student.level }} </b>
+                        </div>
+                        <div class="row"> 
+                            <div class="col-sm-12 col-md-11">
+                                <div class="form-group">
+                                    Identifiant : <b>{{ student.username  }}</b> 
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+ 
+
+            <div class="row" style="margin-top:30px">
+                <div class="col-sm-12 col-md-6 col-lg-6">
+
+
+
+                        <!-- page de paiement en ligne -->
+                        <div id="smart-button-container">
+                            <div style="text-align: center;">
+                              <div id="paypal-button-container"></div>
+                            </div>
+                        </div>
+
+                        <script src="https://www.paypal.com/sdk/js?client-id=AZbWzc5bw6DUgDEDaYf3mGKRefyYaS2eYyhR24vxzoP7WLtfo7qq3p05a6Qfsa3utAopR07r3bOgiqJf&currency=EUR" data-sdk-integration-source="button-factory"></script>
+ 
+                        <script>
+
+                            var amount = "{{ data_post.total_price|decimal2number }}";
+
+                            paypal.Buttons({
+                                  style: {
+                                    shape: 'rect',
+                                    color: 'blue',
+                                    layout: 'vertical',
+                                    label: 'paypal',
+                                    
+                                  },
+
+                                  createOrder: function(data, actions) {
+                                    return actions.order.create({
+                                      purchase_units: [{"amount":
+                                                          {
+                                                            "currency_code":"EUR","value": amount ,
+                                                          }
+                                                        }] ,
+                                    });
+                                  },
+
+                                  onApprove: function(data, actions) {
+                                    return actions.order.capture().then(function(details) {
+
+                                      alert('Transaction en cours');
+
+                                    });
+                                  },
+
+                                  onError: function(err) {
+                                    console.log(err);
+                                  }
+                                }).render('#paypal-button-container');
+                               
+                        </script>
+
+
+ 
+                    <a href="javascript:history.back()" class="btn btn-default" />Annuler</a>
+                </div>
+            </div>
+ 
+    </div>
+</section> 
+
+<section id="footer_asso">    
+</section>
+{% endblock %}

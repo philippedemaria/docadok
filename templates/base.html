@@ -1,0 +1,108 @@
+{% load widget_tweaks %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>do-K-do</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}"/>
+
+    <!-- Bootstrap CSS File -->
+    <link href="{% static 'index/lib/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css">
+
+
+    <!-- Libraries CSS Files -->
+    <link href="{% static 'index/lib/animate/animate.min.css' %}" rel="stylesheet">
+
+    <!--
+    <link href="{% static 'index/lib/ionicons/css/ionicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'index/lib/lightbox/css/lightbox.min.css' %}" rel="stylesheet">
+    -->
+    <!-- Main Stylesheet File -->
+    <link href="{% static 'index/css/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/select2.css' %}"/>
+
+ 
+    <link rel="stylesheet" type="text/css" href="{% static 'index/slick/slick.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'index/slick/slick-theme.css' %}">
+
+
+</head>
+
+<body>
+
+    <div class="participate">
+        <div class="container alert-dismissible fade show" role="alert">
+            <form method="post" action="#" enctype='multipart/form-data'>
+                Vous souhaitez participer à un événement docado ? 
+                www.docado.xyz/
+                <input type="text" name="code" class="form_radius" placeholder="code">
+                <a href="#"><i class="bi bi-play-btn play_button"></i></a>
+            </form>
+
+ 
+              <a href="#" class="close" data-dismiss="alert" aria-label="Close">
+                 <i class="bi bi-x-circle play_button close_participate"></i> 
+              </a>
+ 
+
+        </div>
+    </div>
+
+
+<header id="header">
+    <div class="container">
+
+
+
+
+
+        <div class="logo float-left">
+            <a class="navbar-brand sacado" href="{% url 'index' %}#intro"> docado
+            </a>
+        </div>
+        <nav class="main-nav float-right d-none d-lg-block">
+            <ul>
+                <li><a href="#functions">Fonctionnalités</a></li>
+                <li><a href="#prices">Prix</a></li>
+                <li><a href="#footer">Contact</a></li> 
+                <li><a href="#connect" class="btn btn-new-violet">Se connecter</a></li>
+                <li><a href="#signup" class="btn btn-new-violet">S'inscrire</a></li>         
+            </ul>
+        </nav><!-- .main-nav -->
+    </div>
+</header><!-- #header -->
+ 
+{% block body %}
+{% endblock %}
+ 
+
+<script src="{% static 'index/lib/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'index/lib/jquery/jquery-migrate.min.js' %}"></script>
+<script src="{% static 'index/lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script> 
+<script src="{% static 'index/lib/easing/easing.min.js' %}"></script>
+<script src="{% static 'index/lib/mobile-nav/mobile-nav.js' %}"></script> 
+<script src="{% static 'index/lib/waypoints/waypoints.min.js' %}"></script> 
+<script src="{% static 'index/lib/wow/wow.min.js' %}"></script>   
+<script src="{% static 'index/lib/counterup/counterup.min.js' %}"></script>   
+<script src="{% static 'index/js/main.js' %}"></script> 
+
+{% block general_js %}
+<script src="{% static 'js/script/accueil.js' %}"></script> 
+<script src="{% static 'js/lib/select2.min.js' %}"></script>      
+<script src="{% static 'js/script/config-select2-accueil.js' %}"></script> 
+<script src="{% static 'js/lib/bootstrap-toggle.min.js' %}"></script> 
+<script src="{% static 'index/slick/slick.js' %}"></script>
+{% endblock %}
+
+</body>
+</html>
+
+ 

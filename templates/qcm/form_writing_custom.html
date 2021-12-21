@@ -1,0 +1,339 @@
+{% extends 'dashboard.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load item_tags %}
+
+
+{% block require %}
+    <script src="{% static 'js/require.js' %}"   data-main="{% static 'js/common4.js' %}"></script>
+    <script>
+        require(['script/ajax-exercise']);
+        require(['script/ajax-exercise-canvas']);
+    </script> 
+    
+{% endblock %}
+
+ 
+
+{% block page_title %}
+    <span style="color:{{ parcours.color  }}"><i class="bi bi-explicit"></i> {{ parcours }} <img src="{% static 'img/angle-right.png' %}"/><small> Exercice corrigé par votre enseignant</small></span>  
+{% endblock %}
+
+
+{% block page_menu_right %}
+    {% if on_air %}
+        <li class="on_air">Lecture en direct</li>
+    {% endif %}
+{% endblock %}
+
+
+
+
+{% block css_files %}
+{% endblock %}
+
+
+{% block body %}
+<section class="content_main"> 
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-8">
+            {% if customexercise.customexercise_remediation.all|length > 0 %}
+            <span class="pull-right">
+                <label>Aides : </label>
+                  {% for remediation in customexercise.customexercise_remediation.all %}
+                      <a href="#" data-target="#remediation_viewer" data-remediation_id="{{ remediation.id }}" data-is_custom="1"  data-url="0" data-toggle='modal' class="white remediation_viewer btn btn-default">
+                            {% include 'qcm/remediation_choices.html' %}
+                      </a>
+                  {% endfor  %} 
+            </span>
+            {% endif  %}
+
+            {% if customexercise.is_publish_cor %}
+            <a href="#" data-toggle='modal' data-target='#correction' class="pull-right btn btn-success">Voir le corrigé</a>
+            {% endif  %}
+
+            {% if customexercise.instruction %}
+            <a href="#" data-toggle='modal' data-target='#consigne' class="btn btn-danger">Lire la consigne</a>
+                {% if customexercise.is_realtime  %} 
+                    <a href="#" id='text_zone' class="btn btn-default" >Zone de saisie manuelle</a>
+                    <a href="#" id='canvas_zone' class="btn btn-default" >Zone pour stylet</a>
+                {% endif  %}
+            <br/>
+            {% endif  %}
+
+
+
+
+
+
+            {% for remediation in customexercise.customexercise_remediation.all %}
+                {% if remediation.consigne %}
+                <audio controls>
+                    <source src="{{ remediation.mediation.url }}" type="audio/mpeg">
+                    <span class="text-danger">Votre navigateur ne lit pas l'audio.</span>
+                </audio>
+                {% endif %}
+            {% endfor  %} 
+            {% if customexercise.is_scratch   %} 
+            <hr>              
+            <label>Conseil :</label> Pour réaliser cet exercice, vous devez :
+            <ol>
+                <li>Créer ou utiliser votre compte <a href="https://scratch.mit.edu/projects/editor/?tutorial=getStarted" target="_blank"><img src="{% static 'img/scratch.png' %}" height="20px" /></a>. <em>Utiliser vos identifiants Sacado</em>.       
+                </li>
+                <li>
+                    Prendre une capture d'écran de votre script et la déposer dans la zone de texte ci-dessous.
+                </li>
+                 <li>
+                    Copier le numéro de votre script <img src="{% static 'img/scratch_number.png' %}" height="20px" /> et le coller dans le champ prévu ci-dessous.
+                </li>
+            {% endif %} 
+            <hr> 
+            <!-- ======================================================================= -->   
+            <!-- ================== Zone d'enregistrement ===============================--> 
+            <!-- ======================================================================= -->      
+            <form action="" method="POST" enctype='multipart/form-data'>
+                {% csrf_token %}
+                {% if customexercise.is_image  %} 
+                    <div class="col-sm-7 col-lg-7" >
+                    {% if customexercise.is_scratch   %} 
+                        <div class="form-group">
+                            <label>Numéro du script : <small>nombre obligatoire</small></label> <br/>
+                            {{ form.answer |add_class:"form-control"|attr:"placeholder:Numéro du script.  ex. 469542369"|attr:"required"|attr:"rows:1"|attr:"cols:15"}}
+                            {{ form.image.errors }}
+                        </div>
+                        <label>Ajouter les images de vos blocs de briques. Merci.</label>
+                    {% else %}
+                        <div class="alert alert-danger">
+                            Insérer les images dans l'ordre des pages de votre copie. Merci.
+                        </div>
+                    {% endif %}                        
+                    {{ form_ans.management_form }}
+                        <!-- Les formulaires du formset -->
+                        <div id="formsetZone">
+                            <div class="row" id="duplicate" style="display:none">            
+                                <div class="col-sm-12 col-md-8">
+                                        <div class="form-group">
+                                            {{ form_ans.empty_form.image |add_class:"btn btn-default" }}
+                                            {{ form_ans.empty_form.image.errors }}
+                                        </div>
+
+                                </div>    
+                                <div class="col-sm-12 col-md-4">
+                                        <div class="delete_button"></div>
+
+                                </div>
+                            </div>
+                            {% for form in form_ans %}
+                            <div class="row" id="duplicate{{ forloop.counter0 }}">            
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        {% if not customexercise.is_scratch   %}  <label>{{ form.image.label_tag }}</label><br/>{% endif %} 
+                                        {{ form.image |add_class:"btn btn-default" }}
+                                        {{ form.image.errors }}
+                                    </div> 
+                                 </div>
+                            </div>
+                            {% endfor %}
+
+                        </div> 
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 controls">
+                                <div class="form-group">
+                                    <a href="#" id="new_item" class="btn btn-default add_more" ><i class="fa fa-plus"></i> Ajouter une image</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5 col-lg-5">
+                        {% if images %}
+                            {% for img in images %}
+                                <div class="row" id="delete_custom_answer_image{{ img.id }}">
+                                    <a href="#" class="btn btn-danger delete_custom_answer_image" data-image_id="{{ img.id }}" data-custom=1 ><i class="fa fa-trash"></i></a>
+                                    <img src="{{ img.image.url }}" width="100%"/>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {% if customexercise.is_file  %}  
+                    <div class="form-group">
+                        {{ form.file.label_tag }}  <br>
+                        {{ form.file|add_class:"btn btn-default"   }}
+                        {{ form.file.errors }} <br>
+                    </div> 
+                {% endif %}
+                {% if customexercise.is_text and customexercise.is_realtime  %} 
+                    <div class="form-group">
+                        <a href="#" id="text_zone" class="btn btn-default btn-xs">Zone de texte</a>
+                        <a href="#" id="canvas_zone" class="btn btn-default btn-xs">Pad</a>
+
+                    </div>
+                {% endif %}
+
+                {% if customexercise.is_text %}
+                    {% if customexercise.is_collaborative %}
+                        <a href="#" class="btn btn-primary">Clique ici pour rejoindre ton pad collaboratif {{ pad_student}}</a>
+                    {% else %}
+                        <div class="form-group {% if customexercise.is_text and customexercise.is_realtime  %}not_allowed_display{% endif %}" id="text_zone_div">
+                            <label>Zone pour écrire</label><br>
+                            {{ form.answer }}
+                            {{ form.answer.errors }} <br>
+                        </div>
+                    {% endif %}
+                {% endif %}
+                {% if customexercise.is_realtime  %} 
+                    <div class="form-group {% if customexercise.is_text and customexercise.is_realtime  %}not_allowed_display{% endif %}" id="canvas_zone_div">
+                        <div class="tool_draw_bar">                       
+                            <input type="color" id="colorpicker" class="btn-default btn-publisher" />
+                            <div class="btn btn-default">
+                                <select name="thickness" id="thickness" >
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
+                            <a href="#" id="erasor" class="btn btn-default btn-publisher"><i class="fa fa-eraser"></i></a>
+                            <a href="#" id="clear" class="btn btn-default btn-publisher"><i class="fa fa-eraser text-danger"></i></a>
+                
+                        </div>
+                        <canvas id="myCanvas" style="border:1px solid #000"></canvas>
+                    </div>
+                    {% if c_e %}
+                    {{  c_e.answer|json_script:"this_answer" }} 
+                    {% endif %}
+                    <canvas id="myCanvas" style="border:1px solid #f8f8f8"></canvas>                
+                {% endif %}
+
+
+                <div class="row">
+                    <div class="col-sm-12 col-lg-8">
+                        <div class="form-group">
+                            {% if not customexercise.is_realtime  %} 
+
+                                {% get_all_results_custom customexercise student parcours.id as data %}                          
+                                {% if data.point  %}
+                                    <h3>Note : {{ data.point }} <small>sur {{ customexercise.mark }}</small></h3>                             
+                                {% endif  %}
+                                {% if data.comment  %}
+                                    <h3>Commentaire :</h3>
+                                     {{ data.comment }}                        
+                                {% endif  %}
+                                {% get_is_lock parcours today as is_lock %}                            
+                                {% get_is_lock customexercise today as is_block %}
+                                {% if not is_lock and not customexercise.is_collaborative %} 
+                                    {% if not data.is_corrected and not is_block  %}
+                                        <input value="Soumettre votre exercice" type="submit" class="btn btn-primary"/>
+                                    {% endif  %}
+                                {% endif  %}
+                                <hr/>
+                            {% endif  %}
+
+                            
+                            <input type="hidden" value="{{ parcours.id }}"        name="parcours_id"       id="parcours_id" />  
+                            <input type="hidden" value="{{ customexercise.id }}"  name="customexercise_id" id="customexercise_id" />  
+                            <input type="button" value="Annuler" onclick="javascript:history.back()"  class="btn btn-default "/>                                       
+                        </div>
+                    </div>
+                </div>
+            </form> 
+            <!-- ======================================================================= -->   
+            <!-- ============================ Fin de Zone ===============================--> 
+            <!-- ======================================================================= -->    
+
+
+        </div>  
+        <div class="col-sm-12 col-lg-4">
+
+            {% if customexercise.skills.all|length > 0 %}              
+                <label>Compétences visées :</label>
+                {% for skill in customexercise.skills.all %}
+                {% get_custom_score skill customexercise student parcours as custom_score %}
+                    <li class="sans_puce">{{skill}} 
+                         {% if custom_score == 4 %}<i class="fa fa-square text-primary"></i>
+                         {% elif custom_score == 3 %}<i class="fa fa-square text-success"></i>
+                         {% elif custom_score == 2 %}<i class="fa fa-square text-warning"></i>
+                         {% elif custom_score == 1 %}<i class="fa fa-square text-danger"></i>                         
+                         {% endif %}
+                    </li>
+                {% endfor %}
+            {% endif %}
+            {% if customexercise.skills.all|length > 0 and customexercise.knowledges.all|length > 0 %}
+            <hr>
+            {% endif %}
+            {% if customexercise.knowledges.all|length > 0 %}                
+            <label>Savoir faire évalués :</label>
+            {% for knowledge in customexercise.knowledges.all %}
+                {% get_custom_score knowledge customexercise student parcours as custom_score %}
+                <li class="sans_puce">{{knowledge}}
+                         {% if custom_score == 4 %}<i class="fa fa-square text-primary"></i>
+                         {% elif custom_score == 3 %}<i class="fa fa-square text-success"></i>
+                         {% elif custom_score == 2 %}<i class="fa fa-square text-warning"></i>
+                         {% elif custom_score == 1 %}<i class="fa fa-square text-danger"></i>                         
+                         {% endif %}
+                </li>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>        
+</section>
+
+
+
+<div class="modal fade" id="consigne" tabindex="-1" role="dialog" aria-labelledby="consigne">
+    <div class="modal-dialog" role="document" >
+        <div class="modal-content" style="padding-top :0px;">
+            <div class="modal-header">
+                <h3 class="sacado">Consigne
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> 
+                </h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12 col-xs-12">   
+                        {{ customexercise.instruction|safe }} 
+                    </div>   
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+ 
+
+
+<div class="modal fade" id="correction" tabindex="-1" role="dialog" aria-labelledby="correction">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class='thin' style="width:100%" >Corrigé :   <a href="#" data-dismiss="modal" class="pull-right" ><i class="fa fa-times"></i> </a> </h2>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                      <div class="col-xs-12 col-md-12" > 
+                          {% if  customexercise.text_cor  %}
+                          <pre>{{ customexercise.text_cor |safe }}</pre>
+                          {% elif  customexercise.video_cor  %}
+                              <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ customexercise.video_cor }}?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                              </iframe>
+                          {% elif  customexercise.file_cor   %}
+                              <a href="{{ customexercise.file_cor.url }}" class="btn btn-default">Télécharger le fichier</a>
+                          {% endif %}
+                      </div>
+
+                </div>  
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %} 
+ 

@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+{% load static %}
+
+
+
+{% block body %}
+
+<section id="pricing">
+    <div class="full_container">
+
+        <div class="row">
+            <div class="col-sm-12 col-md-12" align="center" style="margin-bottom: 20px">
+                    <img src="{% if name == "Autonomie" %}{% static 'img/menu_autonomie.png' %}{% else %}{% static 'img/menu_accompagnement.png' %}{% endif %}" width="60px">
+                    Menu <span class="sub_header"> {{ name }}</span> <span class="pull-right"><small> <a href="{% url 'student_to_association'  %}" class="violet"><i class="fa fa-random"></i> Changer de menu</a></small> </span>
+            </div>
+        </div>
+        <div class="row"><input type="hidden" name="menu" value="{{  name }}" />
+            <div class="col-sm-12 col-md-12" align="center">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-violet_border family_selected" id="zero_child" data_value="zero"  data_menus="{% for f in formules %}{{ f.id }}{% if not forloop.last %},{% endif %}{% endfor %}">
+                        <input type="radio" name="children" id="zero_child_radio" value="0"   >  Moi-même*
+                    </label>
+                    <label class="btn btn-violet family_selected" id="one_child" data_value="one"  data_menus="{% for f in formules %}{{ f.id }}{% if not forloop.last %},{% endif %}{% endfor %}">
+                        <input type="radio" name="children" id="one_child_radio" value="1" checked   >  1 enfant
+                    </label>
+                    <label class="btn btn-violet_border family_selected" id="two_children" data_value="two" data_menus="{% for f in formules %}{{ f.id }}{% if not forloop.last %},{% endif %}{% endfor %}">
+                        <input type="radio" name="children"  id="two_children_radio" value="2"  >  2 enfants
+                    </label>
+                    <label class="btn btn-violet_border family_selected" id="three_children" data_value="three"  data_menus="{% for f in formules %}{{ f.id }}{% if not forloop.last %},{% endif %}{% endfor %}">
+                        <input type="radio" name="children"  id="three_children_radio" value="3"  >  3 enfants
+                    </label>
+                    <label class="btn btn-violet_border family_selected" id="four_children" data_value="four"  data_menus="{% for f in formules %}{{ f.id }}{% if not forloop.last %},{% endif %}{% endfor %}">
+                        <input type="radio" name="children"  id="four_children_radio" value="4"    >  4 enfants
+                    </label>
+                    <label class="btn btn-violet_border family_selected" id="more_children" data_value="more"  data_menus="{% for f in formules %}{{ f.id }}{% if not forloop.last %},{% endif %}{% endfor %}">
+                        <input type="radio" name="children"  id="more_children_radio" value="5"   >  5 enfants
+                    </label>
+                </div>
+            </div>
+        </div> 
+        <div class="row">
+            <div class="col-sm-12 col-md-12 violet" align="center">
+                <small>*Je suis majeur ou émancipé et peux m'inscrire sans l'accord d'au moins l'un de mes parents.</small>
+            </div>
+        </div> 
+
+
+        <div class="row">
+            <div class="col-sm-12 col-md-12" align="center">
+                <p></p>
+            </div>
+        </div> 
+        <div class="row" id = "result_price">
+            {% for formule in formules %}                
+            <div class="col-sm-4 col-md-4" align="center">
+                <form action="{% url 'details_of_adhesion' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="total_price" id="total_price{{ formule.id }}" value="{{ formule.data.total1 }}" />
+                <input type="hidden" name="month_price" id="month_price{{ formule.id }}" value="{{ formule.data.price1 }}"  />                
+                <input type="hidden" name="nb_month" id="nb_month{{ formule.id }}"  value="{{ formule.data.left_month }}"  />
+                <input type="hidden" name="date_end" id="date_end{{ formule.id }}"  value='{{ formule.data.end|date:"d F Y" }}'  />
+                <input type="hidden" name="menu_id" id="menu_id{{ formule.id }}" value="{{ formule.id}}" />
+                <input type="hidden" name="nb_child" class="nb_child" value="1" />
+
+                    <div class="card">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 child">
+                                1 enfant
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                              <div class="sub_header">Adhésion {{ formule.adhesion }}</div> 
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="currency">
+                                <span class="family zero" id="total_price_zero{{ formule.id }}">{{ formule.data.total1 }}</span>
+                                <span class="family one" id="total_price_one{{ formule.id }}">{{ formule.data.total1 }}</span>
+                                <span class="family two" id="total_price_two{{ formule.id }}">{{ formule.data.total2 }}</span>
+                                <span class="family three" id="total_price_three{{ formule.id }}">{{ formule.data.total3 }}</span>
+                                <span class="family four" id="total_price_four{{ formule.id }}">{{ formule.data.total4 }}</span>
+                                <span class="family more" id="total_price_more{{ formule.id }}">{{ formule.data.total5 }}</span>€ 
+
+
+                            </div>
+                            <div class="card-block">
+                                <p class="card-text this_center" ><small> Adhésion jusqu'au {{ formule.data.end|date:"d F Y" }} </small></p>
+                            </div>
+                            <input type="submit" name="sending{{ formule.id }}" class="btn-asso" value="Choisir ce menu" />                            <br/>
+
+                            <small>Facturé en un seul paiement.<br/> Soit <span class="family zero" id="payment_zero{{ formule.id }}">{{ formule.data.price1 }}</span>
+                                                                          <span class="family one" id="payment_one{{ formule.id }}">{{ formule.data.price1 }}</span>
+                                                                          <span class="family two"  id="payment_two{{ formule.id }}">{{ formule.data.price2 }}</span>
+                                                                          <span class="family three"  id="payment_three{{ formule.id }}">{{ formule.data.price3 }}</span>
+                                                                          <span class="family four"  id="payment_four{{ formule.id }}">{{ formule.data.price4 }}</span>
+                                                                          <span class="family more"  id="payment_more{{ formule.id }}">{{ formule.data.price5 }}</span>
+
+                                                                        € x {{ formule.data.left_month }} mois.
+                            </small>
+
+                        </div>
+                    </div>
+                </form>     
+            </div>   
+            {% endfor %}
+        </div>
+    </div>
+</section> 
+
+  
+
+
+
+
+
+
+
+
+<section id="faq">
+ 
+</section> 
+
+ 
+    
+
+{% endblock %}

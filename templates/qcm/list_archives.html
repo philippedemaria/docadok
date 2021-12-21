@@ -1,0 +1,34 @@
+{% extends 'qcm/list_parcours.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load item_tags %}
+
+
+ 
+
+ 
+
+{% block page_title %}
+    <i class="bi bi-th sacado_color_text"></i> Mes parcours archivés
+
+{% endblock %}
+
+{% block page_menu_right %}
+
+    <li><a href="{% url 'parcours' %}"  class="no_button">Mes  parcours</a></li>
+
+{% endblock %}
+
+
+
+{% block archive %}
+
+            <button class="btn btn-default" name="action" value="archiver" onclick="return TestArchive('ces dossiers/fichiers')"> 
+                <i class="bi bi-archive"> </i>   Desarchiver la sélection
+            </button>
+
+
+{% endblock  %}   
+
+
+ 
