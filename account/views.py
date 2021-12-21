@@ -37,7 +37,6 @@ import uuid
 
 
 def logout_view(request):
-    tracker_execute_exercise(False,request.user)
     logout(request)
     return redirect('index')
 
