@@ -37,7 +37,7 @@ class Event(ModelWithCode):
  
 
     icon      = models.CharField(max_length=255, null=True, blank=True, editable=False)
-    title     = models.CharField(max_length=255, null=True, blank=True,   verbose_name="Titre")
+    title     = models.CharField(max_length=255, null=True, blank=True, default="Mon nouvel évènement" ,  verbose_name="Titre")
     date      = models.DateField(auto_now_add=True, verbose_name="Date de création")
     folder    = models.ForeignKey(Folder, related_name="events", on_delete=models.CASCADE, default='', blank=True )
     ranking   = models.PositiveIntegerField(  default=0,  blank=True, null=True, editable=False)
