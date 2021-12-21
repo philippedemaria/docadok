@@ -118,3 +118,6 @@ def logout_view(request):
 
 
 
+def csrf_failure(request, reason=""):
+    ctx = {'message': 'some custom messages'}
+    return render(request,"csrf_failure.html", ctx) 
