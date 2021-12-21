@@ -88,8 +88,6 @@ def index(request):
 
         form = AuthenticationForm()
         u_form = UserForm()
-        t_form = TeacherForm()
-        s_form = StudentForm()
         cookie = request.session.get("cookie", None)
 
     
