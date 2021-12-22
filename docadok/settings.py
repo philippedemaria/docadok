@@ -87,6 +87,7 @@ TEX_PREAMBULE_PDF_FILE= DIR_PREAMBULE_TEX+r'\preambulepdf.tex'
 
 
 
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' 
 
 # Application definition

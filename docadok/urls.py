@@ -34,6 +34,7 @@ urlpatterns = [
 # handler500 = myapp_views.handler500
 
 
+
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [
