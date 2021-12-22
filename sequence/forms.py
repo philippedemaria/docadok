@@ -1,6 +1,6 @@
 import datetime
 from django import forms
-from .models import Folder, Event
+from .models import Folder, Sequence
 from account.models import Student , Teacher
  
 from bootstrap_datepicker_plus import DatePickerInput, DateTimePickerInput
@@ -34,13 +34,13 @@ class FolderForm(forms.ModelForm):
 
 
 
-class EventForm(forms.ModelForm):
+class SequenceForm(forms.ModelForm):
 	class Meta:
-		model = Event
+		model = Sequence 
 		fields = '__all__'
 
 
 class CodeForm(forms.ModelForm):
 	class Meta:
-		model = Event
+		model = Sequence
 		fields = ('code',) 

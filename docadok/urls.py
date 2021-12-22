@@ -23,7 +23,7 @@ from setup.views import index
 urlpatterns = [
                   path('', include('setup.urls')),
                   path('account/', include('account.urls')),
-                  path('event/', include('event.urls')),
+                  path('sequence/', include('sequence.urls')),
                   path('setup/', include('setup.urls')),
                   path('ckeditor/', include('ckeditor_uploader.urls')),
  

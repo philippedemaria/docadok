@@ -33,7 +33,7 @@ class Folder(models.Model):
 
 
 
-class Event(ModelWithCode):
+class Sequence(ModelWithCode):
  
 
     icon      = models.CharField(max_length=255, null=True, blank=True, editable=False)
@@ -46,33 +46,6 @@ class Event(ModelWithCode):
         return "{}".format(self.title)
  
  
-
-
-class Question(models.Model):
-    """
-    Modèle représentant un associé.
-    """
-
-    title         = models.TextField(max_length=255, default='',  blank=True, verbose_name="Réponse écrite")
-    date_modified = models.DateTimeField(auto_now=True)
-    vignette      = models.ImageField(upload_to=question_directory_path, verbose_name="Vignette d'accueil", blank=True, null = True , default ="")
- 
-
-    def __str__(self):
-        return self.title
-
- 
-
-class Choice(models.Model):
-    """
-    Modèle représentant un associé.
-    """
-    imageanswer = models.ImageField(upload_to=choice_directory_path,  null=True,  blank=True, verbose_name="Image", default="")
-    answer      = models.TextField(max_length=255, default='', null=True,  blank=True, verbose_name="Réponse écrite")
-    is_correct  = models.BooleanField(default=0, verbose_name="Réponse correcte ?")
-    question    = models.ForeignKey(Question, related_name="choices", blank=True, null = True,  on_delete=models.CASCADE)
-    def __str__(self):
-        return self.answer 
 
  
 

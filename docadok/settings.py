@@ -106,7 +106,7 @@ INSTALLED_APPS = [
     'social_django',
     'account',
     'channels',
-    'event',
+    'sequence',
     ]
 
 

@@ -20,7 +20,7 @@ from django.db.models import Count, Q
 from account.forms import  UserForm, TeacherForm, StudentForm,  AuthenticationForm
 from account.models import  User, Teacher, Student 
 
-from event.forms import  CodeForm
+from sequence.forms import  CodeForm
 
 
 from datetime import date, datetime , timedelta

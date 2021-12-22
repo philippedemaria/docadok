@@ -1,22 +1,22 @@
 from django.shortcuts import render, redirect
-from event.models import Event, Folder
-from event.forms import EventForm, FolderForm
+from sequence.models import Sequence, Folder
+from sequence.forms import SequenceForm, FolderForm
 
 
 
 
-def list_events(request):
+def list_sequences(request):
  
-    events = Event.objects.all()
+    sequences = Sequence.objects.all()
 
-    return render(request, 'socle/list_events.html', {'events': events, 'communications' : [] , })
+    return render(request, 'socle/list_sequences.html', {'sequences': sequences , })
 
 
 
  
-def create_event(request):
+def create_sequence(request, id=0):
 
-    form = EventForm(request.POST or None  )
+    form = SequenceForm(request.POST or None  )
 
     if form.is_valid():
         nf = form.save()
@@ -24,33 +24,33 @@ def create_event(request):
     else:
         print(form.errors)
 
-    context = {'form': form,   'event': None  }
+    context = {'form': form,   'sequence': None  }
 
-    return render(request, 'event/form_event.html', context)
+    return render(request, 'event/form_sequence.html', context)
 
  
 def update_event(request, id):
 
-    event = Event.objects.get(id=id)
-    event_form = EventForm(request.POST or None, instance=event )
+    sequence = Sequence.objects.get(id=id)
+    event_form = SequenceForm(request.POST or None, instance=sequence )
     if request.method == "POST" :
         if event_form.is_valid():
             event_form.save()
-            return redirect('events')
+            return redirect('sequences')
         else:
             print(event_form.errors)
 
-    context = {'form': event_form,   'event': event,   }
+    context = {'form': event_form,   'sequence': sequence,   }
 
-    return render(request, 'event/form_event.html', context )
+    return render(request, 'sequence/form_sequence.html', context )
 
 
   
 def delete_event(request, id):
-    event = Event.objects.get(id=id)
-    event.delete()
+    sequence = Sequence.objects.get(id=id)
+    sequence.delete()
 
-    return redirect('events')
+    return redirect('sequences')
 
 
 ####################################################################################################
@@ -70,12 +70,12 @@ def create_folder(request):
 
     context = {'form': form,   'folder': None  }
 
-    return render(request, 'event/form_folder.html', context)
+    return render(request, 'sequence/form_folder.html', context)
 
  
 def update_folder(request, id):
 
-    folder = Event.objects.get(id=id)
+    folder = Folder.objects.get(id=id)
     folder_form = FolderForm(request.POST or None, instance=folder )
     if request.method == "POST" :
         if folder_form.is_valid():
@@ -91,7 +91,7 @@ def update_folder(request, id):
 
   
 def delete_folder(request, id):
-    folder = Event.objects.get(id=id)
+    folder = Folder.objects.get(id=id)
     folder.delete()
 
     return redirect('index')
