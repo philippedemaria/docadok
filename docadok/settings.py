@@ -152,10 +152,7 @@ else:
         'INTERCEPT_REDIRECTS': False,
     }
 
-CRON_CLASSES = [
-    "setup.cron.MyCronJob",
-]
-
+ 
 ROOT_URLCONF = 'docadok.urls'
 
 TEMPLATES = [

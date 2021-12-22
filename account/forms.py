@@ -25,6 +25,19 @@ class UserForm(UserCreationForm):
         return username
 
  
+class AuthenticationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ('username', 'password')
+
+    def __init__(self, *args, **kwargs):
+        super(AuthenticationForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.pop("autofocus", None)
+
+ 
+
+
+
 
 
 class StudentForm(forms.ModelForm):

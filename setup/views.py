@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 from django.forms import formset_factory
  
 from django.contrib.auth import   logout , login, authenticate
-from django.contrib.auth.forms import  UserCreationForm,  AuthenticationForm
+from django.contrib.auth.forms import  UserCreationForm
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
@@ -17,7 +17,7 @@ from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.db.models import Count, Q
 
-from account.forms import  UserForm, TeacherForm, StudentForm
+from account.forms import  UserForm, TeacherForm, StudentForm,  AuthenticationForm
 from account.models import  User, Teacher, Student 
 
 from event.forms import  CodeForm
