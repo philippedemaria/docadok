@@ -14,9 +14,10 @@ def list_sequences(request):
 
 
  
-def create_sequence(request, id=0):
+def create_sequence(request, ids=0):
 
-    form = SequenceForm(request.POST or None  )
+    teacher = request.user.teacher
+    form = SequenceForm(request.POST or None , teacher=teacher )
 
     if form.is_valid():
         nf = form.save()
@@ -26,27 +27,28 @@ def create_sequence(request, id=0):
 
     context = {'form': form,   'sequence': None  }
 
-    return render(request, 'event/form_sequence.html', context)
+    return render(request, 'sequence/form_sequence.html', context)
 
  
-def update_event(request, id):
+def update_sequence(request, ids):
 
-    sequence = Sequence.objects.get(id=id)
-    event_form = SequenceForm(request.POST or None, instance=sequence )
+    sequence = Sequence.objects.get(id=ids)
+    teacher = request.user.teacher
+    form = SequenceForm(request.POST or None, instance=sequence , teacher=teacher  )
     if request.method == "POST" :
-        if event_form.is_valid():
-            event_form.save()
+        if form.is_valid():
+            form.save()
             return redirect('sequences')
         else:
-            print(event_form.errors)
+            print(form.errors)
 
-    context = {'form': event_form,   'sequence': sequence,   }
+    context = {'form': form,   'sequence': sequence,   }
 
     return render(request, 'sequence/form_sequence.html', context )
 
 
   
-def delete_event(request, id):
+def delete_sequence(request, ids):
     sequence = Sequence.objects.get(id=id)
     sequence.delete()
 

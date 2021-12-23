@@ -1,8 +1,0 @@
-{% load static %}
-
-
-    {% if group %} 
-        <a href="{% url 'dashboard_group' group.id %}" style="color:{{ group.subject.color }}">{{ group.subject.name }}  </a> 
-    {% endif %}
-
-

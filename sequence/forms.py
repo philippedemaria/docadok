@@ -26,21 +26,52 @@ def validation_file(content):
  
 
 
+ 
+
 class FolderForm(forms.ModelForm):
-	class Meta:
-		model = Folder
-		fields = '__all__'
+    class Meta:
+        model = Folder
+        fields = [ 'title', 'teacher', 'ranking' ]
 
 
+    def __init__(self, *args, **kwargs):
+        teacher = kwargs.pop('teacher')
+        super(FolderForm, self).__init__(*args, **kwargs)
+        if teacher :
+            try :
+                r = teacher.folders.order_by('ranking').last().ranking + 1
+            except :
+                r = 0
+        # Champs invisibles
+        self.fields['teacher'].widget  = forms.HiddenInput()
+        self.fields['teacher'].initial = teacher
+        self.fields['ranking'].widget  = forms.HiddenInput()
+        self.fields['ranking'].initial = r
 
 
 class SequenceForm(forms.ModelForm):
-	class Meta:
-		model = Sequence 
-		fields = '__all__'
+    class Meta:
+        model = Sequence
+        fields = [ 'title', 'folder', 'teacher',  'ranking' ]
+
+
+    def __init__(self, *args, **kwargs):
+        teacher = kwargs.pop('teacher')
+        super(SequenceForm, self).__init__(*args, **kwargs)
+
+        if teacher :
+            try :
+                r = teacher.sequences.order_by('ranking').last().ranking + 1
+            except :
+                r = 0
+        # Champs invisibles
+        self.fields['teacher'].widget  = forms.HiddenInput()
+        self.fields['teacher'].initial = teacher
+        self.fields['ranking'].widget  = forms.HiddenInput()
+        self.fields['ranking'].initial = r 
 
 
 class CodeForm(forms.ModelForm):
-	class Meta:
-		model = Sequence
-		fields = ('code',) 
+    class Meta:
+        model = Sequence
+        fields = ('code',)

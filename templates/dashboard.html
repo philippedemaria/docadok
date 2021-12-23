@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>{% block titlepage %}SacAdo - Interface de {{ request.user.first_name }} {{ request.user.last_name }} {% endblock %}</title>
+    <title>{% block titlepage %}docadok - Interface de {{ request.user.first_name }} {{ request.user.last_name }} {% endblock %}</title>
     {% load bootstrap3 %}
     {% load widget_tweaks %}
     {% load item_tags %} 
@@ -80,10 +80,10 @@
         <nav class="navbar">
           <div class="container-fluid">
             <div class="navbar-header">
-              <a class="navbar-brand" href="#">docadoK</a>
+              <a class="navbar-brand" href="#">docadok</a>
             </div>
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="#">  Mes évenements</a></li>
+              <li><a href="#">  Mes séquences</a></li>
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ user }}
                 <span class="caret"></span></a>
@@ -101,14 +101,14 @@
         {% if request.user.is_authenticated %}
             <div class="row">
                 <div class="col-sm-12 col-md-12">
-                    <h2>Mes évènements {{ nbe }}</h2>
+                    <h2>Mes séquences ({{ nbs }})</h2>
 
                 </div>
             </div> 
             <div class="row">
                 <div class="col-sm-10 col-md-10">
-                     <a href="{% url 'create_event' %}" class="btn btn-new-violet"><i class="bi bi-plus-circle-fill"></i> Nouvel évènement</a>
-                     <a href="#" data-toggle='modal' data-target='#import_event'  class="btn btn-new-violet"><i class="bi bi-plus-circle-fill"></i> Importer un évènement</a>
+                     <a href="{% url 'create_sequence' 0 %}" class="btn btn-new-violet"><i class="bi bi-plus-circle-fill"></i> Nouvelle séquence</a>
+                     <a href="#" data-toggle='modal' data-target='#import_sequence'  class="btn btn-new-violet"><i class="bi bi-plus-circle-fill"></i> Importer une séquence</a>
                 </div>
                 <div class="col-sm-2 col-md-2">
                      <a href="#" data-toggle='modal' data-target='#create_folder' class="btn btn-new-violet"><i class="bi bi-folder-plus"></i></a>
@@ -121,12 +121,12 @@
             <div class="row">
                 <div class="col-sm-12 col-md-12">
                     <ul>
-                    {% for event in events %}
+                    {% for sequence in sequences %}
                         <li>
-                            <span class="event_icon">{{ event.icon}}</span>
-                            <span class="event_title">{{ event.title}}</span>
-                            <span class="event_property">[{{ event.code}}]</span>
-                            <span class="event_property">{{ event.date|date:"d N Y"}}</span>
+                            <span class="sequence_icon">{{ sequence.icon}}</span>
+                            <span class="sequence_title">{{ sequence.title}}</span>
+                            <span class="sequence_property">[{{ sequence.code}}]</span>
+                            <span class="sequence_property">{{ sequence.date|date:"d N Y"}}</span>
                             <span class="dropdown"> 
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="bi bi-three-dots-vertical'"></i></a>
                                 <ul class="dropdown-menu">
@@ -152,21 +152,21 @@
 </div>
 
 {% block modales %}
-<div class="modal fade" id="import_event" tabindex="-1" role="dialog" aria-labelledby="import_event">
+<div class="modal fade" id="import_sequence" tabindex="-1" role="dialog" aria-labelledby="import_sequence">
     <div class="modal-dialog" role="document">
         <div class="modal-content" >
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>                 
-                <h2>Importer un événement</h2>              
+                <h2>Importer une séquence</h2>              
             </div>
             <div class="modal-body">
                 <form action="" method="POST" enctype='multipart/form-data'>
                 {% csrf_token %}          
                 <div class="row" align="center">
                     <div class="col-sm-12">    
-                        <label>Entrer le code de l'évènement</label>
+                        <label>Entrer le code de la séquence</label>
                     </div>
                 </div>
                 <div class="row justify-content-center marginbottom50" align="center">
@@ -185,6 +185,48 @@
                     <div class="col-sm-6 col-md-6 col-lg-6" align="right">    
                         <div class="form-group">
                             <input value="Importer" type="submit"  class="btn btn-new-violet" /> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+
+<div class="modal fade" id="create_folder" tabindex="-1" role="dialog" aria-labelledby="create_folder">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>                 
+                <h2>Créer un dossier</h2>              
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST" enctype='multipart/form-data'>
+                {% csrf_token %}          
+                <div class="row" align="center">
+                    <div class="col-sm-12">    
+                        <label>Entrer le nom du dossier</label>
+                    </div>
+                </div>
+                <div class="row justify-content-center marginbottom50" align="center">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-6">
+                        {{ form_folder.title |add_class:"form-control fill_the_code"|attr:"placeholder:Mon dossier" }}
+                        {{ form_folder.title.errors }}
+                        {{ form_folder.teacher }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 col-lg-6" align="left">    
+                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close">
+                            Annuler
+                        </button> 
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6" align="right">    
+                        <div class="form-group">
+                            <input value="Créer" type="submit"  class="btn btn-new-violet" /> 
                         </div>
                     </div>
                 </div>

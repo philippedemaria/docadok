@@ -1,0 +1,58 @@
+{% extends 'dashboard.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load item_tags %}
+
+
+{% block require %}
+    <script src="{% static 'js/require.js' %}"   data-main="{% static 'js/common4.js' %}"></script>
+    <script>
+        require(['script/ajax-qcm']);
+    </script> 
+{% endblock %}
+ 
+
+
+
+
+{% block body %}
+<form action="#" method="POST" id="question_form"  enctype='multipart/form-data' >
+{% csrf_token %}    
+    <section class="content_list"> 
+        <div class="row">
+            <div class="col-sm-12 col-md-2">
+
+                
+            </div>
+        </div> 
+        <div class="row">
+            <div class="col-sm-12 col-md-12" >  
+ 
+
+                {{ form_ans.management_form }}
+
+                {% for form in form_ans %} 
+                    {{ form.id }}
+                    <div class="input-group mb-4">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                {{ form.is_correct }}
+                            </div>
+                            <span class="input-group-text"><i class="bi bi-image"></i></span>{{ form.imageanswer }}
+                        </div>
+                        {{ form.answer|add_class:"form-control"|attr:"placeholder:Ecrire votre réponse ici" }}
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button"><i class="bi bi-trash"></i></button>
+                        </div> 
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+ 
+</form>
+
+{% endblock %} 
+
+ 

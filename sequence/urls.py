@@ -8,6 +8,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
 
-    path('create_sequence/0', create_sequence, name='create_sequence'),
-
+    path('create_sequence/<int:ids>', create_sequence, name='create_sequence'),
+    path('update_sequence/<int:ids>', update_sequence, name='update_sequence'),
  ]
