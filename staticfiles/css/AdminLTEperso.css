@@ -1295,9 +1295,16 @@ a.menuright:hover{
   margin-top: 20px;
 }
 
-.icones{
-  font-size: 20px;
+
+.font16{
+  font-size:16px;
 }
+
+
+
+
+
+
 
 /* Prelaoder */
  #preloader_groups {
@@ -4507,129 +4514,17 @@ a.white, a.white:active, a.white:visited, a.white:hover, .white{
   display: block;
 }
 /*****************************************************  Bouton sacado *************/
-.btn-mastering  {
-  background-color: #5d4391  ; /* #deeaea*rgb(219, 205, 247)*/
-  color:#FFF;  /* #657574*/
-  min-width: 120px;
-  border-radius: 20px;
-  opacity: 0.9;
-  font-size: 12px;
-  padding:0px;
-  margin-left: 25px;
-}
-
- 
-.btn-mastering:hover,
-.btn-mastering:active,
-.btn-mastering.hover {
-  background-color: rgb(219, 205, 247);
-  color:#5d4391!important;
-  border-radius: 20px;
-}
-
-.btn-accueil  {
-  background-color: #FFF ; /* #deeaea*/
-  color:#007bff;  /* #657574*/
-  margin-top: 5px;
-  margin-left: 0px;
-  margin-bottom: 5px;
-  min-width: 220px;
-  border-radius: 20px;
-  opacity: 0.9;
-}
-
- 
-.btn-accueil:hover,
-.btn-accueil:active,
-.btn-accueil.hover {
-  background-color: transparent!important;
-  color:#FFF!important;
-  border-radius: 20px;
-}
  
 
-.btn-accueil-student  {
-  margin-top: 5px;
-  margin-left: 0px;
-  margin-bottom: 5px;
-  min-width: 220px;
-  border-radius: 20px;
-  opacity: 0.9;
-  color:#FFF!important;
-}
-
- 
-.btn-accueil-student:hover,
-.btn-accueil-student:active,
-.btn-accueil-student.hover {
-  border-radius: 20px;
-  background-color: #FFF;
-  color:#5d4391!important;
-  border-color:#5d4391!important;
-}
-
-
-
-
-
-
-
- 
-.btn-create-group{
-  color: #f1eef7;
-  font-size: 60px!important;
-}
-
-.btn-create-group:hover{ 
-  color:#5d4391;
-}
-
-
-
-
-.btn-new  {
-  color : #007bff!important;
+.btn-form {
   border-radius: 20px; /*radius des boutons*/
-  border: 1px solid #007bff;
+  border: 1px solid #998fa6;
   margin-right: 5px;
 }
-.btn-new:hover, .btn-new:hover > a ,
-.btn-new:active, .btn-new:active > a ,
-.btn-new.hover,  .btn-new.hover > a   {
-  background-color: #007bff!important;/*   #dd4b39!important;*/
-  color: white!important;
-  text-decoration: none;
-}
-
-
-
-
-.btn-new-evaluation  {
-  color : #ffd500!important;
-  border-radius: 20px; /*radius des boutons*/
-  border: 1px solid #ffd500;
-  margin-right: 5px;
-}
-.btn-new-evaluation:hover,
-.btn-new-evaluation:active,
-.btn-new-evaluation.hover {
-  background-color: #ffd500!important;/*   #dd4b39!important;*/
-  color: white!important;
-}
-
-
-
-.btn-test  {
-  color : #b300b3!important;
-  border-radius: 20px; /*radius des boutons*/
-  border: 1px solid #b300b3;
-  margin-right: 5px;
-}
-.btn-test:hover,
-.btn-test:active,
-.btn-test.hover {
-  background-color: #b300b3!important;/*   #dd4b39!important;*/
-  color: white!important;
+.btn-form:hover,
+.btn-form:active,
+.btn-form.hover {
+  border: 1px solid #5d4391;
 }
 
 
@@ -4668,33 +4563,18 @@ a.white, a.white:active, a.white:visited, a.white:hover, .white{
 }
 
 
-
-
-
-
-
-
-.btn-green  {
-  color : #3b9d26!important;
-  border-radius: 20px; /*radius des boutons*/
-  border: 1px solid #3b9d26;
-  margin-right: 5px;
-}
-.btn-green:hover,
-.btn-green:active,
-.btn-green.hover {
-  background-color: #3b9d26!important;/*   #dd4b39!important;*/
-  color: white!important;
-}
-
-
-
-
+.size20 {
+    font-size : 20px !important;
+} 
 
 
 
 .size18 {
     font-size : 18px !important;
+}
+
+.bgwhite{
+  background: white
 }
 /*****************************************************   FIN Bouton sacado ****************************/
 

@@ -44,8 +44,8 @@ class Sequence(ModelWithCode):
     authentification = models.BooleanField(default=0, verbose_name="Authentification ?")
     pseudonyme       = models.BooleanField(default=0, verbose_name="Pseudonyme ?")
     competition      = models.BooleanField(default=0, verbose_name="Compétition ?")
-    terminal         = models.BooleanField(default=0, verbose_name="Afficage des diapositives sur le terminal des participants ?")
-    displayresult    = models.BooleanField(default=0, verbose_name="Résultats visibles par defaut ?")
+    terminal         = models.BooleanField(default=0, verbose_name="Affichage des diapositives sur le terminal des participants ?")
+    displayresult    = models.BooleanField(default=0, verbose_name="Résultats visibles par défaut ?")
 
     def __str__(self):     
         return "{}".format(self.title)
