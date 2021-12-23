@@ -26,10 +26,10 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from django.contrib.auth import   logout
-from account.models import User, Teacher, Student
+from account.models import User, Organisateur, Participant
  
  
-from .forms import UserForm,StudentForm, TeacherForm
+from .forms import UserForm, ParticipantForm, OrganisateurForm
  
  
 import uuid
@@ -42,9 +42,9 @@ def logout_view(request):
 
                  
 
-def list_teacher(request):
-    teachers = User.objects.filter(user_type=User.TEACHER)
-    return render(request, 'account/list_teacher.html', {'teachers': teachers})
+def list_organisateur(request):
+    organisateurs = User.objects.filter(user_type=User.TEACHER)
+    return render(request, 'account/list_organisateur.html', {'organisateurs': organisateurs})
 
 
  
@@ -67,26 +67,26 @@ class DashboardView(TemplateView): # lorsque l'utilisateur vient de se connecter
             for r in relationships :
                 Relationship.objects.filter(id=r.id).update(is_publish = 1)
 
-            if self.request.user.is_teacher:  # Teacher
+            if self.request.user.is_organisateur:  # Teacher
 
-                teacher = Teacher.objects.get(user=self.request.user.id)
+                organisateur = Teacher.objects.get(user=self.request.user.id)
 
-                groups = Group.objects.filter(teacher = teacher)
+                groups = Group.objects.filter(organisateur = organisateur)
 
-                relationships = Relationship.objects.filter(Q(is_publish = 1)|Q(start__lte=today), parcours__teacher=teacher, date_limit__gte=today,exercise__supportfile__is_title=0).order_by("parcours")
-                parcourses = Parcours.objects.filter(teacher=teacher,is_trash=0) # parcours non liés à un groupe
+                relationships = Relationship.objects.filter(Q(is_publish = 1)|Q(start__lte=today), parcours__organisateur=organisateur, date_limit__gte=today,exercise__supportfile__is_title=0).order_by("parcours")
+                parcourses = Parcours.objects.filter(organisateur=organisateur,is_trash=0) # parcours non liés à un groupe
 
                 communications = Communication.objects.filter(active=1)
-                parcours_tab = Parcours.objects.filter(students=None, teacher=teacher)
+                parcours_tab = Parcours.objects.filter(participants=None, organisateur=organisateur)
 
-                context = {'this_user': this_user, 'teacher': teacher, 'relationships': relationships,
+                context = {'this_user': this_user, 'organisateur': organisateur, 'relationships': relationships,
                            'parcourses': parcourses, 'groups': groups, 'parcours_tab': parcours_tab, 'today' : today , 
                            'communications': communications, }
-            elif self.request.user.is_student:  # Student
-                student = Student.objects.get(user=self.request.user.id)
+            elif self.request.user.is_participant:  # Participant
+                participant = Participant.objects.get(user=self.request.user.id)
 
-                parcourses = Parcours.objects.filter(students=student, linked=0, is_evaluation=0, is_publish=1,is_trash=0)
-                groups = student.students_to_group.all()
+                parcourses = Parcours.objects.filter(participants=participant, linked=0, is_evaluation=0, is_publish=1,is_trash=0)
+                groups = participant.participants_to_group.all()
 
                 parcours = []
                 for p in parcourses:
@@ -101,7 +101,7 @@ class DashboardView(TemplateView): # lorsque l'utilisateur vient de se connecter
 
                 num = 0
                 for e in exercise_tab:
-                    if Studentanswer.objects.filter(student=student, exercise=e).count() > 0:
+                    if Participantanswer.objects.filter(participant=participant, exercise=e).count() > 0:
                         num += 1
 
                 nb_relationships = Relationship.objects.filter(Q(is_publish = 1)|Q(start__lte=today), parcours__in=parcours, date_limit__gte=today,exercise__supportfile__is_title=0).count()
@@ -112,33 +112,33 @@ class DashboardView(TemplateView): # lorsque l'utilisateur vient de se connecter
 
                 ratiowidth = int(0.9*ratio)
 
-                evaluations = Parcours.objects.filter(start__lte=today, stop__gte=today, students=student, is_evaluation=1,is_trash=0)
-                studentanswers = Studentanswer.objects.filter(student=student)
+                evaluations = Parcours.objects.filter(start__lte=today, stop__gte=today, participants=participant, is_evaluation=1,is_trash=0)
+                participantanswers = Participantanswer.objects.filter(participant=participant)
 
                 exercises = []
-                for studentanswer in studentanswers:
-                    if not studentanswer.exercise in exercises:
-                        exercises.append(studentanswer.exercise)
+                for participantanswer in participantanswers:
+                    if not participantanswer.exercise in exercises:
+                        exercises.append(participantanswer.exercise)
 
                 relationships_in_late = Relationship.objects.filter(Q(is_publish=1) | Q(start__lte=today),
                                                                     parcours__in=parcours, is_evaluation=0,
                                                                     date_limit__lt=today).exclude(exercise__in=exercises).order_by("date_limit")
 
-                context = {'student_id': student.user.id, 'student': student, 'relationships': relationships,
+                context = {'participant_id': participant.user.id, 'participant': participant, 'relationships': relationships,
                            'ratio': ratio, 'evaluations': evaluations, 'ratiowidth': ratiowidth, 'today' : today , 
                            'relationships_in_late': relationships_in_late}
             elif self.request.user.is_parent:  # Parent
 
                 parent = Parent.objects.get(user=self.request.user)
-                students = parent.students.order_by("user__first_name")
-                context = {'parent': parent, 'students': students, 'today' : today ,  }
+                participants = parent.participants.order_by("user__first_name")
+                context = {'parent': parent, 'participants': participants, 'today' : today ,  }
 
         else: ## Anonymous
 
             form = AuthenticationForm()
             u_form = UserForm()
             t_form = TeacherForm()
-            s_form = StudentForm()
+            s_form = ParticipantForm()
             levels = Level.objects.all()
             exercise_nb = Exercise.objects.filter(supportfile__is_title=0).count()
 
@@ -159,29 +159,29 @@ class DashboardView(TemplateView): # lorsque l'utilisateur vient de se connecter
 
 def myaccount(request):
  
-    if request.user.is_teacher:
-        teacher = Teacher.objects.get(user_id=request.session.get('user_id'))
-        context = {'teacher': teacher, }
-        return render(request, 'account/teacher_account.html', context)
+    if request.user.is_organisateur:
+        organisateur = Organisateur.objects.get(user_id=request.session.get('user_id'))
+        context = {'organisateur': organisateur, }
+        return render(request, 'account/organisateur_account.html', context)
     else:
-        student = Student.objects.get(user_id=request.session.get('user_id'))
-        context = {'student': student, }
+        participant = Participant.objects.get(user_id=request.session.get('user_id'))
+        context = {'participant': participant, }
 
-        return render(request, 'account/student_account.html', context)
+        return render(request, 'account/participant_account.html', context)
 
 #####################################
 
 
  
-def send_to_teachers(request):
+def send_to_organisateurs(request):
     users = User.objects.filter(user_type=2)
     context = {"users" : users, }
-    return render(request,'account/send_message_to_teachers.html', context)
+    return render(request,'account/send_message_to_organisateurs.html', context)
 
 
 
 
-def message_to_teachers_sent(request):
+def message_to_organisateurs_sent(request):
     subject = request.POST.get("subject")
     message = request.POST.get("message")
     users = request.POST.getlist("users")
@@ -203,10 +203,10 @@ def message_to_teachers_sent(request):
 
  
 
-def newpassword_student(request, id,idg):
+def newpassword_participant(request, id,idg):
 
-    student = get_object_or_404(Student, user_id=id)
-    user = student.user
+    participant = get_object_or_404(Participant, user_id=id)
+    user = participant.user
     user.set_password("sacado2020")
     user.save()
 
@@ -215,7 +215,7 @@ def newpassword_student(request, id,idg):
     if idg > 0 :
         return redirect('show_group', idg )
     else :
-        return redirect('school_students')
+        return redirect('school_participants')
 
  
 
@@ -224,15 +224,15 @@ def sender_mail(request,form):
     if request.method == "POST" : 
         subject = request.POST.get("subject") 
         texte = request.POST.get("texte") 
-        student_id = request.POST.get("student_id")
+        participant_id = request.POST.get("participant_id")
  
-        student_user =  User.objects.get(pk=student_id)
+        participant_user =  User.objects.get(pk=participant_id)
         rcv = []
         if form.is_valid():
             nf = form.save(commit = False)
             nf.author =  request.user
             nf.save()
-            nf.receivers.add(student_user)
+            nf.receivers.add(participant_user)
             for r in nf.receivers.all():
                 rcv.append(r.email)
             sending_mail( cleanhtml(subject), cleanhtml(texte) , settings.DEFAULT_FROM_EMAIL , rcv)
@@ -262,25 +262,25 @@ def close_my_account(request):
 
 #########################################Teacher #######################################################################
  
-def register_teacher(request):
+def register_organisateur(request):
     if request.method == 'POST':
 
         user_form = UserForm(request.POST)
 
         if user_form.is_valid():
             user = user_form.save(commit=False)
-            user.user_type = User.TEACHER
+            user.user_type = User.ORGANISATEUR
             user.set_password(user_form.cleaned_data["password1"])
             user.save()
             username = user_form.cleaned_data['username']
             password = user_form.cleaned_data['password1']
             user = authenticate(username=username, password=password)
             login(request, user,  backend='django.contrib.auth.backends.ModelBackend' )
-            teacher = Teacher.objects.create(user=user)
+            organisateur = Organisateur.objects.create(user=user)
 
             try :
-                #teacher.notify_registration()
-                teacher.notify_registration_to_admins()
+                #organisateur.notify_registration()
+                organisateur.notify_registration_to_admins()
                 msg = "Bonjour "+ user.first_name +" " + user.last_name+",\n\n Votre compte Sacado est maintenant disponible.\n\nVotre identifiant est : "+user.username+".\n\nVotre mot de passe est : "+password+" \n\nPour vous connecter, redirigez-vous vers  https://sacado.xyz .\n\nCeci est un mail automatique. Merci de ne pas répondre."
                 msg_ = "Bonjour,\n\n Un enseignant vient de rejoindre SacAdo : " + user.last_name + "  "+user.first_name 
                 if user.email :
@@ -298,69 +298,69 @@ def register_teacher(request):
 
 #@can_register
 #@is_manager_of_this_school
-def update_teacher(request, pk):
+def update_organisateur(request, pk):
 
     user = get_object_or_404(User, pk=pk)
-    teacher = get_object_or_404(Teacher, user=user)
+    organisateur = get_object_or_404(Teacher, user=user)
     today = time_zone_user(user)
     user_form = ManagerUpdateForm(request.POST or None, instance=user)
-    teacher_form = TeacherForm(request.POST or None, instance=teacher)
+    organisateur_form = OrganisateurForm(request.POST or None, instance=organisateur)
     new = False
-    if all((user_form.is_valid(), teacher_form.is_valid())):
+    if all((user_form.is_valid(), organisateur_form.is_valid())):
         user_form.save()
-        teacher = teacher_form.save(commit=False)
-        teacher.user = user
-        teacher.save()
-        teacher_form.save_m2m()
+        organisateur = organisateur_form.save(commit=False)
+        organisateur.user = user
+        organisateur.save()
+        organisateur_form.save_m2m()
         messages.success(request, "Actualisation réussie !")
 
         test = request.POST.get("listing",None)
  
         if test :
-            return redirect('list_teacher')
+            return redirect('list_organisateur')
         elif request.user.is_manager :
-            return redirect('school_teachers')
+            return redirect('school_organisateurs')
         else :
             return redirect('index') 
 
-    return render(request, 'account/teacher_form.html',
+    return render(request, 'account/organisateur_form.html',
                   {'user_form': user_form, 'new' : new , 'communications': [] , 'today' : today , 
-                   'teacher_form': teacher_form,
-                   'teacher': teacher})
+                   'organisateur_form': organisateur_form,
+                   'organisateur': organisateur})
 
 
 
 #@can_register
 #@is_manager_of_this_school
-def delete_teacher(request, id):
+def delete_organisateur(request, id):
 
-    teacher = get_object_or_404(Teacher, user_id=id)
+    organisateur = get_object_or_404(Teacher, user_id=id)
 
     supprime , sup  = False , False
 
-    if request.user.is_manager and teacher.user.school == request.user.school : #Si l'enseignant est manager et administre le même étabissement que le prof à supprimer alors on supprime.
+    if request.user.is_manager and organisateur.user.school == request.user.school : #Si l'enseignant est manager et administre le même étabissement que le prof à supprimer alors on supprime.
         supprime = True
-        if teacher.groups.count() > 0 : # si le prof a déjà des groupes, seul lui peut se supprimer
+        if organisateur.groups.count() > 0 : # si le prof a déjà des groupes, seul lui peut se supprimer
             supprime = False
 
-    if request.user.teacher == teacher or request.user.is_superuser   :
+    if request.user.organisateur == organisateur or request.user.is_superuser   :
         sup = True
         
     if sup or supprime :
-        teacher.user.delete()
+        organisateur.user.delete()
         messages.success(request,"Le profil a été supprimé avec succès.")
     else :
         messages.error(request,"Permission refusée. Le profil n'a pas été supprimé. Des groupes sont attribués à cet enseignant. Il faut le dissocer de ses groupes.")
 
     if request.user.is_superuser :
-        return redirect('list_teacher')
+        return redirect('list_organisateur')
     elif request.user.is_manager :
-        return redirect('school_teachers')
+        return redirect('school_organisateurs')
     else :
         return redirect('index') 
 
 
-def dissociate_teacher(request, id):
+def dissociate_organisateur(request, id):
 
     user = User.objects.get(pk=id)
     this_user = request.user
@@ -382,9 +382,9 @@ def dissociate_teacher(request, id):
 
     test = request.POST.get("listing",None)
     if test :
-        return redirect('list_teacher')
+        return redirect('list_organisateur')
     elif request.user.is_manager :
-        return redirect('school_teachers')
+        return redirect('school_organisateurs')
     else :
         return redirect('index') 
 
@@ -392,16 +392,16 @@ def dissociate_teacher(request, id):
 
 #@can_register
 #@is_manager_of_this_school
-def register_teacher_from_admin(request):
+def register_organisateur_from_admin(request):
     """"
     Enregistre un enseignant depuis la console admin d'un établissement
     """ 
     user_form = ManagerForm(request.POST or None,initial = {'time_zone': request.user.time_zone , 'country': request.user.country })
-    teacher_form = TeacherForm(request.POST or None)
+    organisateur_form = TeacherForm(request.POST or None)
     school = this_school_in_session(request)
     new = False
     if request.method == 'POST':
-        if all((user_form.is_valid(),teacher_form.is_valid())):
+        if all((user_form.is_valid(),organisateur_form.is_valid())):
             u_form = user_form.save(commit=False)
             u_form.password = make_password("sacado2020")
             u_form.user_type = User.TEACHER
@@ -410,25 +410,25 @@ def register_teacher_from_admin(request):
             u_form.school = school
             u_form.username = get_username(request , u_form.last_name, u_form.first_name)
             u_form.save()
-            teacher = teacher_form.save(commit=False)
-            teacher.user = u_form
-            teacher.save()
-            teacher_form.save_m2m()
+            organisateur = organisateur_form.save(commit=False)
+            organisateur.user = u_form
+            organisateur.save()
+            organisateur_form.save_m2m()
 
             sending_mail('Création de compte sur Sacado',
-                          f'Bonjour {teacher.user}, votre compte Sacado est maintenant disponible.\r\n\r\nVotre identifiant est {u_form.username} \r\n\r\nVotre mot de passe est : sacado2020 \r\n\r\nVous pourrez le modifier une fois connecté à votre espace personnel.\r\n\r\nPour vous connecter, redirigez-vous vers https://sacado.xyz.\r\n\r\nCeci est un mail automatique. Ne pas répondre.',
+                          f'Bonjour {organisateur.user}, votre compte Sacado est maintenant disponible.\r\n\r\nVotre identifiant est {u_form.username} \r\n\r\nVotre mot de passe est : sacado2020 \r\n\r\nVous pourrez le modifier une fois connecté à votre espace personnel.\r\n\r\nPour vous connecter, redirigez-vous vers https://sacado.xyz.\r\n\r\nCeci est un mail automatique. Ne pas répondre.',
                           settings.DEFAULT_FROM_EMAIL,
                           [u_form.email, ])
  
-            return redirect('school_teachers')
+            return redirect('school_organisateurs')
         else:
             messages.error(request, user_form.errors)
     else:
         new = True
 
-    return render(request, 'account/teacher_form.html',
+    return render(request, 'account/organisateur_form.html',
                   {'user_form': user_form, 'communications': [] ,   "school" : school ,
-                   'teacher_form': teacher_form,
+                   'organisateur_form': organisateur_form,
                    'new': new, })
 
  
@@ -436,28 +436,28 @@ def register_teacher_from_admin(request):
 #@is_manager_of_this_school
 def register_by_csv(request, key, idg=0):
     """
-    Enregistrement par csv : key est le code du user_type : 0 pour student, 2 pour teacher
+    Enregistrement par csv : key est le code du user_type : 0 pour participant, 2 pour organisateur
     """
     if idg > 0:
         group = Group.objects.get(pk=idg)
-        is_teacher = False
+        is_organisateur = False
     else :
-        is_teacher = True
+        is_organisateur = True
     if request.method == "POST":
         # try:
         csv_file = request.FILES["csv_file"]
         if not csv_file.name.endswith('.csv'):
             messages.error(request, "Le fichier n'est pas format CSV")
-            return HttpResponseRedirect(reverse("register_teacher_csv", args=[key, idg]))
+            return HttpResponseRedirect(reverse("register_organisateur_csv", args=[key, idg]))
         # if file is too large, return
         if csv_file.multiple_chunks():
             messages.error(request, "Le fichier est trop lourd (%.2f MB)." % (csv_file.size / (1000 * 1000),))
-            return HttpResponseRedirect(reverse("register_teacher_csv", args=[key, idg]))
+            return HttpResponseRedirect(reverse("register_organisateur_csv", args=[key, idg]))
         try:
             file_data = csv_file.read().decode("utf-8")
         except UnicodeDecodeError:
             messages.error(request, 'Erreur..... Votre fichier contient des caractères spéciaux qui ne peuvent pas être décodés. Merci de vérifier que votre fichier .csv est bien encodé au format UTF-8.')
-            return HttpResponseRedirect(reverse("register_teacher_csv", args=[key, idg]))
+            return HttpResponseRedirect(reverse("register_organisateur_csv", args=[key, idg]))
 
         lines = file_data.split("\r\n")
         # loop over the lines and save them in db. If error , store as string and then display = []
@@ -476,17 +476,17 @@ def register_by_csv(request, key, idg=0):
                                                                 'is_extra': 0})
                     Teacher.objects.get_or_create(user=user, notification=1, exercise_post=1)
                     group = None
-                else:  # Student
+                else:  # Participant
                     user, created = User.objects.get_or_create(last_name=ln, first_name=fn, email=email, user_type=0,
                                                                school=this_school_in_session(request),
                                                                time_zone=request.user.time_zone, is_manager=0,
                                                                defaults={'username': username, 'password': password,
                                                                          'is_extra': 0})
-                    student, creator = Student.objects.get_or_create(user=user, level=group.level, task_post=1)
+                    participant, creator = Participant.objects.get_or_create(user=user, level=group.level, task_post=1)
                     if not creator : #Si l'élève n'est pas créé alors il existe dans des groupes. On l'efface de ses anciens groupes pour l'inscrire à nouveau !
-                        for g in student.students_to_group.all():
-                            g.students.remove(student)
-                    group.students.add(student)
+                        for g in participant.participants_to_group.all():
+                            g.participants.remove(participant)
+                    group.participants.add(participant)
 
                 if is_username_changed :
                     list_names += ln+" "+fn+" : "+username+"; "
@@ -507,7 +507,7 @@ def register_by_csv(request, key, idg=0):
  
 
         if key == User.TEACHER:
-            return redirect('school_teachers')
+            return redirect('school_organisateurs')
         else:
             return redirect('school_groups')
     else:
@@ -516,7 +516,7 @@ def register_by_csv(request, key, idg=0):
         else:
             group = Group.objects.get(pk=idg)
 
-        return render(request, 'account/csv_teachers_or_students.html', {'key': key, 'idg': idg, 'communications' : [],  'group': group ,  'is_teacher': is_teacher })
+        return render(request, 'account/csv_organisateurs_or_participants.html', {'key': key, 'idg': idg, 'communications' : [],  'group': group ,  'is_organisateur': is_organisateur })
 
 
 
@@ -528,18 +528,18 @@ def register_by_csv(request, key, idg=0):
 #@is_manager_of_this_school
 def register_users_by_csv(request,key):
     """
-    Enregistrement par csv : key est le code du user_type : 0 pour student, 2 pour teacher
+    Enregistrement par csv : key est le code du user_type : 0 pour participant, 2 pour organisateur
     """
     if request.method == "POST":
         # try:
         csv_file = request.FILES["csv_file"]
         if not csv_file.name.endswith('.csv'):
             messages.error(request, "Le fichier n'est pas format CSV")
-            return HttpResponseRedirect(reverse("register_teacher_csv"))
+            return HttpResponseRedirect(reverse("register_organisateur_csv"))
         # if file is too large, return
         if csv_file.multiple_chunks():
             messages.error(request, "Le fichier est trop lourd (%.2f MB)." % (csv_file.size / (1000 * 1000),))
-            return HttpResponseRedirect(reverse("register_teacher_csv"))
+            return HttpResponseRedirect(reverse("register_organisateur_csv"))
         try:
             file_data = csv_file.read().decode("utf-8")
         except UnicodeDecodeError:
@@ -560,13 +560,13 @@ def register_users_by_csv(request,key):
                                                       defaults={'username': username, 'password': password,
                                                                 'is_extra': 0})
                     Teacher.objects.get_or_create(user=user, notification=1, exercise_post=1)
-                else:  # Student
+                else:  # Participant
                     user, created = User.objects.get_or_create(last_name=ln, first_name=fn, email=email, user_type=0,
                                                                school=this_school_in_session(request),
                                                                time_zone=request.user.time_zone, is_manager=0,
                                                                defaults={'username': username, 'password': password,
                                                                          'is_extra': 0})
-                    student, creator = Student.objects.get_or_create(user=user, level_id=level, task_post=1)
+                    participant, creator = Participant.objects.get_or_create(user=user, level_id=level, task_post=1)
 
                 if is_username_changed :
                     list_names += ln+" "+fn+" : "+username+"; "
@@ -582,13 +582,13 @@ def register_users_by_csv(request,key):
             messages.error(request,"Les identifiants des "+user_type+" suivants ont été modifiés lors de la création "+list_names)
 
         if key == User.TEACHER:
-            return redirect('school_teachers')
+            return redirect('school_organisateurs')
         else:
-            return redirect('school_students')
+            return redirect('school_participants')
 
     else :
 
-        return render(request, 'account/csv_all_teachers_or_students.html', {'key': key , 'communications' : [], })
+        return render(request, 'account/csv_all_organisateurs_or_participants.html', {'key': key , 'communications' : [], })
 
   
 #########################################Lost password #################################################################
@@ -627,8 +627,8 @@ def register_parent(request):
     if request.method == 'POST':
         user_form = UserForm(request.POST)
         if user_form.is_valid():
-            code_student = request.POST.get("code_student")
-            if Student.objects.filter(code=code_student).exists():
+            code_participant = request.POST.get("code_participant")
+            if Participant.objects.filter(code=code_participant).exists():
                 username = user_form.cleaned_data['last_name'] + user_form.cleaned_data['first_name']
                 user = user_form.save(commit=False)
                 user.username = username
@@ -637,8 +637,8 @@ def register_parent(request):
                 user.set_password(password)
                 user.save()
                 parent, result = Parent.objects.get_or_create(user=user)
-                student = Student.objects.get(code=code_student)
-                parent.students.add(student)
+                participant = Participant.objects.get(code=code_participant)
+                parent.participants.add(participant)
             
                 user = authenticate(username=username, password = password)
                 login(request, user,  backend='django.contrib.auth.backends.ModelBackend' )
@@ -656,7 +656,7 @@ def update_parent(request, id):
     user = get_object_or_404(User, pk=id)
     parent = get_object_or_404(Parent, pk=id)
     user_form = UserUpdateForm(request.POST or None, instance=user)
-    parent_form = ParentUpdateForm(request.POST or None, instance=student)
+    parent_form = ParentUpdateForm(request.POST or None, instance=participant)
     if all((user_form.is_valid(), parent_form.is_valid())):
         user_form.save()
         parent_f = parent_form.save(commit=False)
@@ -691,47 +691,47 @@ def my_profile(request):
         user_form = UserUpdateForm(request.POST or None, request.FILES or None, instance=user)
 
     new = False
-    if request.user.is_teacher:
-        teacher = Teacher.objects.get(user=user)
+    if request.user.is_organisateur:
+        organisateur = Teacher.objects.get(user=user)
 
-        teacher_form = TeacherForm(request.POST or None, request.FILES or None, instance=teacher)
+        organisateur_form = TeacherForm(request.POST or None, request.FILES or None, instance=organisateur)
         if request.method == "POST":
-            if all((user_form.is_valid(), teacher_form.is_valid())):
-                teacher       = teacher_form.save(commit=False)
-                teacher.user  = user
-                teacher.save()
-                teacher_form.save_m2m()
+            if all((user_form.is_valid(), organisateur_form.is_valid())):
+                organisateur       = organisateur_form.save(commit=False)
+                organisateur.user  = user
+                organisateur.save()
+                organisateur_form.save_m2m()
                 uf            = user_form.save(commit=False) 
                 uf.is_manager = is_manager
                 uf.is_extra   = is_extra
                 uf.is_testeur = is_testeur
                 uf.save()
                 messages.success(request, 'Votre profil a été changé avec succès !')
-                if teacher.groups.count() == 0:
+                if organisateur.groups.count() == 0:
                     return redirect('index')
                 else:
                     return redirect('profile')
 
-        return render(request, 'account/teacher_form.html', 
-                      {'teacher_form': teacher_form, 'user_form': user_form,'new' : new , 'communications': [] ,  'teacher': teacher, 'today' : today})
+        return render(request, 'account/organisateur_form.html', 
+                      {'organisateur_form': organisateur_form, 'user_form': user_form,'new' : new , 'communications': [] ,  'organisateur': organisateur, 'today' : today})
 
-    elif request.user.is_student:
+    elif request.user.is_participant:
 
-        student = Student.objects.get(user=user)
-        form = StudentForm(request.POST or None, request.FILES or None, instance=student)
+        participant = Participant.objects.get(user=user)
+        form = ParticipantForm(request.POST or None, request.FILES or None, instance=participant)
         if request.method == "POST":
             if all((user_form.is_valid(), form.is_valid())):
                 user_form.save()
-                student_f = form.save(commit=False)
-                student_f.user = user
-                student_f.save()
+                participant_f = form.save(commit=False)
+                participant_f.user = user
+                participant_f.save()
                 messages.success(request, 'Votre profil a été changé avec succès !')
                 return redirect('profile')
 
             else:
                 print(form.errors)
-        return render(request, 'account/student_form.html',
-                      {'form': form, 'user_form': user_form, 'communications' : [],  'student': student, 'idg' : None , 'today' : today })
+        return render(request, 'account/participant_form.html',
+                      {'form': form, 'user_form': user_form, 'communications' : [],  'participant': participant, 'idg' : None , 'today' : today })
 
     else:
         parent = Parent.objects.get(user=user)
@@ -801,16 +801,16 @@ def ajax_courseinfo(request):
     return JsonResponse(data)
 
 
-def ajax_control_code_student(request):
+def ajax_control_code_participant(request):
     data = {}
     try:
-        code_student = request.POST.get("code_student")
-        nb_user = Student.objects.filter(code=code_student).count()
+        code_participant = request.POST.get("code_participant")
+        nb_user = Participant.objects.filter(code=code_participant).count()
 
         if nb_user == 1:
-            student = Student.objects.get(code=code_student)
+            participant = Participant.objects.get(code=code_participant)
             data[
-                'html'] = "<br><i class='fa fa-check text-success'></i> Paire avec " + student.user.first_name + " en " + student.level.name
+                'html'] = "<br><i class='fa fa-check text-success'></i> Paire avec " + participant.user.first_name + " en " + participant.level.name
             data['test'] = True
 
         else:
@@ -826,69 +826,69 @@ def ajax_control_code_student(request):
 
 
 
-def ajax_detail_student(request):
-    student_id = int(request.POST.get("student_id"))
+def ajax_detail_participant(request):
+    participant_id = int(request.POST.get("participant_id"))
     theme_id = int(request.POST.get("theme_id"))
     group_id = int(request.POST.get("group_id"))
 
-    user = User.objects.get(pk=student_id)
+    user = User.objects.get(pk=participant_id)
     group = Group.objects.get(pk=group_id)
-    student = Student.objects.get(user=user)
+    participant = Participant.objects.get(user=user)
 
     if theme_id > 0:
         theme = Theme.objects.get(pk=theme_id)
         knowledges = group.level.knowledges.filter(theme=theme)
-        context = {'student': student, 'theme': theme, 'group': group, 'knowledges': knowledges}
+        context = {'participant': participant, 'theme': theme, 'group': group, 'knowledges': knowledges}
     else:
         themes = group.level.themes.all()
-        context = {'student': student, 'themes': themes, 'group': group}
+        context = {'participant': participant, 'themes': themes, 'group': group}
 
     data = {}
-    data['html'] = render_to_string('account/ajax_detail_student.html', context)
+    data['html'] = render_to_string('account/ajax_detail_participant.html', context)
  
     return JsonResponse(data)
 
 
 
-def ajax_detail_student_exercise(request):
-    student_id = int(request.POST.get("student_id"))
+def ajax_detail_participant_exercise(request):
+    participant_id = int(request.POST.get("participant_id"))
     parcours_id = int(request.POST.get("parcours_id"))
 
     parcours = Parcours.objects.get(pk=parcours_id)
-    student = Student.objects.get(user_id=student_id)
+    participant = Participant.objects.get(user_id=participant_id)
 
-    relationships = Relationship.objects.filter(parcours=parcours, students=student,exercise__supportfile__is_title=0).order_by("ranking")
-    studentanswers = Studentanswer.objects.filter(student=student, parcours=parcours).order_by("exercise")
+    relationships = Relationship.objects.filter(parcours=parcours, participants=participant,exercise__supportfile__is_title=0).order_by("ranking")
+    participantanswers = Participantanswer.objects.filter(participant=participant, parcours=parcours).order_by("exercise")
 
-    context = {'student': student, 'parcours': parcours, 'studentanswers': studentanswers, 'communications' : [], 
+    context = {'participant': participant, 'parcours': parcours, 'participantanswers': participantanswers, 'communications' : [], 
                'relationships': relationships}
 
     data = {}
-    data['html'] = render_to_string('account/ajax_detail_student_exercise.html', context)
+    data['html'] = render_to_string('account/ajax_detail_participant_exercise.html', context)
 
     return JsonResponse(data)
 
 
 
-def ajax_detail_student_parcours(request):
-    student_id = int(request.POST.get("student_id"))
+def ajax_detail_participant_parcours(request):
+    participant_id = int(request.POST.get("participant_id"))
     parcours_id = int(request.POST.get("parcours_id"))
 
-    student = Student.objects.get(user_id=student_id)
+    participant = Participant.objects.get(user_id=participant_id)
     parcours = Parcours.objects.get(pk=parcours_id)
 
-    if student.user.school :
-        stage = Stage.objects.get(school = student.user.school)
+    if participant.user.school :
+        stage = Stage.objects.get(school = participant.user.school)
     else :
         stage = { 'low' : 30, 'medium' : 60 , 'up' :80 }        
 
 
     relationships = Relationship.objects.filter(parcours=parcours,exercise__supportfile__is_title=0).order_by("ranking")
 
-    context = {'student': student, 'relationships': relationships, 'stage' : stage}
+    context = {'participant': participant, 'relationships': relationships, 'stage' : stage}
 
     data = {}
-    data['html'] = render_to_string('account/ajax_detail_student_parcours.html', context)
+    data['html'] = render_to_string('account/ajax_detail_participant_parcours.html', context)
 
     return JsonResponse(data)
 
@@ -968,16 +968,16 @@ def passwordResetConfirmView(request, code ):
 
 
 
-def init_password_teacher(request, id ):
+def init_password_organisateur(request, id ):
 
-    teacher = Teacher.objects.get(pk=id)
+    organisateur = Teacher.objects.get(pk=id)
     password =  str(uuid.uuid4())[:8]
-    teacher.user.password = make_password(password)
+    organisateur.user.password = make_password(password)
  
     msg = "Bonjour, \n\n Votre nouveau mot de passe : " + password + "\nest attribué. Il est généré automatiquement.\n\n Vous pouvez le modifer via votre profil. Ceci est un mail automatique, ne pas répondre.\n\nL'équipe SACADO."
     
-    if teacher.user.email :
-        send_mail('SacAdo : Ré-initialisation de mot de passe', msg ,settings.DEFAULT_FROM_EMAIL,[teacher.user.email, ])
+    if organisateur.user.email :
+        send_mail('SacAdo : Ré-initialisation de mot de passe', msg ,settings.DEFAULT_FROM_EMAIL,[organisateur.user.email, ])
 
 
-    return redirect('list_teacher') 
+    return redirect('list_organisateur') 

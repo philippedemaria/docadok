@@ -12,29 +12,21 @@ def list_sequences(request):
     return render(request, 'socle/list_sequences.html', {'sequences': sequences , })
 
 
+ 
 
  
 def create_sequence(request, ids=0):
 
-    teacher = request.user.teacher
-    form = SequenceForm(request.POST or None , teacher=teacher )
-
-    if form.is_valid():
-        nf = form.save()
-        return redirect('index')
-    else:
-        print(form.errors)
-
-    context = {'form': form,   'sequence': None  }
-
-    return render(request, 'sequence/form_sequence.html', context)
+    organisateur = request.user.organisateur
+    seq = Sequence.objects.create(title = 'Ma nouvelle séquence', folder = None , organisateur = organisateur)
+    return redirect('update_sequence' , seq.pk )
 
  
 def update_sequence(request, ids):
 
     sequence = Sequence.objects.get(id=ids)
-    teacher = request.user.teacher
-    form = SequenceForm(request.POST or None, instance=sequence , teacher=teacher  )
+    organisateur = request.user.organisateur
+    form = SequenceForm(request.POST or None, instance=sequence , organisateur=organisateur  )
     if request.method == "POST" :
         if form.is_valid():
             form.save()

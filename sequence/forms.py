@@ -1,7 +1,7 @@
 import datetime
 from django import forms
 from .models import Folder, Sequence
-from account.models import Student , Teacher
+from account.models import Participant , Organisateur
  
 from bootstrap_datepicker_plus import DatePickerInput, DateTimePickerInput
 
@@ -10,7 +10,7 @@ from django.conf import settings
 
 from itertools import groupby
 from django.forms.models import ModelChoiceIterator, ModelChoiceField, ModelMultipleChoiceField
- 
+import uuid 
 
 def validation_file(content):
     if content :
@@ -31,20 +31,20 @@ def validation_file(content):
 class FolderForm(forms.ModelForm):
     class Meta:
         model = Folder
-        fields = [ 'title', 'teacher', 'ranking' ]
+        fields = [ 'title', 'organisateur', 'ranking' ]
 
 
     def __init__(self, *args, **kwargs):
-        teacher = kwargs.pop('teacher')
+        organisateur = kwargs.pop('organisateur')
         super(FolderForm, self).__init__(*args, **kwargs)
-        if teacher :
+        if organisateur :
             try :
-                r = teacher.folders.order_by('ranking').last().ranking + 1
+                r = organisateur.folders.order_by('ranking').last().ranking + 1
             except :
                 r = 0
         # Champs invisibles
-        self.fields['teacher'].widget  = forms.HiddenInput()
-        self.fields['teacher'].initial = teacher
+        self.fields['organisateur'].widget  = forms.HiddenInput()
+        self.fields['organisateur'].initial = organisateur
         self.fields['ranking'].widget  = forms.HiddenInput()
         self.fields['ranking'].initial = r
 
@@ -52,21 +52,23 @@ class FolderForm(forms.ModelForm):
 class SequenceForm(forms.ModelForm):
     class Meta:
         model = Sequence
-        fields = [ 'title', 'folder', 'teacher',  'ranking' ]
+        fields = '__all__'
 
 
     def __init__(self, *args, **kwargs):
-        teacher = kwargs.pop('teacher')
+        organisateur = kwargs.pop('organisateur')
         super(SequenceForm, self).__init__(*args, **kwargs)
 
-        if teacher :
+        if organisateur :
             try :
-                r = teacher.sequences.order_by('ranking').last().ranking + 1
+                r = organisateur.sequences.order_by('ranking').last().ranking + 1
             except :
                 r = 0
+
+        self.fields['code'].initial    = str(uuid.uuid4())[:8] 
         # Champs invisibles
-        self.fields['teacher'].widget  = forms.HiddenInput()
-        self.fields['teacher'].initial = teacher
+        self.fields['organisateur'].widget  = forms.HiddenInput()
+        self.fields['organisateur'].initial = organisateur
         self.fields['ranking'].widget  = forms.HiddenInput()
         self.fields['ranking'].initial = r 
 

@@ -19,15 +19,15 @@ urlpatterns = [
     path('password/reset/done/', passwordResetDoneView, name='password_reset_done'),
     path('newpassword/<slug:code>', passwordResetConfirmView, name='password_reset_confirm'),
  
-    path('init_password_teacher/<int:id>', init_password_teacher, name='init_password_teacher'),
+    path('init_password_organisateur/<int:id>', init_password_organisateur, name='init_password_organisateur'),
 
  
 
-    path('update_teacher/<int:pk>', update_teacher, name='update_teacher'),
-    path('delete_teacher/<int:id>', delete_teacher, name='delete_teacher'),
-    path('dissociate_teacher/<int:id>', dissociate_teacher, name='dissociate_teacher'),
+    path('update_organisateur/<int:pk>', update_organisateur, name='update_organisateur'),
+    path('delete_organisateur/<int:id>', delete_organisateur, name='delete_organisateur'),
+    path('dissociate_organisateur/<int:id>', dissociate_organisateur, name='dissociate_organisateur'),
  
-    path('register_teacher', register_teacher, name='register_teacher'),
+    path('register_organisateur', register_organisateur, name='register_organisateur'),
 
     path('my_profile', my_profile, name='my_profile'),
 

@@ -17,10 +17,10 @@ from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.db.models import Count, Q
 
-from account.forms import  UserForm, TeacherForm, StudentForm,  AuthenticationForm
-from account.models import  User, Teacher, Student 
+from account.forms import  UserForm, OrganisateurForm, ParticipantForm,  AuthenticationForm
+from account.models import  User, Organisateur, Participant 
 
-from sequence.forms import  CodeForm , FolderForm
+from sequence.forms import  CodeForm , FolderForm, SequenceForm
 
 
 from datetime import date, datetime , timedelta
@@ -73,14 +73,14 @@ def index(request):
     if request.user.is_authenticated :
         index_tdb = True  # Permet l'affichage des tutos Youtube dans le dashboard
         template = "dashboard.html"
-        if request.user.is_teacher:
+        if request.user.is_organisateur:
             form_code = CodeForm(request.POST or None)
-            teacher = request.user.teacher
-            form_folder = FolderForm(request.POST or None, request.FILES or None,  teacher=teacher )
-            nbs = teacher.sequences.count()
+            organisateur = request.user.organisateur
+            form_folder = FolderForm(request.POST or None, request.FILES or None,  organisateur=organisateur )
+            nbs = organisateur.sequences.count()
             context = { 'form_code' : form_code ,  'form_folder' : form_folder  ,  'nbs' : nbs }
         
-        elif request.user.is_student:  ## student
+        elif request.user.is_participant:  ## student
             context = { }
 
 

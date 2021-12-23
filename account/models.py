@@ -60,11 +60,10 @@ class User(AbstractUser):
  
     #### user_type = 0 for student, 2 for teacher, 2 + is_superuser for admin,  5 for superuser
 
-    STUDENT, PARENT, TEACHER = 0, 1, 2
+    PARTICIPANT, ORGANISATEUR = 0,  2
     USER_TYPES = (
-        (STUDENT, "Élève"),
-        (PARENT, "Parent"),
-        (TEACHER, "Enseignant"),
+        (PARTICIPANT, "participant"),
+        (ORGANISATEUR, "Organisateur"),
     )
 
     CIVILITIES = (
@@ -87,67 +86,21 @@ class User(AbstractUser):
         return "{} {}".format(self.last_name, self.first_name)
 
     @property
-    def is_student(self):
-        return self.user_type == self.STUDENT
+    def is_organisateur(self):
+        return self.user_type == self.ORGANISATEUR
 
     @property
-    def is_parent(self):
-        return self.user_type == self.PARENT
-
-    @property
-    def is_teacher(self):
-        return self.user_type == self.TEACHER
-
-    @property
-    def is_creator(self):
-        return self.is_staff == True
-
-    @property
-    def sacado(self):
-        """
-        L'enseignant est un membre bénéficiaire de sacado
-        """
-        sacado_asso = False
-        if self.school  :
-            sacado_asso = True
-        return sacado_asso
-
-    @property
-    def is_sacado_member(self):
-        is_sacado = False
-        today = datetime.now()
-        try :
-            abonnement = self.school.abonnement.last()
-            if today < abonnement.date_stop and abonnement.is_active :
-                is_sacado = True
-        except :
-            pass
-        return is_sacado 
-
-
-    def my_groups(self):
-        group_string = ""
-        try :
-            groups = self.student.students_to_group.all()
-            n , i = groups.count() , 1
-            sep = ""
-            for g in self.student.students_to_group.all():
-                if n == i :
-                    sep = "<br/>"
-                group_string += g.name+" (<small>"+g.teacher.user.last_name +" "+g.teacher.user.first_name+"</small>)"+sep
-                i+=1
-        except : 
-            pass   
-
-        return group_string
+    def is_participant(self):
+        return self.user_type == self.PARTICIPANT
 
 
 
-class Student(ModelWithCode):
+
+class Participant(ModelWithCode):
     """
     Modèle représentant un élève.
     """
-    user      = models.OneToOneField(User, blank=True, related_name="student", on_delete=models.CASCADE, primary_key=True)
+    user      = models.OneToOneField(User, blank=True, related_name="parcitipant", on_delete=models.CASCADE, primary_key=True)
 
     def __str__(self):
         lname = self.user.last_name.capitalize()
@@ -157,11 +110,11 @@ class Student(ModelWithCode):
 
 
   
-class Teacher(models.Model):
+class Organisateur(models.Model):
     """
     Modèle représentant un enseignant.
     """
-    user          = models.OneToOneField(User, blank=True, related_name="teacher", on_delete=models.CASCADE, primary_key=True)
+    user          = models.OneToOneField(User, blank=True, related_name="organisateur", on_delete=models.CASCADE, primary_key=True)
 
     def __str__(self):
         return f"{self.user.last_name.capitalize()} {self.user.first_name.capitalize()}"
@@ -173,7 +126,7 @@ class Teacher(models.Model):
         try :
             if self.user.email != '':
                 send_templated_mail(
-                    template_name="teacher_registration",
+                    template_name="participant_registration",
                     from_email= settings.DEFAULT_FROM_EMAIL ,
                     recipient_list=[self.user.email, ],
                     context={"teacher": self.user, }, )
@@ -190,34 +143,13 @@ class Teacher(models.Model):
             #admins_emails = list(admins.values_list('email', flat=True))
             admins_emails =["sacado.asso@gmail.com"]
             send_templated_mail(
-                template_name="teacher_registration_notify_admins",
+                template_name="participant_registration_notify_admins",
                 from_email= settings.DEFAULT_FROM_EMAIL ,
                 recipient_list=admins_emails,
                 context={"teacher": self.user,}, )
         except :
             pass
 
-
-
-
-    def sacado(self):
-        """
-        L'enseignant est un membre bénéficiaire de sacado
-        """
-        sacado_asso = False
-        if self.user.school  :
-            sacado_asso = True
-        return sacado_asso
-
-
-    def is_creator(self):
-        """
-        L'enseignant est un membre bénéficiaire de sacado
-        """
-        creator = False
-        if self.user.is_creator  :
-            creator = True
-        return creator
 
 
 

@@ -3,7 +3,7 @@ from datetime import date, datetime, timedelta
 
  
 from django.utils import timezone
-from account.models import Student, Teacher, ModelWithCode 
+from account.models import Participant, Organisateur, ModelWithCode 
  
 from django.apps import apps
 from ckeditor_uploader.fields import RichTextUploadingField
@@ -24,7 +24,7 @@ def choice_directory_path(instance, filename):
 class Folder(models.Model):
 
     title   = models.CharField(max_length=255, verbose_name="Titre")
-    teacher = models.ForeignKey(Teacher, related_name="folders", on_delete=models.CASCADE, default='', blank=True)
+    organisateur = models.ForeignKey(Organisateur, related_name="folders", on_delete=models.CASCADE, default='', blank=True)
     ranking = models.PositiveIntegerField(  default=0,  blank=True, null=True )
 
     def __str__(self):
@@ -35,12 +35,17 @@ class Folder(models.Model):
 
 class Sequence(ModelWithCode):
  
- 
-    title     = models.CharField(max_length=255, null=True, blank=True, default="Mon nouvel évènement" ,  verbose_name="Titre")
-    date      = models.DateField(auto_now_add=True, verbose_name="Date de création")
-    folder    = models.ForeignKey(Folder, related_name="sequences", on_delete=models.CASCADE, default='', blank=True )
-    ranking   = models.PositiveIntegerField(  default=0,  blank=True, null=True )
-    teacher   = models.ForeignKey(Teacher, related_name="sequences", on_delete=models.CASCADE, default='', blank=True)
+    title            = models.CharField(max_length=255, null=True, blank=True, default="Ma nouvelle séquence" ,  verbose_name="Titre")
+    date             = models.DateField(auto_now_add=True, verbose_name="Date de création")
+    folder           = models.ForeignKey(Folder, related_name="sequences", on_delete=models.CASCADE,   blank=True, null=True )
+    ranking          = models.PositiveIntegerField(  default=0,  blank=True, null=True )
+    organisateur     = models.ForeignKey(Organisateur, related_name="sequences", on_delete=models.CASCADE, default='', blank=True)
+    temporisation    = models.BooleanField(default=0, verbose_name="mode continu ?")
+    authentification = models.BooleanField(default=0, verbose_name="Authentification ?")
+    pseudonyme       = models.BooleanField(default=0, verbose_name="Pseudonyme ?")
+    competition      = models.BooleanField(default=0, verbose_name="Compétition ?")
+    terminal         = models.BooleanField(default=0, verbose_name="Afficage des diapositives sur le terminal des participants ?")
+    displayresult    = models.BooleanField(default=0, verbose_name="Résultats visibles par defaut ?")
 
     def __str__(self):     
         return "{}".format(self.title)

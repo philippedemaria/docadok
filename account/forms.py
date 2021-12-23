@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Teacher, User, Student,  Newpassword
+from .models import Organisateur, User, Participant,  Newpassword
 
 from django.core.exceptions import ValidationError
 from django.forms import BaseFormSet
@@ -40,16 +40,16 @@ class AuthenticationForm(UserCreationForm):
 
 
 
-class StudentForm(forms.ModelForm):
+class ParticipantForm(forms.ModelForm):
     class Meta:
-        model = Student
+        model = Participant
         fields = '__all__'
 
 
-class TeacherForm(forms.ModelForm):
+class OrganisateurForm(forms.ModelForm):
 
     class Meta :
-        model = Teacher
+        model = Organisateur
         fields = '__all__'
 
 

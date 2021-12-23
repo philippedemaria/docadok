@@ -1,6 +1,6 @@
 import pytz
 from django.utils import timezone
-from account.models import Teacher, Student, User
+from account.models import Organisateur, Participant, User
  
 from datetime import datetime 
 
@@ -29,11 +29,11 @@ def menu(request):
         else:
             today = timezone.now()
  
-        if request.user.is_teacher:
+        if request.user.is_organisateur:
             
  
             return {'today': today, 'index_tdb' : False } 
-        elif request.user.is_student:
+        elif request.user.is_participant:
             
 
 
@@ -41,11 +41,7 @@ def menu(request):
            
             }
 
-        elif request.user.is_parent:
-       
-            return {
-                
-            }
+  
 
 
     else:
