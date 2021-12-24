@@ -1298,17 +1298,6 @@ a.menuright:hover{
 
 }
 
-.input-group-addon-borderless {
-    padding: 6px 12px;
-    font-size: 14px;
-    font-weight: normal;
-    line-height: 1;
-    color: #5d4391;
-    text-align: center;
-    background-color: #FFF;
-    border:none;
-}
-
 
 .input-group-addon {
     padding: 10px 12px;
@@ -1320,6 +1309,21 @@ a.menuright:hover{
     background-color: #eee;
     border: 1px solid #ccc;
     margin-bottom: 5px;
+}
+
+.input-group-addon-borderless {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1;
+    color: #5d4391;
+    text-align: center;
+    background-color: #FFF;
+    border:none;
+}
+
+.radius-right {
+    border-radius : 0 5px 5px 0!important;
 }
 
 
@@ -1346,10 +1350,25 @@ a.menuright:hover{
   font-size:16px;
 }
 
+.get_image   {
+  position: relative;
+}
 
+.get_image input {
+  position: absolute;
+  top: 0;
+  left: 0px;
+  margin: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  font-size: 30px !important;
+  direction: ltr;
+  cursor: pointer;
+}
 
-
-
+.input-group .preview{
+    display: none;
+}
 
 
 /* Prelaoder */
