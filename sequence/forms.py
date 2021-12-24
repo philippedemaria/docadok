@@ -1,6 +1,6 @@
 import datetime
 from django import forms
-from .models import Folder, Sequence
+from .models import Folder, Sequence , Activity
 from account.models import Participant , Organisateur
  
 from bootstrap_datepicker_plus import DatePickerInput, DateTimePickerInput
@@ -64,8 +64,6 @@ class SequenceForm(forms.ModelForm):
                 r = organisateur.sequences.order_by('ranking').last().ranking + 1
             except :
                 r = 0
-
-        self.fields['code'].initial    = str(uuid.uuid4())[:8] 
         # Champs invisibles
         self.fields['organisateur'].widget  = forms.HiddenInput()
         self.fields['organisateur'].initial = organisateur
@@ -77,3 +75,20 @@ class CodeForm(forms.ModelForm):
     class Meta:
         model = Sequence
         fields = ('code',)
+
+
+
+
+
+class ActivityForm(forms.ModelForm):
+    class Meta:
+        model = Activity
+        fields = '__all__'
+
+
+    def __init__(self, *args, **kwargs):
+        sequence = kwargs.pop('sequence')
+        super(ActivityForm, self).__init__(*args, **kwargs)
+
+        self.fields['sequence'].initial    = sequence
+ 

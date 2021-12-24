@@ -1,0 +1,84 @@
+{% extends 'dashboard.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load item_tags %}
+
+
+{% block require %}
+    <script src="{% static 'js/require.js' %}"   data-main="{% static 'js/common4.js' %}"></script>
+    <script>
+        require(['script/ajax-qcm']);
+    </script> 
+{% endblock %}
+ 
+
+
+
+
+{% block body %}
+<form action="#" method="POST" id="question_form"  enctype='multipart/form-data' >
+{% csrf_token %}    
+    <section class="content_list">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h3> <i class="bi bi-chevron-right"></i> {{ sequence.title  }}</h3> 
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="form-group">
+                    <h3 class="thin">Créer une question à choix multiple</h3>
+                    <label class="label_complement">Ecrire la question que vous souhaitez poser à votre audience</label>
+                    {{ form.title|add_class:"form-control-custom form-control" }} 
+                </div>
+            </div>
+        </div> 
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="form-group">
+                    <label class="label_complement">Associer une image à la question</label>
+                    {{ form.imagefile|add_class:"btn btn-default" }} 
+                </div>
+            </div>
+        </div> 
+
+        <hr/>
+        <div class="row">
+            <div class="col-sm-12 col-md-12" >  
+ 
+                {{ form_ans.management_form }}
+
+                {% for form in form_ans %} 
+                    <div class="input-group marginbottom10">
+                        <span class="input-group-addon input-group-addon-left">{{ form.is_correct }}</span>
+                        <span class="input-group-addon"><i class="bi bi-image"></i></span>
+                        {{ form.label|add_class:"form-control padding20"|attr:"placeholder:Ecrire votre réponse ici" }}
+                        <span class="input-group-addon input-group-addon-right"><i class="bi bi-trash"></i></span>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+
+
+        <div class="col-sm-12 col-md-8">
+            <div class="form-group">
+ 
+                <input value="Enregistrer" type="submit"  class="btn btn-primary"  />
+ 
+                <a href="javascript:history.back()"><input type="button" value="Annuler" class="btn btn-default"/></a>
+            </div>
+        </div> 
+
+
+
+
+    </section>
+ 
+</form>
+
+{% endblock %} 
+
+ 

@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse 
 from django.core import serializers
 from django.template.loader import render_to_string
+from django.forms import inlineformset_factory
 
-from sequence.models import Sequence, Folder
-from sequence.forms import SequenceForm, FolderForm
+from sequence.models import Sequence, Folder , Activity , Choice
+from sequence.forms import SequenceForm, FolderForm, ActivityForm  
 
 
 
@@ -159,5 +160,70 @@ def update_folder(request, id):
 def delete_folder(request, id):
     folder = Folder.objects.get(id=id)
     folder.delete()
+
+    return redirect('index')
+
+
+
+####################################################################################################
+####################################################################################################
+####################    Activity
+####################################################################################################
+####################################################################################################
+def create_activity(request,ids,atype,ida=0):
+
+    sequence = Sequence.objects.get(pk = ids)
+
+    form     = ActivityForm(request.POST or None, request.FILES or None, sequence = sequence)
+    formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','is_correct') , extra=2)
+    form_ans = formSet(request.POST or None,  request.FILES or None)
+
+    if request.method == "POST"  :
+        if form.is_valid():
+            nf.save()
+            form.save_m2m()
+            #############
+            form_ans = formSet(request.POST or None,  request.FILES or None, instance = nf)
+            for form_answer in form_ans :
+                if form_answer.is_valid():
+                    form_answer.save()
+
+            return redirect('update_sequence',ids)
+
+    context = {  'form' : form , 'form_ans' : form_ans , 'sequence' : sequence  } 
+    template = 'sequence/form_activity.html'
+    return render(request, template , context)
+
+ 
+def update_activity(request,ids,atype,ida):
+
+    sequence = Sequence.objects.get(pk = ids)
+    activity = Activity.objects.get(pk = ida)
+
+    form     = ActivityForm(request.POST or None, request.FILES or None, instance = activity, sequence = sequence)
+    formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','is_correct') , extra=0)
+    form_ans = formSet(request.POST or None,  request.FILES or None, instance = question)
+
+    if request.method == "POST"  :
+        if form.is_valid():
+            nf.save()
+            form.save_m2m() 
+ 
+            form_ans = formSet(request.POST or None,  request.FILES or None, instance = nf)
+            for form_answer in form_ans :
+                if form_answer.is_valid():
+                    form_answer.save()
+            return redirect('update_sequence',ids)
+
+    context = {  'form' : form ,  'form_ans' : form_ans   } 
+    template = 'sequence/form_activity.html'
+
+    return render(request, template , context)
+
+
+  
+def delete_folder(request, id):
+    activity = Activity.objects.get(id=id)
+    activity.delete()
 
     return redirect('index')

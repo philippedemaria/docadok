@@ -48,6 +48,36 @@ p{
 }
 
 
+.activity_menu_li{
+  list-style: none;
+  border-radius: 5px;
+  border : 1px solid #CCC;
+  margin: 5px 0 ;
+  padding:5px;
+  font-size: 16px;  
+  width: 100%;
+}
+ 
+
+.activity_menu_li:hover {
+  background-color:  #f1eef7 ;
+}
+
+.activity_menu_li .hover_mouse{
+  display: none ;
+}
+
+.activity_menu_li:hover .hover_mouse{
+  display: block ;
+}
+
+.label_complement{
+  font-size:14px;
+  color:#AAA;
+}
+
+
+
 .bg_violet{
   background-color: #f1eef7 ;
   }                
@@ -564,15 +594,7 @@ text-align: right;
     }
      
 
-    .mini_width{
-      display: none;
-
     }
-     
-
-    }
-
-
 
     .sanspuce{
       list-style: none;
@@ -1276,7 +1298,7 @@ a.menuright:hover{
 
 }
 
-.input-group-addon {
+.input-group-addon-borderless {
     padding: 6px 12px;
     font-size: 14px;
     font-weight: normal;
@@ -1286,6 +1308,30 @@ a.menuright:hover{
     background-color: #FFF;
     border:none;
 }
+
+
+.input-group-addon {
+    padding: 10px 12px;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1;
+    color: #5d4391;
+    text-align: center;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+}
+
+
+.input-group-addon-left {
+    border-radius : 5px 0 0 5px;
+    margin-bottom: 5px;
+}
+.input-group-addon-right {
+    border-radius : 0 5px 5px 0;
+    margin-bottom: 5px;
+}
+
 
 .inline{
   display :inline;
@@ -1494,6 +1540,9 @@ table.table-bordered.dataTable {
 .space70{
   height: 70px;
 }
+.marginbottom10{
+  margin-bottom: 10px;
+}
 .marginbottom50{
   margin-bottom: 50px;
 }
@@ -1501,6 +1550,9 @@ table.table-bordered.dataTable {
   margin-bottom: 100px;
 }
 
+.padding20{
+  padding : 20px;
+}
 
 .fill_the_code{
   font-size:20px;

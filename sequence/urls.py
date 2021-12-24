@@ -14,4 +14,11 @@ urlpatterns = [
 
     path('ajax_update_sequence', ajax_update_sequence, name='ajax_update_sequence'),
     path('ajax_update_checkbox_sequence', ajax_update_checkbox_sequence, name='ajax_update_checkbox_sequence'),
+
+
+    path('create_activity/<int:ids>/<int:atype>/<int:ida>', create_activity, name='create_activity'),
+    path('update_activity/<int:ids>/<int:atype>/<int:ida>', update_activity, name='update_activity'),
+
+
+
  ]

@@ -23,8 +23,9 @@
 {% block body %}  
 <section class="content_main">
     <form action="" method="POST" enctype='multipart/form-data'>
+    {% csrf_token %} 
+    <!-- Gestion de la séquence -->       
     <input name="sequence" id="sequence_id" type="hidden" value="{{ sequence.id }}" />    
-    {% csrf_token %}
     <div class="row margin_top20">
         <div class="col-sm-5 col-md-4 col-lg-4">
             <div class="sacado_color_text input-group" id="sequence_title" >
@@ -34,7 +35,7 @@
             <div class="input-group no_visu_on_load" id="sequence_title_form" >
                 {{ form.title |add_class:"form-control-custom"  }}
                 {{ form.title.errors }}
-                <span class="input-group-addon inline">  
+                <span class="input-group-addon-borderless inline">  
                     <a href="javascript:void();" class="btn btn-form text-danger size20" id="close_sequence_title_form"><i class="bi bi-x-lg"></i></a>
                     <a href="javascript:void();" class="btn btn-form text-success size20 save_sequence" data-sequence_id="{{ sequence.id}}"  data-champ="title"><i class="bi bi-check"></i></a>
                 </span>
@@ -50,7 +51,7 @@
             </div>            
             <div class="form-group no_visu_on_load" id="sequence_code_form">
                 <span class="color_gray font16" > 
-                    Participer : https://docadok.org/<span class="input-group-addon inline">{{ form.code|add_class:"form-control-custom "  }}</span>
+                    Participer : https://docadok.org/<span class="input-group-addon-borderless inline">{{ form.code|add_class:"form-control-custom "  }}</span>
                 </span>
                 <a href="javascript:void();" class="btn btn-form text-danger size20"  id="close_sequence_code_form"><i class="bi bi-x-lg"></i></a>
                 <a href="javascript:void();" class="btn btn-form text-success size20 save_sequence" data-sequence_id="{{ sequence.id}}"  data-champ="code"><i class="bi bi-check"></i></a>
@@ -62,7 +63,6 @@
             </div>
         </div>
     </div>
-
     <div class="row no_visu_on_load" id="properties">
         <div class="col-sm-12 col-md-4 col-lg-4">
             <div class="form-group">
@@ -135,57 +135,99 @@
             </div>
         </div>
     </div>
-
+    <hr/>
+    <!-- Fin de gestion de la séquence -->
  
-
-
-    <div class="row" style="margin-top:40px">
-        <div class="col-sm-12 col-md-8">
-            <div class="form-group">
-
-                <input value="Enregistrer et choisir les exercices" type="submit" name="save_and_choose" class="btn btn-primary" />                
-                <input value="Enregistrer" type="submit" name="saver" class="btn btn-default"  />
-
-                <a href="javascript:history.back()"><input type="button" value="Annuler" class="btn btn-default "/></a>
-            </div>
-        </div> 
-
-        {% block save_evaluation %}
-        <div class="col-sm-12 col-md-4">
-        {% if parcours %}
-                
-                <a href="{% url 'clone_parcours' parcours.id  1 %}" class="btn btn-info"  onclick="return TestDuplicate('ce parcours')"> 
-                    <i class="fa fa-clone"> </i>   Dupliquer
-                </a>
- 
-                {% if parcours.is_archive %}
-                    <a href="{% url 'unarchive_parcours' parcours.id  idg  %}" class="btn btn-warning"> 
-                        <i class="fa fa-th"> </i>   Désarchiver
-                    </a>
-                {% else %}
-                    <a href="{% url 'archive_parcours' parcours.id  idg  %}" class="btn btn-warning"  onclick="return TestArchive('ce parcours')"> 
-                        <i class="fa fa-archive"> </i>   Archiver
-                    </a>
-                {% endif %}
-                <a href="{% url 'delete_parcours' parcours.id  idg  %}" class="btn btn-danger"  onclick="return TestDelete('ce parcours')"> 
-                    <i class="fa fa-trash"> </i>   Supprimer
-                </a>
-    
-        {% endif %}  
+    <!-- Gestion des activités --> 
+    <div class="row">
+        <div class="col-sm-12 col-md-12" align="right">
+            <a href="#" data-toggle='modal' data-target='#import_activit'  class="btn btn-new-violet"><i class="bi bi-plus-circle-fill"></i> Importer une activité</a>
         </div>
-        {% endblock %}
-    </div>  
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-3">
+            {% include 'sequence/activities_menu.html' %}
+        </div>
+        <div class="col-sm-12 col-md-9">
+
+            <ul class="sanspuce">
+                {% for activity in activities %}
+                <li>
+                    
+                </li>
+                {% empty %}
+                <li>
+                    Aucune activité créée
+                </li>
+                {% endfor %}
+            </ul>
+
+
+ 
+
+
+
+            <div class="row" style="margin-top:40px">
+                <div class="col-sm-12 col-md-8">
+                    <div class="form-group">
+                        <input value="Enregistrer" type="submit" name="save_and_choose" class="btn btn-primary" />                
+                        <a href="javascript:history.back()"><input type="button" value="Annuler" class="btn btn-default "/></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin de gestion des activités -->
+
+
+
 
     </form>      
 </section>   
-
-
-
-
-
 {% endblock %}
 
 
-      
+{% block modales %}
+<div class="modal fade" id="import_sequence" tabindex="-1" role="dialog" aria-labelledby="import_sequence">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>                 
+                <h2>Importer une séquence</h2>              
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST" enctype='multipart/form-data'>
+                {% csrf_token %}          
+                <div class="row" align="center">
+                    <div class="col-sm-12">    
+                        <label>Entrer le code de la séquence</label>
+                    </div>
+                </div>
+                <div class="row justify-content-center marginbottom50" align="center">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-6">
+                        {{ form_code.code |add_class:"form-control fill_the_code"|attr:"placeholder:Code" }}
+                        {{ form_code.code.errors }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 col-lg-6" align="left">    
+                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close">
+                            Annuler
+                        </button> 
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6" align="right">    
+                        <div class="form-group">
+                            <input value="Importer" type="submit"  class="btn btn-new-violet" /> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+{% endblock %}      
  
  

@@ -1,4 +1,4 @@
-define(['jquery', 'bootstrap', 'ui', 'ui_sortable'], function ($) {
+define(['jquery', 'bootstrap', 'ui', 'ui_sortable', 'slick'], function ($) {
     $(document).ready(function () {
         console.log("chargement JS ajax-sequence.js OK");
 
@@ -91,6 +91,17 @@ define(['jquery', 'bootstrap', 'ui', 'ui_sortable'], function ($) {
             }
         )
     });
+
+
+
+
+      $(".center").slick({
+        dots: false,
+        infinite: true,
+        centerMode: true,
+        slidesToShow: 5,
+        slidesToScroll: 3
+      });
 
 
 

@@ -53,14 +53,58 @@ class Sequence(ModelWithCode):
  
 
 
-class Ranking(models.Model):
+
+class Activity(ModelWithCode):
  
-    appid    = models.CharField(max_length=255, null=True, blank=True, editable=False)
-    sequence  = models.ForeignKey(Sequence, related_name="rankings", on_delete=models.CASCADE , editable=False)
-    position  = models.PositiveIntegerField(  default=0,  blank=True, null=True, editable=False)
+    title        = models.CharField(max_length=255, null=True, blank=True,  verbose_name="Ecrire la question que vous souhaitez poser à votre audience")
+    date         = models.DateField(auto_now_add=True, verbose_name="Date de création")
+    imagefile    = models.ImageField(upload_to=question_directory_path, null=True, blank=True,  verbose_name="Image", default="")
+    sequence     = models.ForeignKey(Sequence, related_name="activities", on_delete=models.CASCADE )
+    score        = models.PositiveIntegerField( default=0,  blank=True, null=True )
+    atype        = models.PositiveIntegerField( default=0)
+
+
+    is_share     = models.BooleanField(default=0, verbose_name="Mutualisé ?")
+    timer        = models.BooleanField(default=0, verbose_name="Compte à rebours ?")
+    is_publish   = models.BooleanField(default=0, verbose_name="Publié ?") 
+    start_publish= models.DateTimeField(null=True, blank=True, verbose_name="A partir de")
+    stop_publish = models.DateTimeField(null=True, blank=True, verbose_name="Date de verrouillage")
+
+    liker        = models.BooleanField(default=0, verbose_name="Like")
+    multiple     = models.BooleanField(default=0, verbose_name="Réponse multiple")
+    ranking      = models.PositiveIntegerField(default=0,  blank=True, null=True, editable=False)
+
 
     def __str__(self):     
-        return "{}".format(self.appid)
- 
+        return "{}".format(self.title)
 
 
+
+class Choice(models.Model):
+    """
+    Modèle représentant un associé.
+    """
+    imageanswer    = models.ImageField(upload_to=choice_directory_path,  null=True,  blank=True, verbose_name="Image", default="")
+    label          = models.CharField(max_length=255, default='', null=True,  blank=True, verbose_name="Réponse")
+    is_correct     = models.BooleanField(default=0, verbose_name="Réponse correcte ?")
+    activity       = models.ForeignKey(Activity, related_name="choices", blank=True, null = True,  on_delete=models.CASCADE)
+    associate      = models.CharField(max_length=255, default='', null=True,  blank=True, verbose_name="Association")
+    imageassociate = models.ImageField(upload_to=choice_directory_path,  null=True,  blank=True, verbose_name="Image", default="")
+    textarea       = models.TextField( default='', null=True,  blank=True, verbose_name="Texte")
+    def __str__(self):
+        return self.answer 
+
+
+
+
+class Answerplayer(models.Model):
+
+    participant = models.ForeignKey(Participant,  null=True, blank=True,   related_name='answers_player', on_delete=models.CASCADE,  editable= False)
+    activity    = models.ForeignKey(Activity,  null=True, blank=True, related_name='answers_player', on_delete=models.CASCADE, editable= False)
+    answer      = models.CharField( max_length=255, null=True, blank=True,  verbose_name="Réponse")  
+    score       = models.PositiveIntegerField(default=0, editable=False)
+    timer       = models.CharField(max_length=255, editable=False)  
+    is_correct  = models.BooleanField(default=0, editable=False) 
+
+    def __str__(self):
+        return self.participant.user.last_name
