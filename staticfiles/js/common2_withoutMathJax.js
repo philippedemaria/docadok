@@ -13,9 +13,6 @@ requirejs.config({
         bootstrap: "lib/bootstrap.min",
         bootstrap_popover: ["https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min", 'lib/popper.min'], 
         popoverx: "lib/bootstrap-popover-x.min",
-        ckeditor: "../ckeditor/ckeditor/ckeditor",
-        ckeditor_init: "../ckeditor/ckeditor-init",
-        ckeditor_jquery: "../ckeditor/ckeditor/adapters/jquery",
         toggle: ["lib/bootstrap-toggle.min"],
         
         colorpicker: "lib/bootstrap-colorpicker.min",
@@ -59,12 +56,6 @@ requirejs.config({
         "slimscroll": {
             deps: ['jquery']
         },
-        "ckeditor_init": {
-            deps: ['jquery', 'ckeditor']
-        },
-        "ckeditor_jquery": {
-            deps: ['jquery', 'ckeditor']
-        },
         "config_toggle": {
             deps: ['jquery','toggle']
         },
@@ -78,7 +69,7 @@ requirejs.config({
     }
 });
 
-require(['jquery', 'bootstrap', 'bootstrap_popover',  'bcPicker',  'ckeditor_jquery', 'ckeditor', 'ckeditor_init',   'datatables', 'datatables_bootstrap',
+require(['jquery', 'bootstrap', 'bootstrap_popover',  'bcPicker',   'datatables', 'datatables_bootstrap',
     'config_select2', 'config_datepicker', 'config_toggle', 'config_colorpicker', 'fonctions_jquery', 'fonctions',   'uploader',   'config_datatable', 
     'multiselect', 'ui', 'slimscroll', 'chart']);
 

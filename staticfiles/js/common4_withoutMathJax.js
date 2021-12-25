@@ -2,8 +2,8 @@ requirejs.config({
     baseUrl: "../../../../static/js", 
     waitSeconds: 90,
     paths: {
-        jquery: ['//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min', 'lib/jquery-2.2.4.min'],
-        jquery19: ['//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min'],  
+        jquery: [ 'lib/jquery-2.2.4.min'],
+ 
         select2: "lib/select2.full.min",
         ui: "lib/jquery-ui.min",
         ui_draggable: "script/ui-draggable",
@@ -12,11 +12,8 @@ requirejs.config({
         datepicker_fr: ["script/config-datepicker-fr"],
         bootstrap: "lib/bootstrap.min",
         bootstrap_popover: ["https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min", 'lib/popper.min'], 
-        ckeditor: "../ckeditor/ckeditor/ckeditor",
-        ckeditor_init: "../ckeditor/ckeditor-init",
-        ckeditor_jquery: "../ckeditor/ckeditor/adapters/jquery",
         toggle: ["lib/bootstrap-toggle.min"],
-        
+
         colorpicker: "lib/bootstrap-colorpicker.min",
         bcPicker: "lib/bcPicker", 
 
@@ -36,6 +33,8 @@ requirejs.config({
         fonctions: "script/fonctions",
         uploader: "lib/jquery.smartuploader",
  
+
+
     },
     shim: {
         "bootstrap": {
@@ -62,20 +61,19 @@ requirejs.config({
         "ckeditor_init": {
             deps: ['jquery', 'ckeditor']
         },
-        "uploader": {
-            deps: ['jquery' ]
-        },
         "config_toggle": {
             deps: ['jquery','toggle']
         },
         "bcPicker": {
-            deps: ['jquery']
+            deps: ['jquery',]
+        },
+        "uploader": {
+            deps: ['jquery',]
         },
 
     }
 });
 
-require(['jquery', 'bootstrap',  'uploader', 'uploader', 'bootstrap_popover', 'bcPicker', 'ckeditor_jquery', 'ckeditor', 'ckeditor_init',   'datatables', 'datatables_bootstrap', 'config_select2', 'config_datepicker', 'config_toggle',  'config_colorpicker', 'fonctions_jquery', 'fonctions',   'config_datatable', 'multiselect', 'ui',]);
-
-// suppression de admin dans le chargement  : 'admin', 
-//  ,'slimscroll', 'chart'
+require(['jquery', 'bootstrap', 'uploader', 'bootstrap_popover', 'bcPicker', 'datatables', 'datatables_bootstrap',  'uploader', 
+     'config_select2', 'config_datepicker', 'config_toggle',  'config_colorpicker', 'fonctions_jquery',  
+    'fonctions',   'config_datatable', 'multiselect', 'ui',]);

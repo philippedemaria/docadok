@@ -12,9 +12,6 @@ requirejs.config({
         datepicker_fr: ["script/config-datepicker-fr"],
         bootstrap: "lib/bootstrap.min",
         bootstrap_popover: ["https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min", 'lib/popper.min'], 
-        ckeditor: "../ckeditor/ckeditor/ckeditor",
-        ckeditor_init: "../ckeditor/ckeditor-init",
-        ckeditor_jquery: "../ckeditor/ckeditor/adapters/jquery",
         toggle: ["lib/bootstrap-toggle.min"],
 
         colorpicker: "lib/bootstrap-colorpicker.min",
@@ -77,6 +74,6 @@ requirejs.config({
     }
 });
 
-require(['jquery', 'bootstrap', 'uploader', 'bootstrap_popover', 'bcPicker', 'datatables', 'datatables_bootstrap',  'uploader', 'ckeditor_jquery',
-    'ckeditor', 'ckeditor_init', 'config_select2', 'config_datepicker', 'config_toggle',  'config_colorpicker', 'fonctions_jquery',  
+require(['jquery', 'bootstrap', 'uploader', 'bootstrap_popover', 'bcPicker', 'datatables', 'datatables_bootstrap',  'uploader', 
+     'config_select2', 'config_datepicker', 'config_toggle',  'config_colorpicker', 'fonctions_jquery',  
     'fonctions',   'config_datatable', 'multiselect', 'ui',]);

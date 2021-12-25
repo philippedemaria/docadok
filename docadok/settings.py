@@ -99,8 +99,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_bootstrap_breadcrumbs',
     'widget_tweaks',
-    'ckeditor',
-    'ckeditor_uploader',
     'bootstrap3',
     'bootstrap_datepicker_plus',
     'setup',
