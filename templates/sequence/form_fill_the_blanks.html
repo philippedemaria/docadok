@@ -1,0 +1,40 @@
+{% extends 'sequence/form_activity.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load item_tags %}
+
+
+
+ 
+
+{% block question %}
+    {{ form.title|add_class:"form-control radius-right padding20"|attr:"placeholder: Compléter le texte à trous suivant." }}
+{% endblock %}
+
+
+
+{% block label_choice %}
+<h4>Texte à trous</h4>
+<label class="label_complement">Ecrire votre texte en plaçant entre ___ (3 tirets du bas) les mots cachés. Si plusieurs réponse sont possibles, il suffit de séparer les réponses par des vigules. Si vous ne souhaitez pas fournir de bonnes réponses, laisser un espace comme cela : ___ ___ . <br/>Par exemple : Le Yin et le Yang est représenté par deux couleurs : Le noir et le ___blanc___ </label>
+{% endblock %}
+
+
+
+{% block clone %}
+
+{% endblock %}
+
+
+{% block choices %}
+<div class="marginbottom10">
+    {{ form.textarea|add_class:"form-control radius-right padding20"|attr:"placeholder:Ecrire votre texte ici" }}
+</div>
+{% endblock %}
+
+{% block more %}
+{% endblock %}           
+
+
+{% block properties %}
+{% endblock %} 
+             

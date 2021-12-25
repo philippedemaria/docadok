@@ -52,6 +52,7 @@ def delete_sequence(request, ids):
     return redirect('sequences')
 
 
+
 def ajax_update_sequence(request):
 
     data = {}
@@ -120,6 +121,53 @@ def ajax_update_checkbox_sequence(request):
 
  
 
+def moderate_sequence(request, ids):
+    sequence = Sequence.objects.get(id=id)
+    sequence.delete()
+
+    return redirect('sequences')
+
+
+def compare_sequence(request, ids):
+    sequence = Sequence.objects.get(id=id)
+    sequence.delete()
+
+    return redirect('sequences')
+
+
+def clone_sequence(request, ids):
+    sequence = Sequence.objects.get(id=id)
+    for a in sequence.activities.all():
+        for c in a.choices.all():
+            c.pk=None
+            c.save()
+        a.pk=None
+        a.save()
+    sequence.pk = None
+    sequence.save()
+
+    return redirect('sequences')
+
+
+def export_sequence(request, ids):
+    sequence = Sequence.objects.get(id=id)
+    sequence.delete()
+
+    return redirect('sequences')    
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
 ####################################################################################################
 ####################################################################################################
 ####################    folder
@@ -172,10 +220,51 @@ def delete_folder(request, id):
 ####################################################################################################
 def create_activity(request,ids,atype,ida=0):
 
+    titles_activity = ['Créer une question à choix multiple','Sondage','Nuage de mots','Légender une image',"Trouver l'image","Capture d'image",'Association','Brainstorming','Echelle','Classement','Priorisation','Texte à trous']
+    title_activity = titles_activity[atype]
+
     sequence = Sequence.objects.get(pk = ids)
 
     form     = ActivityForm(request.POST or None, request.FILES or None, sequence = sequence)
-    formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','is_correct') , extra=2)
+    
+    if atype == 0 :
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','is_correct') , extra=2)
+        template = 'sequence/form_qcm.html'
+    elif atype == 1 :
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer') , extra=2)
+        template = 'sequence/form_sondage.html'
+    elif atype == 2 :
+        formSet  = inlineformset_factory( Activity , Choice , fields=('is_correct',) , extra=0)
+        template = 'sequence/form_cloud.html'
+    elif atype == 3 : # TODO
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','is_correct') , extra=2)
+        template = 'sequence/form_legend_image.html'
+    elif atype == 4 : # TODO
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','is_correct') , extra=2)
+        template = 'sequence/form_find_image.html'
+    elif atype == 5 : # TODO
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','is_correct') , extra=2)
+        template = 'sequence/form_cast_image.html'
+    elif atype == 6 :
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','associate','imageassociate') , extra=2)
+        template = 'sequence/form_association.html'
+    elif atype == 7 :
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label',) , extra=1)
+        template = 'sequence/form_brainstorming.html'
+    elif atype == 8 :
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label',) , extra=1)
+        template = 'sequence/form_ladder.html'
+    elif atype == 9 :
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer') , extra=2)
+        template = 'sequence/form_classement.html'
+    elif atype == 10 :
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer') , extra=2)
+        template = 'sequence/form_priorisation.html'
+    elif atype == 11 :
+        formSet  = inlineformset_factory( Activity , Choice , fields=('textarea',) , extra=1)
+        template = 'sequence/form_fill_the_blanks.html'
+ 
+
     form_ans = formSet(request.POST or None,  request.FILES or None)
 
     if request.method == "POST"  :
@@ -190,8 +279,8 @@ def create_activity(request,ids,atype,ida=0):
 
             return redirect('update_sequence',ids)
 
-    context = {  'form' : form , 'form_ans' : form_ans , 'sequence' : sequence  } 
-    template = 'sequence/form_activity.html'
+    context = {  'form' : form , 'form_ans' : form_ans , 'sequence' : sequence, 'atype' : atype , 'title_activity' : title_activity  } 
+
     return render(request, template , context)
 
  

@@ -12,126 +12,183 @@
 {% endblock %}
  
 
-
+{% block sequence %}
+        <a class="navbar-brand" href="{% url 'create_activity'  sequence.id atype 0 %}">  <i class="bi bi-chevron-right"></i> {{ sequence.title  }}</a>
+{% endblock %}
 
 
 {% block body %}
 <form action="#" method="POST" id="question_form"  enctype='multipart/form-data' >
 {% csrf_token %}    
-    <section class="content_list">
+    <section class="content_activities">
         <div class="row">
-            <div class="col-sm-12 col-md-12">
-                <h3> <i class="bi bi-chevron-right"></i> {{ sequence.title  }}</h3> 
-            </div>
-        </div>
+            <div class="col-sm-12 col-md-9">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        <div class="form-group">
 
 
-        <div class="row">
-            <div class="col-sm-12 col-md-12">
-                <div class="form-group">
-                    <h3 class="thin">Créer une question à choix multiple</h3>
-                    <label class="label_complement">Ecrire la question que vous souhaitez poser à votre audience</label>
-                    {{ form.title|add_class:"form-control-custom form-control" }} 
+                            <h3>{{ title_activity }}</h3>
+
+
+
+
+                            <label class="label_complement">Ecrire la question que vous souhaitez poser à votre audience</label>
+                            <div class="input-group marginbottom10"  id="spanner00">
+                                <span class="input-group-addon input-group-addon-left get_image">
+                                    <i class="bi bi-image" id="bi-image00"></i>{{ form.imagefile|add_class:"choose_imagefile" }} 
+                                    <img src="{% if form.imagefile.url %}{{ form.imagefile.url }}{% endif %}" height="20px" class="preview" id="preview00" >
+                                </span>
+                                {% block question %}
+                                {{ form.title|add_class:"form-control radius-right padding20"|attr:"placeholder: Ecrire votre question" }}
+                                {% endblock %}                                
+                            </div>
+
+
+                       </div>
+                    </div>
+                </div> 
+                <hr/>
+
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-12" >  
+                        {% block label_choice %}
+                        {% endblock %}
+                    </div>
                 </div>
-            </div>
-        </div> 
-        <div class="row">
-            <div class="col-sm-12 col-md-12">
-                <div class="form-group">
-                    <label class="label_complement">Associer une image à la question</label>
-                    {{ form.imagefile|add_class:"btn btn-default" }} 
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-12" >  
+         
+                        {{ form_ans.management_form }}
+
+                        {% block clone %}
+                        {% endblock %}
+                    </div>
                 </div>
-            </div>
-        </div> 
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        <div id="formsetZone">
+                            {% for form in form_ans %} 
 
-        <hr/>
+                                {% block choices %}
+                                {% endblock %}
 
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
 
-        <div class="row">
-            <div class="col-sm-12 col-md-12" >  
- 
-                {{ form_ans.management_form }}
-                <script id="rowToClone" type="text/template">
-                    <div id="duplicate"> 
-                        <div class="row" >
-                            <div class="col-sm-12 col-md-12 col-lg-12">
-                                <div class="input-group marginbottom10"  id="spanner">
-                                    <span class="input-group-addon input-group-addon-left">{{ form_ans.empty_form.is_correct }}</span>
-                                    <span class="input-group-addon get_image">
-                                        <i class="bi bi-image" id="bi-image{{ forloop.counter0 }}"></i>{{ form_ans.empty_form.imageanswer|add_class:"choose_imagefile" }} 
-                                        <img src="{% if form_ans.imageanswer.url %}{{ form_ans.empty_form.imageanswer.url }}{% endif %}" height="20px" class="preview" id="preview" >
-                                    </span>
-
-                                    {{ form_ans.empty_form.label|add_class:"form-control  padding20"|attr:"placeholder:Ecrire votre réponse ici" }}
-                                    <span class="input-group-addon input-group-addon-right remove_more"><i class="bi bi-trash"></i></span>
-                                </div>
-                            </div> 
+                            {% endfor %}  
                         </div>
-                        <div class="row" id="cloningZone">                            
-
+                            {% block more %}
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6" >
+                                    <a href="#"  class="add_more edit" ><i class="bi bi-plus-circle"></i> <small>Ajouter une réponse</small></a><br/><br/>
+                                </div>                            
+                            </div>
+                            {% endblock %}
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                    <div class="form-group">
+         
+                        <input value="Enregistrer" type="submit"  class="btn btn-primary"  />
+         
+                        <a href="javascript:history.back()"><input type="button" value="Annuler" class="btn btn-default"/></a>
+                    </div>
+                </div> 
+            </div>
+            <div class="col-sm-12 col-md-3 activities_properties">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        <h4 id="caret_activities">Activités <i class="bi bi-caret-down-fill pull-right edit"></i> </h4>
+                        <div class="display_caret_activities" id="display_caret_activities">
+                            {% include 'sequence/activities_menu.html' %}
                         </div>
                     </div>
-                </script> 
-            </div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-sm-12 col-md-12">
- 
-                <div id="formsetZone">
-                    {% for form in form_ans %} 
-                        <div class="input-group marginbottom10"  id="spanner{{ forloop.counter0 }}">
-                            <span class="input-group-addon input-group-addon-left">{{ form.is_correct }}</span>
-                            <span class="input-group-addon get_image">
-                                <i class="bi bi-image" id="bi-image{{ forloop.counter0 }}"></i>{{ form.imageanswer|add_class:"choose_imagefile" }} 
-                                <img src="{% if form.imageanswer.url %}{{ form.imageanswer.url }}{% endif %}" height="20px" class="preview" id="preview{{ forloop.counter0 }}" >
-                            </span>
-
-                            {{ form.label|add_class:"form-control radius-right padding20"|attr:"placeholder:Ecrire votre réponse ici" }}
-                        </div>
-
-                    {% for hidden in form.hidden_fields %}
-                        {{ hidden }}
-                    {% endfor %}
-
-                    {% endfor %}  
                 </div>
-                    <div class="row">
-                        <div class="col-sm-6 col-md-6" >
-                            <a href="#"  class="add_more edit" ><i class="bi bi-plus-circle"></i> <small>Ajouter une réponse</small></a><br/><br/>
-                        </div>                            
+
+
+
+
+
+                <hr/>
+                <div class="row" >
+                    <div class="col-sm-12 col-md-12">
+                        <h4>Propriétés</h4>
                     </div>
-
-
-
-
-                
+                </div>
+                <div class="row" >
+                    <div class="col-sm-5 col-md-5">
+                        <div class="form-group">
+                            <label class="label_complement">Mutualisé ?</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-7 col-md-7">
+                        <div class="form-group">
+                            {{ form.is_share|add_class:"check_sequence"|attr:"data-toggle:toggle" |attr:"data-onstyle:primary"|attr:"data-offstyle:default"|attr:"data-on:Oui"|attr:"data-off:Non"|attr:"data-size:small"}}  
+                        </div>
+                    </div>
+                </div>
+                {% block properties %}                
+                {% endblock %} 
+                <div class="row" >
+                    <div class="col-sm-5 col-md-5">
+                        <div class="form-group">
+                            <label class="label_complement">Cpt à rebours ?</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-7 col-md-7">
+                        <div class="form-group">
+                            {{ form.is_timer|add_class:"check_sequence"|attr:"data-toggle:toggle" |attr:"data-onstyle:primary"|attr:"data-offstyle:default"|attr:"data-on:Oui"|attr:"data-off:Non"|attr:"data-size:small"}}  
+                        </div>
+                    </div>
+                </div>
+                <div class="row no_visu_on_load" id="display_timer">
+                    <div class="col-sm-5 col-md-5">
+                        <div class="form-group">
+                            <label class="label_complement">Temps</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-7 col-md-7">
+                        <div class="form-group">
+                            {{ form.timer|add_class:"form-control"}}  
+                        </div>
+                    </div>
+                </div>
+                <div class="row" >
+                    <div class="col-sm-5 col-md-5">
+                        <div class="form-group">
+                            <label class="label_complement">Publié ?</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-7 col-md-7">
+                        <div class="form-group">
+                            {{ form.is_publish|add_class:"check_sequence"|attr:"data-toggle:toggle" |attr:"data-onstyle:primary"|attr:"data-offstyle:default"|attr:"data-on:Oui"|attr:"data-off:Non"|attr:"data-size:small"}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row no_visu_on_load" id="display_publish" >
+                    <div class="col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <label class="label_complement">Depuis le</label>
+                            {{ form.start_publish|add_class:"form-control datetimepicker"  }} 
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <label class="label_complement">Jusqu'à</label>
+                            {{ form.stop_publish|add_class:"form-control datetimepicker" }} 
+                        </div>
+                    </div>
+                </div>
             </div>
- 
         </div>
-
-
-
-
-
-
-        <div class="col-sm-12 col-md-12">
-            <div class="form-group">
- 
-                <input value="Enregistrer" type="submit"  class="btn btn-primary"  />
- 
-                <a href="javascript:history.back()"><input type="button" value="Annuler" class="btn btn-default"/></a>
-            </div>
-        </div> 
-
-
-
-
     </section>
  
-</form>
 
+</form>
 {% endblock %} 
 
  

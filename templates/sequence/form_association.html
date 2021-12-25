@@ -1,0 +1,104 @@
+{% extends 'sequence/form_activity.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load item_tags %}
+
+
+
+{% block question %}
+    {{ form.title|add_class:"form-control radius-right padding20"|attr:"placeholder: Associer les mots" }}
+{% endblock %}
+
+{% block label_choice %}
+<h4>Couples de mots</h4>
+<label class="label_complement">Entrez un couple de mots par ligne</label>
+{% endblock %}
+
+
+
+{% block clone %}
+<script id="rowToClone" type="text/template">
+    <div id="duplicate"> 
+        <div class="row" >
+            <div class="col-sm-5 col-md-5">
+                <div class="input-group marginbottom10"  id="spanner">
+                    <span class="input-group-addon get_image">
+                        <i class="bi bi-image" id="bi-image{{ forloop.counter0 }}"></i>{{ form_ans.empty_form.imageanswer|add_class:"choose_imageanswer" }} 
+                        <img src="{% if form_ans.empty_form.imageanswer.url %}{{ form_ans.empty_form.imageanswer.url }}{% endif %}" height="20px" class="preview" id="preview" >
+                    </span>
+
+                    {{ form_ans.empty_form.label|add_class:"form-control radius-right padding20"|attr:"placeholder:Donnée" }}
+                </div>
+            </div>
+            <div class="col-sm-1 col-md-1" style="margin-top:10px">
+                <i class="bi bi-arrow-left-right"></i>
+            </div>
+            <div class="col-sm-5 col-md-5">
+                <div class="input-group marginbottom10"  id="spanner_">
+                    <span class="input-group-addon get_image">
+                        <i class="bi bi-image" id="bi-image_"></i>{{ form_ans.empty_form.imageassociate|add_class:"choose_imageanswer" }} 
+                        <img src="{% if form_ans.empty_form.imageassociate.url %}{{ form_ans.empty_form.imageassociate.url }}{% endif %}" height="20px" class="preview" id="preview_" >
+                    </span>
+
+                    {{ form_ans.empty_form.associate|add_class:"form-control radius-right padding20"|attr:"placeholder: Donnée associée" }}
+                </div>
+            </div>
+
+            <div class="col-sm-1 col-md-1" style="margin-top:10px">
+                <span class="remove_more"><i class="bi bi-trash"></i></span>
+            </div>
+
+        </div>
+        <div class="row" id="cloningZone">                            
+
+        </div>
+    </div>
+</script> 
+{% endblock %}
+
+
+{% block choices %}
+<div class="row" >
+    <div class="col-sm-5 col-md-5">
+        <div class="input-group marginbottom10"  id="spanner{{ forloop.counter0 }}">
+            <span class="input-group-addon get_image">
+                <i class="bi bi-image" id="bi-image{{ forloop.counter0 }}"></i>{{ form.imageanswer|add_class:"choose_imageanswer" }} 
+                <img src="{% if form.imageanswer.url %}{{ form.imageanswer.url }}{% endif %}" height="20px" class="preview" id="preview{{ forloop.counter0 }}" >
+            </span>
+
+            {{ form.label|add_class:"form-control radius-right padding20"|attr:"placeholder:Donnée" }}
+        </div>
+    </div>
+    <div class="col-sm-1 col-md-1" style="margin-top:10px">
+        <i class="bi bi-arrow-left-right"></i>
+    </div>
+    <div class="col-sm-5 col-md-5">
+        <div class="input-group marginbottom10"  id="spanner_{{ forloop.counter0 }}">
+            <span class="input-group-addon get_image">
+                <i class="bi bi-image" id="bi-image_{{ forloop.counter0 }}"></i>{{ form.imageassociate|add_class:"choose_imageanswer" }} 
+                <img src="{% if form.imageassociate.url %}{{ form.imageassociate.url }}{% endif %}" height="20px" class="preview" id="preview_{{ forloop.counter0 }}" >
+            </span>
+
+            {{ form.associate|add_class:"form-control radius-right padding20"|attr:"placeholder:Donnée associée" }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+           
+
+
+{% block properties %}
+{% endblock %} 
+
+
+
+
+{% block more %}
+<div class="row">
+    <div class="col-sm-6 col-md-6" >
+        <a href="#"  class="add_more edit" ><i class="bi bi-plus-circle"></i> <small>Ajouter un couple de mots</small></a><br/><br/>
+    </div>                            
+</div>
+{% endblock %}
+             

@@ -60,12 +60,14 @@ class Activity(ModelWithCode):
     date         = models.DateField(auto_now_add=True, verbose_name="Date de création")
     imagefile    = models.ImageField(upload_to=question_directory_path, null=True, blank=True,  verbose_name="Image", default="")
     sequence     = models.ForeignKey(Sequence, related_name="activities", on_delete=models.CASCADE )
-    score        = models.PositiveIntegerField( default=0,  blank=True, null=True )
+    is_score     = models.BooleanField(default=0, verbose_name="Score ?")
+    score        = models.PositiveIntegerField( default=1000,  blank=True, null=True )
     atype        = models.PositiveIntegerField( default=0)
 
 
     is_share     = models.BooleanField(default=0, verbose_name="Mutualisé ?")
-    timer        = models.BooleanField(default=0, verbose_name="Compte à rebours ?")
+    is_timer     = models.BooleanField(default=0, verbose_name="Compte à rebours ?")
+    timer        = models.BooleanField(default=0, verbose_name="Temps")
     is_publish   = models.BooleanField(default=0, verbose_name="Publié ?") 
     start_publish= models.DateTimeField(null=True, blank=True, verbose_name="A partir de")
     stop_publish = models.DateTimeField(null=True, blank=True, verbose_name="Date de verrouillage")
@@ -73,7 +75,7 @@ class Activity(ModelWithCode):
     liker        = models.BooleanField(default=0, verbose_name="Like")
     multiple     = models.BooleanField(default=0, verbose_name="Réponse multiple")
     ranking      = models.PositiveIntegerField(default=0,  blank=True, null=True, editable=False)
-
+    is_shuffle   = models.BooleanField(default=0, verbose_name="Shuffle ?")
 
     def __str__(self):     
         return "{}".format(self.title)

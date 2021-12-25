@@ -76,9 +76,10 @@ def index(request):
         if request.user.is_organisateur:
             form_code = CodeForm(request.POST or None)
             organisateur = request.user.organisateur
+            sequences = organisateur.sequences.all()
             form_folder = FolderForm(request.POST or None, request.FILES or None,  organisateur=organisateur )
             nbs = organisateur.sequences.count()
-            context = { 'form_code' : form_code ,  'form_folder' : form_folder  ,  'nbs' : nbs }
+            context = { 'form_code' : form_code ,  'form_folder' : form_folder  ,  'nbs' : nbs ,  'sequences' : sequences }
         
         elif request.user.is_participant:  ## student
             context = { }

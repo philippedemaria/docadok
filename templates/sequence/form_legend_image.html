@@ -1,0 +1,49 @@
+{% extends 'sequence/form_activity.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load item_tags %}
+
+
+{% block clone %}
+<script id="rowToClone" type="text/template">
+    <div id="duplicate"> 
+        <div class="row" >
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="input-group marginbottom10"  id="spanner">
+                    <span class="input-group-addon input-group-addon-left">{{ form_ans.empty_form.is_correct }}</span>
+                    <span class="input-group-addon get_image">
+                        <i class="bi bi-image" id="bi-image{{ forloop.counter0 }}"></i>{{ form_ans.empty_form.imageanswer|add_class:"choose_imagefile" }} 
+                        <img src="{% if form_ans.imageanswer.url %}{{ form_ans.empty_form.imageanswer.url }}{% endif %}" height="20px" class="preview" id="preview" >
+                    </span>
+                    {{ form_ans.empty_form.label|add_class:"form-control  padding20"|attr:"placeholder:Ecrire votre réponse ici" }}
+                    <span class="input-group-addon input-group-addon-right remove_more"><i class="bi bi-trash"></i></span>
+                </div>
+            </div> 
+        </div>
+        <div class="row" id="cloningZone">                            
+
+        </div>
+    </div>
+</script> 
+{% endblock %}
+
+
+{% block choices %}
+<div class="input-group marginbottom10"  id="spanner{{ forloop.counter0 }}">
+    <span class="input-group-addon input-group-addon-left">{{ form.is_correct }}</span>
+    <span class="input-group-addon get_image">
+        <i class="bi bi-image" id="bi-image{{ forloop.counter0 }}"></i>{{ form.imageanswer|add_class:"choose_imageanswer" }} 
+        <img src="{% if form.imageanswer.url %}{{ form.imageanswer.url }}{% endif %}" height="20px" class="preview" id="preview{{ forloop.counter0 }}" >
+    </span>
+
+    {{ form.label|add_class:"form-control radius-right padding20"|attr:"placeholder:Ecrire votre réponse ici" }}
+</div>
+{% endblock %}
+
+           
+
+
+{% block properties %}
+
+{% endblock %} 
+             
