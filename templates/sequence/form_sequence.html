@@ -6,7 +6,7 @@
 {% block require %}
  
  
-    <script src="{% static 'js/require.js' %}"   data-main="{% static 'js/common3_withoutMathJax.js' %}"></script>
+    <script src="{% static 'js/require.js' %}"   data-main="{% static 'js/common3.js' %}"></script>
  
 
     <script>
@@ -140,41 +140,47 @@
  
     <!-- Gestion des activités --> 
     <div class="row">
-        <div class="col-sm-12 col-md-12" align="right">
-            <a href="#" data-toggle='modal' data-target='#import_activit'  class="btn btn-new-violet"><i class="bi bi-plus-circle-fill"></i> Importer une activité</a>
+        <div class="col-sm-6 col-md-6" align="left">
+            <a href="javascript:void();" class="edit" id="show_hide_menu_activities"><i class="bi bi-plus-circle-dotted"></i> Ajouter une activité</a>
+        </div>
+        <div class="col-sm-6 col-md-6" align="right">
+            <a href="javascript:void();" data-toggle='modal' data-target='#import_activity'  class="btn btn-new-violet"><i class="bi bi-plus-circle-fill"></i> Importer une activité</a>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12 col-md-3">
+        <div class="col-sm-12 col-md-1 col-lg-1" id="left_col">
             {% include 'sequence/activities_menu.html' %}
         </div>
-        <div class="col-sm-12 col-md-9">
-
-            <ul class="sanspuce">
+        <div class="col-sm-12 col-md-10 col-lg-10" id="right_col">
+            <hr/>
                 {% for activity in activities %}
-                <li>
-                    
+                <li class="list_sequence_index font16 activity_sorter"  data-activity_id = "{{ activity.id }}" >
+
+                    <span class="classement_item"><i class="bi bi-grip-vertical"></i></span>
+                    <span class="sequence_title"><i class="{{ activity.icon }}"></i> <span class="number_list">{{ forloop.counter }}</span>. {{ activity.title }}</span>
+                    <span class="sequence_property">[{{ activity.code}}]</span>
+                    <span class="sequence_property"><a href="{% url 'update_activity' sequence.id activity.atype activity.id %}">Modifier</a></span>
+                    <span class="sequence_property"><a href="{% url 'show_activity'  sequence.id  activity.id %}"  class="btn btn-new-violet" style="padding:2px 10px"><i class="bi bi-play"></i> Lancer</a></span> 
+                    <span class="sequence_vertical"> 
+                        <span href="#" class="helper_tip"><i class="bi bi-three-dots-vertical"  style="font-size: 20px"></i>
+                            <div class="helper_tip_text" style="width: 120px">
+                                <div class="list_sequence_index_padding"><a href="{% url 'export_activity' sequence.id  activity.id %}"><i class="bi bi-file-earmark-excel"></i> Exporter</a></div>
+                                <div class="list_sequence_index_padding"><a href="{% url 'clone_activity' sequence.id  activity.id %}"><i class="bi bi-file-earmark-plus"></i> Dupliquer</a></div>
+                                <div class="list_sequence_index_padding"><a href="{% url 'copy_link_activity' sequence.id  activity.id %}"><i class="bi bi-clipboard"></i> Copier le lien</a></div>
+                                <div class="list_sequence_index_padding"><a href="{% url 'embed_activity' sequence.id  activity.id %}"><i class="bi bi-cast"></i> Embed</a></div>
+                                <div class="list_sequence_index_padding"><a href="{% url 'delete_activity' sequence.id  activity.id %}"><i class="bi bi-trash"></i> Supprimer</a></div>
+                            </div>
+                        </span>
+                    </span>
+
                 </li>
                 {% empty %}
                 <li>
                     Aucune activité créée
                 </li>
                 {% endfor %}
-            </ul>
-
-
  
-
-
-
-            <div class="row" style="margin-top:40px">
-                <div class="col-sm-12 col-md-8">
-                    <div class="form-group">
-                        <input value="Enregistrer" type="submit" name="save_and_choose" class="btn btn-primary" />                
-                        <a href="javascript:history.back()"><input type="button" value="Annuler" class="btn btn-default "/></a>
-                    </div>
-                </div>
-            </div>
+ 
         </div>
     </div>
     <!-- Fin de gestion des activités -->
@@ -188,7 +194,7 @@
 
 
 {% block modales %}
-<div class="modal fade" id="import_sequence" tabindex="-1" role="dialog" aria-labelledby="import_sequence">
+<div class="modal fade" id="import_activity" tabindex="-1" role="dialog" aria-labelledby="import_activity">
     <div class="modal-dialog" role="document">
         <div class="modal-content" >
             <div class="modal-header">
@@ -198,11 +204,12 @@
                 <h2>Importer une séquence</h2>              
             </div>
             <div class="modal-body">
-                <form action="" method="POST" enctype='multipart/form-data'>
+                <form action="{% url 'import_activity' sequence.id %}" method="POST" enctype='multipart/form-data'>
+                {{ form_code.sequence }}    
                 {% csrf_token %}          
                 <div class="row" align="center">
                     <div class="col-sm-12">    
-                        <label>Entrer le code de la séquence</label>
+                        <label>Entrer le code de l'activité</label>
                     </div>
                 </div>
                 <div class="row justify-content-center marginbottom50" align="center">

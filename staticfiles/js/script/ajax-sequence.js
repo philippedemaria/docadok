@@ -14,6 +14,29 @@ define(['jquery', 'bootstrap', 'ui', 'ui_sortable'], function ($) {
     clickOneDivAppear($(".close_properties"), $("#properties"));
 
 
+
+    click_DivAppear($("#show_hide_menu_activities"), $(".activity_menu_li"));
+    var show = 0 ;
+    function click_DivAppear($toggle, $item ) {
+                $toggle.click(function () {
+                show++;
+
+                if (show%2==1)
+                {
+                    $toggle.html('<i class="bi bi-eye-slash"></i>  Cacher les activités');
+                    $("#left_col").addClass("col-md-3").addClass("col-lg-2").removeClass("col-md-1").removeClass("col-lg-1");
+                    $("#right_col").addClass("col-md-9").addClass("col-lg-9").removeClass("col-md-10").removeClass("col-lg-10");
+                }
+                else
+                {
+                    $toggle.html('<i class="bi bi-plus-circle-dotted"></i>  Ajouter une activité');
+                    $("#left_col").addClass("col-md-1").addClass("col-lg-1").removeClass("col-md-3").removeClass("col-lg-2");
+                    $("#right_col").addClass("col-md-10").addClass("col-lg-10").removeClass("col-md-9").removeClass("col-lg-9");
+                }
+                $item.toggle("slow");
+            });         
+        }
+
     function clickOneDivAppear($toggle, $item ) {
                 $toggle.click(function () {
                     $item.toggle("slow");
@@ -96,7 +119,7 @@ define(['jquery', 'bootstrap', 'ui', 'ui_sortable'], function ($) {
 
 
 
-        function sorter_exotexs($div_class , $exercise_class ) {
+    function sorter_activities($div_class , $exercise_class) {
 
                 $($div_class).sortable({
                     cursor: "move",
@@ -110,37 +133,36 @@ define(['jquery', 'bootstrap', 'ui', 'ui_sortable'], function ($) {
                        },
                     stop: function (event, ui) {
 
-                        let bibliotex = $("#bibliotex").val();
                         let csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-                        var relationtexs = [];
- 
+                        var activities = [];
 
                         $($exercise_class).each(function() {
 
-                            let relationtex_id = $(this).data("relationtex_id");
-                            relationtexs.push(relationtex_id);
+                            let activity_id = $(this).data("activity_id");
+                            activities.push(activity_id);
  
                         });
 
- 
-                        $(ui.item).css("box-shadow", "0px 0px 0px transparent"); 
-
-                        console.log( 'relationtexs  ' + relationtexs +  '  bibliotex' + bibliotex )
-
+                        $(ui.item).css("box-shadow", "0px 0px 0px transparent");
 
                         $.ajax({
-                                data:   { 'relationtexs': relationtexs ,  'bibliotex' : bibliotex , csrfmiddlewaretoken: csrf_token  } ,    
+                                data:   { 'activities': activities ,  csrfmiddlewaretoken: csrf_token  } ,    
                                 type: "POST",
                                 dataType: "json",                
                                 traditional: true,
-                                url: "../ajax_sort_exotexs_in_bibliotex" 
+                                url: "../ajax_sort_activities" ,
+                                success: function (data) {
+                                        i=1;
+                                        $(".number_list").each(function() {
+                                            $(this).html(i);
+                                            i++;
+                                        });
+                                   }
                             }); 
                         }
                     });
                 }
-
-    
-        sorter_exotexs('#bibliotex_sortable' , ".relationtex_sorter");
+    sorter_activities('#right_col' , ".activity_sorter");
 
 });
 

@@ -71,12 +71,19 @@ class SequenceForm(forms.ModelForm):
         self.fields['ranking'].initial = r 
 
 
-class CodeForm(forms.ModelForm):
+class CodeSequenceForm(forms.ModelForm):
     class Meta:
         model = Sequence
-        fields = ('code',)
+        fields = ('code','organisateur')
 
 
+    def __init__(self, *args, **kwargs):
+        organisateur = kwargs.pop('organisateur')
+        super(CodeSequenceForm, self).__init__(*args, **kwargs)
+
+        self.fields['organisateur'].initial = organisateur
+        self.fields['organisateur'].widget  = forms.HiddenInput()
+ 
 
 
 
@@ -88,7 +95,25 @@ class ActivityForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         sequence = kwargs.pop('sequence')
+        atype = kwargs.pop('atype')
         super(ActivityForm, self).__init__(*args, **kwargs)
 
-        self.fields['sequence'].initial    = sequence
- 
+
+        self.fields['sequence'].initial = sequence
+        self.fields['sequence'].widget  = forms.HiddenInput()
+        self.fields['atype'].initial    = int(atype)
+        self.fields['atype'].widget  = forms.HiddenInput()
+
+
+class CodeActivityForm(forms.ModelForm):
+    class Meta:
+        model = Activity
+        fields = ('code','sequence')
+
+
+    def __init__(self, *args, **kwargs):
+        sequence = kwargs.pop('sequence')
+        super(CodeActivityForm, self).__init__(*args, **kwargs)
+
+        self.fields['sequence'].initial = sequence
+        self.fields['sequence'].widget  = forms.HiddenInput()

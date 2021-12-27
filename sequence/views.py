@@ -5,9 +5,68 @@ from django.template.loader import render_to_string
 from django.forms import inlineformset_factory
 
 from sequence.models import Sequence, Folder , Activity , Choice
-from sequence.forms import SequenceForm, FolderForm, ActivityForm  
+from sequence.forms import SequenceForm, FolderForm, ActivityForm , CodeActivityForm  , CodeSequenceForm
+
+from django.contrib import messages
+####################################################################################################
+####################################################################################################
+####################    folder
+####################################################################################################
+####################################################################################################
+def create_folder(request):
+
+    organisateur = request.user.organisateur
+    form = FolderForm(request.POST or None , organisateur = organisateur )
+    data = {}
+
+    if form.is_valid():
+        nf = form.save()
+    else :
+        print(form.errors)
+
+    return redirect('index')
+
+ 
+def update_folder(request):
+
+    idf = request.POST.get("folder")
+    title = request.POST.get("title")
+
+    Folder.objects.filter(pk=idf).update(title = title)
+
+    return redirect('index')
 
 
+  
+def delete_folder(request, idf):
+    folder = Folder.objects.get(id=idf)
+    if request.user.is_authenticated :
+        if request.user.organisateur == folder.organisateur :
+            folder.delete()
+            messages.success(request,'Suppression réalisée avec succès')
+
+    return redirect('index')
+
+
+def ajax_sort_folders(request):
+
+    sequence_ids  = request.POST.getlist("sequences")
+    i=0
+    for folder_id in sequence_ids:
+        Folder.objects.filter( pk = folder_id ).update(ranking = i)
+        i+=1
+    data = {}
+    return JsonResponse(data) 
+
+
+
+
+
+####################################################################################################
+####################################################################################################
+####################    folder
+####################################################################################################
+####################################################################################################
 
 
 def list_sequences(request):
@@ -17,9 +76,6 @@ def list_sequences(request):
     return render(request, 'socle/list_sequences.html', {'sequences': sequences , })
 
 
- 
-
- 
 def create_sequence(request, ids=0):
 
     organisateur = request.user.organisateur
@@ -30,8 +86,10 @@ def create_sequence(request, ids=0):
 def update_sequence(request, ids):
 
     sequence = Sequence.objects.get(id=ids)
+    activities = sequence.activities.order_by("ranking")
     organisateur = request.user.organisateur
     form = SequenceForm(request.POST or None, instance=sequence , organisateur=organisateur  )
+    form_code = CodeActivityForm(request.POST or None, request.FILES or None, sequence = sequence )
     if request.method == "POST" :
         if form.is_valid():
             form.save()
@@ -39,15 +97,19 @@ def update_sequence(request, ids):
         else:
             print(form.errors)
 
-    context = {'form': form,   'sequence': sequence,   }
+    context = {'form': form,   'sequence': sequence, 'activities' : activities , 'form_code' : form_code , }
 
     return render(request, 'sequence/form_sequence.html', context )
 
 
   
 def delete_sequence(request, ids):
-    sequence = Sequence.objects.get(id=id)
-    sequence.delete()
+
+    sequence = Sequence.objects.get(id=ids)
+    if request.user.is_authenticated :
+        if request.user.organisateur == sequence.organisateur :
+            sequence.delete()
+            messages.success(request,'Suppression réalisée avec succès')
 
     return redirect('sequences')
 
@@ -155,61 +217,42 @@ def export_sequence(request, ids):
 
     return redirect('sequences')    
 
- 
 
+def import_sequence(request):
 
-
-
-
-
-
-
-
-
-
-
-####################################################################################################
-####################################################################################################
-####################    folder
-####################################################################################################
-####################################################################################################
-def create_folder(request):
-
-    form = FolderForm(request.POST or None  )
-
-    if form.is_valid():
-        nf = form.save()
-        return redirect('index')
-    else:
-        print(form.errors)
-
-    context = {'form': form,   'folder': None  }
-
-    return render(request, 'sequence/form_folder.html', context)
-
- 
-def update_folder(request, id):
-
-    folder = Folder.objects.get(id=id)
-    folder_form = FolderForm(request.POST or None, instance=folder )
-    if request.method == "POST" :
-        if folder_form.is_valid():
-            folder_form.save()
+    organisateur = request.user.organisateur
+    form  = CodeSequenceForm(request.POST or None, request.FILES or None, organisateur = organisateur )
+    if request.method == "POST"  :
+        if form.is_valid():
+            nf = form.save()
             return redirect('index')
-        else:
-            print(folder_form.errors)
 
-    context = {'form': folder_form,   'folder': folder,   }
+def ajax_sort_sequences(request):
 
-    return render(request, 'event/form_folder.html', context )
+    sequence_ids  = request.POST.getlist("sequences")
+    i=0
+    for sequence_id in sequence_ids:
+        Sequence.objects.filter( pk = sequence_id ).update(ranking = i)
+        i+=1
+    data = {}
+    return JsonResponse(data) 
 
 
-  
-def delete_folder(request, id):
-    folder = Folder.objects.get(id=id)
-    folder.delete()
 
-    return redirect('index')
+def ajax_include_folders(request):
+
+    sequence_id  = request.POST.get("sequence_id")
+    folder_id  = request.POST.get("folder_id")
+    Sequence.objects.filter( pk = sequence_id ).update(folder_id = folder_id)
+    data = {}
+    return JsonResponse(data) 
+
+
+
+
+
+
+
 
 
 
@@ -218,59 +261,85 @@ def delete_folder(request, id):
 ####################    Activity
 ####################################################################################################
 ####################################################################################################
-def create_activity(request,ids,atype,ida=0):
 
-    titles_activity = ['Créer une question à choix multiple','Sondage','Nuage de mots','Légender une image',"Trouver l'image","Capture d'image",'Association','Brainstorming','Echelle','Classement','Priorisation','Texte à trous']
-    title_activity = titles_activity[atype]
+def get_form(atype,new) :
 
-    sequence = Sequence.objects.get(pk = ids)
-
-    form     = ActivityForm(request.POST or None, request.FILES or None, sequence = sequence)
-    
     if atype == 0 :
-        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','is_correct') , extra=2)
+        if new : extra=2
+        else : extra=0
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','is_correct') , extra=extra)
         template = 'sequence/form_qcm.html'
     elif atype == 1 :
-        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer') , extra=2)
+        if new : extra=2
+        else : extra=0
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer') , extra=extra)
         template = 'sequence/form_sondage.html'
     elif atype == 2 :
         formSet  = inlineformset_factory( Activity , Choice , fields=('is_correct',) , extra=0)
         template = 'sequence/form_cloud.html'
     elif atype == 3 : # TODO
-        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','is_correct') , extra=2)
+        if new : extra=2
+        else : extra=0
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','is_correct') , extra=extra)
         template = 'sequence/form_legend_image.html'
     elif atype == 4 : # TODO
-        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','is_correct') , extra=2)
+        if new : extra=2
+        else : extra=0
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','is_correct') , extra=extra)
         template = 'sequence/form_find_image.html'
     elif atype == 5 : # TODO
-        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','is_correct') , extra=2)
+        if new : extra=2
+        else : extra=0
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','is_correct') , extra=extra)
         template = 'sequence/form_cast_image.html'
     elif atype == 6 :
-        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','associate','imageassociate') , extra=2)
+        if new : extra=2
+        else : extra=0
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','associate','imageassociate') , extra=extra)
         template = 'sequence/form_association.html'
     elif atype == 7 :
-        formSet  = inlineformset_factory( Activity , Choice , fields=('label',) , extra=1)
+        if new : extra=1
+        else : extra=0
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label',) , extra=extra)
         template = 'sequence/form_brainstorming.html'
     elif atype == 8 :
-        formSet  = inlineformset_factory( Activity , Choice , fields=('label',) , extra=1)
+        if new : extra=1
+        else : extra=0
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label',) , extra=extra)
         template = 'sequence/form_ladder.html'
     elif atype == 9 :
-        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer') , extra=2)
+        if new : extra=2
+        else : extra=0
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer') , extra=extra)
         template = 'sequence/form_classement.html'
     elif atype == 10 :
-        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer') , extra=2)
+        if new : extra=2
+        else : extra=0
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer') , extra=extra)
         template = 'sequence/form_priorisation.html'
     elif atype == 11 :
-        formSet  = inlineformset_factory( Activity , Choice , fields=('textarea',) , extra=1)
+        if new : extra=1
+        else : extra=0
+        formSet  = inlineformset_factory( Activity , Choice , fields=('textarea',) , extra=extra)
         template = 'sequence/form_fill_the_blanks.html'
- 
+    return formSet, template
 
+
+def title_activity(atype) :
+    titles_activity = ['Créer une question à choix multiple','Sondage','Nuage de mots','Légender une image',"Trouver l'image","Capture d'image",'Association','Brainstorming','Echelle','Classement','Priorisation','Texte à trous']
+    title = titles_activity[atype]
+    return title 
+
+def create_activity(request,ids,atype,ida=0):
+
+    sequence = Sequence.objects.get(pk = ids)
+    form     = ActivityForm(request.POST or None, request.FILES or None, sequence = sequence, atype = atype)
+    formSet, template = get_form(atype,True) 
     form_ans = formSet(request.POST or None,  request.FILES or None)
 
     if request.method == "POST"  :
         if form.is_valid():
-            nf.save()
-            form.save_m2m()
+            nf = form.save()
             #############
             form_ans = formSet(request.POST or None,  request.FILES or None, instance = nf)
             for form_answer in form_ans :
@@ -278,8 +347,10 @@ def create_activity(request,ids,atype,ida=0):
                     form_answer.save()
 
             return redirect('update_sequence',ids)
+        else :
+            print(form.errors)
 
-    context = {  'form' : form , 'form_ans' : form_ans , 'sequence' : sequence, 'atype' : atype , 'title_activity' : title_activity  } 
+    context = {  'form' : form , 'form_ans' : form_ans , 'sequence' : sequence, 'atype' : atype , 'title_activity' : title_activity(atype)  } 
 
     return render(request, template , context)
 
@@ -288,31 +359,96 @@ def update_activity(request,ids,atype,ida):
 
     sequence = Sequence.objects.get(pk = ids)
     activity = Activity.objects.get(pk = ida)
-
-    form     = ActivityForm(request.POST or None, request.FILES or None, instance = activity, sequence = sequence)
-    formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','is_correct') , extra=0)
-    form_ans = formSet(request.POST or None,  request.FILES or None, instance = question)
+    form     = ActivityForm(request.POST or None, request.FILES or None, instance = activity, sequence = sequence, atype = atype)
+    formSet, template = get_form(atype,False)  
+    form_ans = formSet(request.POST or None  , request.FILES or None, instance = activity)
 
     if request.method == "POST"  :
         if form.is_valid():
-            nf.save()
-            form.save_m2m() 
- 
+            nf = form.save()
+  
             form_ans = formSet(request.POST or None,  request.FILES or None, instance = nf)
             for form_answer in form_ans :
                 if form_answer.is_valid():
                     form_answer.save()
             return redirect('update_sequence',ids)
 
-    context = {  'form' : form ,  'form_ans' : form_ans   } 
-    template = 'sequence/form_activity.html'
+    context = {  'form' : form ,  'form_ans' : form_ans  , 'sequence' : sequence, 'atype' : atype , 'title_activity' : title_activity(atype)    } 
+ 
 
     return render(request, template , context)
 
 
   
-def delete_folder(request, id):
-    activity = Activity.objects.get(id=id)
-    activity.delete()
+def delete_activity(request,ids,ida):
+
+    sequence = Sequence.objects.get(id=ids)
+    activity = Activity.objects.get(id=ida)
+    if request.user.is_authenticated :
+        if request.user.organisateur == sequence.organisateur :
+            activity.delete()
+            messages.success(request,'Suppression réalisée avec succès')
 
     return redirect('index')
+
+
+
+
+def export_activity(request,ids,ida):
+    activity = Activity.objects.get(id=ida)
+    activity.delete()
+
+    return redirect('update_sequence',ids)
+
+
+def clone_activity(request,ids,ida):
+    activity = Activity.objects.get(id=ida)
+    activity.delete()
+
+    return redirect('update_sequence',ids)
+
+def copy_link_activity(request,ids,ida):
+    activity = Activity.objects.get(id=ida)
+    activity.delete()
+
+    return redirect('update_sequence',ids)
+
+
+def embed_activity(request,ids,ida):
+    activity = Activity.objects.get(id=ida)
+    activity.delete()
+
+    return redirect('update_sequence',ids)
+
+
+
+def show_activity(request,ids, ida):
+    activity = Activity.objects.get(id=ida)
+    activity.delete()
+
+
+    context = {  'form' : form ,  'form_ans' : form_ans  , 'sequence' : sequence, 'activity' : activity , 'title_activity' : title_activity(atype)    } 
+    template = 'sequence/show_activity.html'
+
+    return render(request, template , context)
+
+
+def import_activity(request,ids):
+
+    sequence = Sequence.objects.get(pk = ids)
+    form  = CodeActivityForm(request.POST or None, request.FILES or None, sequence = sequence )
+    if request.method == "POST"  :
+        if form.is_valid():
+            nf = form.save()
+            return redirect('update_sequence', ids)
+
+def ajax_sort_activities(request):
+
+    activity_ids  = request.POST.getlist("activities")
+    print(activity_ids)
+    i=0
+    for activity_id in activity_ids:
+        Activity.objects.filter( pk = activity_id ).update(ranking = i)
+        i+=1
+    data = {}
+    return JsonResponse(data) 

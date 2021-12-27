@@ -353,12 +353,13 @@ li.menu_document:hover, li.menu_document:hover > a {
   padding: 5px;
   list-style: none;
 }
-
-
-
+.list_sequence_index_padding15{
+  padding: 15px;
+  padding-bottom : 5px;
+}
 
 .sequence_title{
-  width:65%;  
+  width:63%;  
   color: #998fa6;
   display: inline-block;
   font-size: 18px;
@@ -379,11 +380,18 @@ li.menu_document:hover, li.menu_document:hover > a {
 }
 
 .sequence_vertical{
-  width:5%;
+  width:3%;
   color: #998fa6;
   display: inline-block; 
+  text-align: right;
 }
 
+.activity_property{
+  width:15%;
+  color: #998fa6;  
+  display: inline-block;
+  text-align: center
+}
 
 .sanspuce{
   list-style: none;
@@ -1143,7 +1151,9 @@ a.menuright:hover{
   margin-top: 20px;
 }
 
-
+.font12{
+  font-size:12px;
+}
 .font16{
   font-size:16px;
 }
@@ -1403,9 +1413,7 @@ table.table-bordered.dataTable {
 
 .fill_the_code{
   font-size:20px;
-  font-weight: 600;
-  letter-spacing: 1.1;
-
+  font-weight: 500;
 }
  
 
@@ -1601,8 +1609,8 @@ a:hover,
 a:active,
 a:focus {
   outline: none;
-  text-decoration: underline;
-  color: #5d4391 ;
+  text-decoration: none;
+  color: #ffb400 ;
 }
 /* Page Header */
 .page-header {
