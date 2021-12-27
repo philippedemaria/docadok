@@ -20,14 +20,7 @@ def file_directory_path(instance, filename):
 
 
 def generate_code():
-    '''
-    Fonction qui génère un code pour les modèles suivantes :
-    - Parcours
-    - Group
-    - Student
-    - Supportfile
-    '''
-    return str(uuid.uuid4())[:8]
+    return str(uuid.uuid4())[:6].upper()
 
 
 class ModelWithCode(models.Model):
