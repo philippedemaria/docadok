@@ -1,0 +1,57 @@
+{% extends 'dashboard.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% load item_tags %}
+
+{% block require %}
+    <script src="{% static 'js/require.js' %}"   data-main="{% static 'js/common3.js' %}"></script>
+    <script>
+        require(['script/ajax-sequence']);
+    </script> 
+{% endblock %} 
+
+
+{% block sequence %}
+ 
+{% endblock %}
+
+
+
+
+{% block nav %}
+{% endblock %}
+
+
+
+{% block body %}  
+<section class="content_main">
+
+    <div class="show_sequence {% comment %}no_visu_on_load{% endcomment %}"  id="this_activity{{ activity.id }}">
+        <div class="row">
+            <div class="col-sm-12" align="center">
+                {% if activity.imagefile %}
+                    <div class="col-sm-4" align="center">
+                        <h2 class="activity_title_img"  id ="activity_title">{{ activity.title }}  </h2>
+                    </div>
+                    <div class="col-sm-8" align="left">
+                        <img src="{{ activity.imagefile.url }}" height="300px" />
+                    </div>
+                {% else %}
+                    <h1 class="activity_title"  id="activity_title">{{ activity.title }} </h1>
+                {% endif %} 
+            </div>
+        </div>
+        {% with  template_name=activity.atype|create_template %}
+            {% include template_name  with act=activity %}
+        {% endwith %}
+    </div>
+
+</section>   
+{% endblock %}
+
+
+{% block modales %}
+ 
+{% endblock %}      
+ 
+ 

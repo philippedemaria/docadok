@@ -89,7 +89,9 @@ class Activity(ModelWithCode):
         return "bi bi-"+icons[self.atype] 
  
 
- 
+    def choices_shuffle(self):
+        self.choices.shuffle()
+        return "bi bi-"+icons[self.atype] 
 
 
 
@@ -105,8 +107,27 @@ class Choice(models.Model):
     imageassociate = models.ImageField(upload_to=choice_directory_path,  null=True,  blank=True, verbose_name="Image", default="")
     textarea       = models.TextField( default='', null=True,  blank=True, verbose_name="Texte")
     def __str__(self):
-        return self.answer 
+        return self.label 
 
+
+ 
+
+    def get_details(self):
+        nb_answers     = Answerplayer.objects.filter( activity=self.activity).count()
+        nb_this_choice = Answerplayer.objects.filter( choice=self ).count()
+
+        data={}
+        if nb_answers > 0 :
+            answer_percent     = nb_this_choice/nb_answers
+            answer_this_choice = nb_this_choice
+        else :
+            answer_percent     = 0
+            answer_this_choice = 0
+
+        data["answers"]            = answer_percent
+        data["answer_this_choice"] = answer_this_choice
+
+        return data
 
 
 
@@ -114,6 +135,7 @@ class Answerplayer(models.Model):
 
     participant = models.ForeignKey(Participant,  null=True, blank=True,   related_name='answers_player', on_delete=models.CASCADE,  editable= False)
     activity    = models.ForeignKey(Activity,  null=True, blank=True, related_name='answers_player', on_delete=models.CASCADE, editable= False)
+    choice      = models.ForeignKey(Choice,  null=True, blank=True, related_name='answers_player', on_delete=models.CASCADE, editable= False)
     answer      = models.CharField( max_length=255, null=True, blank=True,  verbose_name="Réponse")  
     score       = models.PositiveIntegerField(default=0, editable=False)
     timer       = models.CharField(max_length=255, editable=False)  

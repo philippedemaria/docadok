@@ -67,3 +67,33 @@ def abreviation(raw_html): #nettoie le code des balises HTML
         return raw_html
 
 
+ 
+
+@register.filter
+def create_template(a): #enlève la virgule et met un point 
+    return "activity/activity_"+str(a)+".html"
+
+
+ 
+
+@register.filter
+def shuffle(arg): #enlève la virgule et met un point
+    listes = list(arg.values("associate","imageassociate") )
+    random.shuffle(listes)
+    return listes
+
+
+
+@register.filter
+def fill_the_blank(arg): #enlève la virgule et met un point
+    tab_string = arg.split('___') 
+    new_str = ""
+    for i in range(0,len(tab_string)):
+        if i%2==0 :
+            new_str += tab_string[i]
+        else :
+            for i in range(len(tab_string[i])):
+                new_str += "_"
+    return new_str
+
+

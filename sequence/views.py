@@ -360,9 +360,9 @@ def get_form(atype,new) :
         formSet  = inlineformset_factory( Activity , Choice , fields=('label',) , extra=extra)
         template = 'sequence/form_brainstorming.html'
     elif atype == 8 :
-        if new : extra=1
+        if new : extra=2
         else : extra=0
-        formSet  = inlineformset_factory( Activity , Choice , fields=('label',) , extra=extra)
+        formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer') , extra=extra)
         template = 'sequence/form_ladder.html'
     elif atype == 9 :
         if new : extra=2
@@ -479,13 +479,10 @@ def embed_activity(request,ids,ida):
 
 
 
-def show_activity(request,ids, ida):
+def show_activity(request, ida):
     activity = Activity.objects.get(id=ida)
-    activity.delete()
-
-
-    context = {  'form' : form ,  'form_ans' : form_ans  , 'sequence' : sequence, 'activity' : activity , 'title_activity' : title_activity(atype)    } 
-    template = 'sequence/show_activity.html'
+    context = {  'activity' : activity   } 
+    template = 'activity/show_activity.html'
 
     return render(request, template , context)
 

@@ -28,7 +28,7 @@ urlpatterns = [
     path('create_activity/<int:ids>/<int:atype>/<int:ida>', create_activity, name='create_activity'),
     path('update_activity/<int:ids>/<int:atype>/<int:ida>', update_activity, name='update_activity'),
     path('delete_activity/<int:ids>/<int:ida>', delete_activity, name='delete_activity'),
-    path('show_activity/<int:ids>/<int:ida>', show_activity, name='show_activity'),
+    path('show_activity/<int:ida>', show_activity, name='show_activity'),
 
 
     path('export_activity/<int:ids>/<int:ida>', export_activity, name='export_activity'),

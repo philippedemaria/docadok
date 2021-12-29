@@ -4,16 +4,11 @@
 {% load item_tags %}
 
 {% block require %}
- 
- 
     <script src="{% static 'js/require.js' %}"   data-main="{% static 'js/common3.js' %}"></script>
  
-
     <script>
         require(['script/ajax-sequence']);
     </script> 
-  
-
 {% endblock %} 
 
 
@@ -158,36 +153,32 @@
         </div>
         <div class="col-sm-12 col-md-10 col-lg-10" id="right_col">
             <hr/>
-                {% for activity in activities %}
-                <li class="list_sequence_index font16 activity_sorter"  data-activity_id = "{{ activity.id }}" >
+            {% for activity in activities %}
+            <li class="list_sequence_index font16 activity_sorter"  data-activity_id = "{{ activity.id }}" >
 
-                    <span class="classement_item"><i class="bi bi-grip-vertical"></i></span>
-                    <span class="sequence_title" style="width: 70%"><i class="{{ activity.icon }}"></i> <span class="number_list">{{ forloop.counter }}</span>. {{ activity.title }}</span>
-                    <span class="sequence_property">[{{ activity.code}}]</span>
-                    <span class="sequence_property"><a href="{% url 'update_activity' sequence.id activity.atype activity.id %}">Modifier</a></span>
-                    {% comment %}
-                    <span class="sequence_property"><a href="{% url 'show_activity'  sequence.id  activity.id %}"  class="btn btn-new-violet" style="padding:2px 10px"><i class="bi bi-play"></i> Lancer</a></span> 
-                    {% endcomment %}
-                    <span class="sequence_vertical"> 
-                        <span href="#" class="helper_tip"><i class="bi bi-three-dots-vertical"  style="font-size: 20px"></i>
-                            <div class="helper_tip_text" style="width: 120px">
-                                <div class="list_sequence_index_padding"><a href="{% url 'export_activity' sequence.id  activity.id %}"><i class="bi bi-file-earmark-excel"></i> Exporter</a></div>
-                                <div class="list_sequence_index_padding"><a href="{% url 'clone_activity' sequence.id  activity.id %}"><i class="bi bi-file-earmark-plus"></i> Dupliquer</a></div>
-                                <div class="list_sequence_index_padding"><a href="{% url 'copy_link_activity' sequence.id  activity.id %}"><i class="bi bi-clipboard"></i> Copier le lien</a></div>
-                                <div class="list_sequence_index_padding"><a href="{% url 'embed_activity' sequence.id  activity.id %}"><i class="bi bi-cast"></i> Embed</a></div>
-                                <div class="list_sequence_index_padding"><a href="{% url 'delete_activity' sequence.id  activity.id %}"><i class="bi bi-trash"></i> Supprimer</a></div>
-                            </div>
-                        </span>
+                <span class="classement_item"><i class="bi bi-grip-vertical"></i></span>
+                <span class="sequence_title" style="width: 60%"><i class="{{ activity.icon }}"></i> <span class="number_list">{{ forloop.counter }}</span>. {{ activity.title }}</span>
+                <span class="sequence_property">[{{ activity.code}}]</span>
+                <span class="sequence_property"><a href="{% url 'update_activity' sequence.id activity.atype activity.id %}">Modifier</a></span>
+                <span class="sequence_property"><a href="{% url 'show_activity' activity.id %}"  class="btn btn-new-violet" style="padding:2px 10px" target="_blank"><i class="bi bi-play"></i> Lancer</a></span> 
+                <span class="sequence_vertical"> 
+                    <span href="#" class="helper_tip"><i class="bi bi-three-dots-vertical"  style="font-size: 20px"></i>
+                        <div class="helper_tip_text" style="width: 120px">
+                            <div class="list_sequence_index_padding"><a href="{% url 'export_activity' sequence.id  activity.id %}"><i class="bi bi-file-earmark-excel"></i> Exporter</a></div>
+                            <div class="list_sequence_index_padding"><a href="{% url 'clone_activity' sequence.id  activity.id %}"><i class="bi bi-file-earmark-plus"></i> Dupliquer</a></div>
+                            <div class="list_sequence_index_padding"><a href="{% url 'copy_link_activity' sequence.id  activity.id %}"><i class="bi bi-clipboard"></i> Copier le lien</a></div>
+                            <div class="list_sequence_index_padding"><a href="{% url 'embed_activity' sequence.id  activity.id %}"><i class="bi bi-cast"></i> Embed</a></div>
+                            <div class="list_sequence_index_padding"><a href="{% url 'delete_activity' sequence.id  activity.id %}"><i class="bi bi-trash"></i> Supprimer</a></div>
+                        </div>
                     </span>
+                </span>
 
-                </li>
-                {% empty %}
-                <li class="list_sequence_index font16">
-                    Aucune activité créée
-                </li>
-                {% endfor %}
- 
- 
+            </li>
+            {% empty %}
+            <li class="list_sequence_index font16">
+                Aucune activité créée
+            </li>
+            {% endfor %}
         </div>
     </div>
     <!-- Fin de gestion des activités -->
