@@ -1,0 +1,25 @@
+ 
+ 
+
+ 
+<span class="classement_item"><i class="bi bi-grip-vertical"></i></span>
+<a href="{% url 'update_sequence' sequence.id %}" class="sequence_title">{{ sequence.title}} <span class="font12 edit">[{{total}} activité{{ total|pluralize}}]</span></a>
+{% if sequence.is_active %}
+    <span class="sequence_live is_active">En cours</span>
+{% else %}
+    <a href="{% url 'tdb_sequence' sequence.id %}" class="sequence_live"><i class="bi bi-play"></i> Lancer</a>
+{% endif %}
+<span class="sequence_property">[{{ sequence.code}}]</span>
+<span class="sequence_property">{{ sequence.date|date:"d N Y"}}</span>
+<span class="sequence_vertical"> 
+    <span href="#" class="helper_tip"><i class="bi bi-three-dots-vertical"  style="font-size: 20px"></i>
+        <div class="helper_tip_text" style="width: 120px">
+            <div class="list_sequence_index_padding"><a href="{% url 'moderate_sequence' sequence.id %}"><i class="bi bi-check-square"></i> Modérer</a></div>
+            <div class="list_sequence_index_padding"><a href="{% url 'compare_sequence' sequence.id %}"><i class="bi bi-hand-thumbs-up"></i> Comparer</a></div>
+            <div class="list_sequence_index_padding"><a href="{% url 'clone_sequence' sequence.id %}"><i class="bi bi-file-earmark-plus"></i> Dupliquer</a></div>
+            <div class="list_sequence_index_padding"><a href="{% url 'export_sequence' sequence.id %}"><i class="bi bi-file-earmark-excel"></i> Exporter</a></div>
+            <div class="list_sequence_index_padding"><a href="{% url 'delete_sequence' sequence.id %}"><i class="bi bi-trash"></i> Supprimer</a></div>
+        </div>
+    </span>
+</span>
+                        

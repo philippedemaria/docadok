@@ -379,6 +379,10 @@ li.menu_document:hover, li.menu_document:hover > a {
   padding: 1px 5px;
 }
 
+.classement_item{
+  cursor: move;
+}
+
 .sequence_vertical{
   width:3%;
   color: #998fa6;
@@ -396,6 +400,85 @@ li.menu_document:hover, li.menu_document:hover > a {
 .sanspuce{
   list-style: none;
 }
+
+.tdb_title_sequence{
+ line-height: 50px;
+ background-color: #f1eef7;
+ color: #5d4391;
+ border-radius: 20px;
+ padding : 10px;
+}
+
+.is_active{
+  color: #cb2131 ;  
+  border-radius: 5px;
+  border : 1px solid  #cb2131;
+  padding: 1px 5px;
+}
+
+
+.tdb_title_col{
+ line-height: 20px;
+ background-color: #f1eef7;
+ color: #5d4391;
+ padding : 10px;
+ border-radius: 0px 30px 0px 0px; 
+}
+
+.tdb_command_buttons{
+  border-bottom:1px dotted #CCC;
+  line-height: 20px;
+  padding : 10px;
+}
+
+
+.btn_command_sequence{
+  border-radius: 5px;
+  border : 2px solid  #5d4391;
+  padding: 4px;
+}
+
+.margintop4{
+  margin-top: 4px;
+}
+
+.btn_command_sequence:hover{
+ background-color: #f1eef7;
+  -webkit-box-shadow:1px 1px 2px rgba(79, 73, 66, .255);
+    box-shadow: 1px 1px 2px rgba(79, 73, 66, .255);
+  padding: 4px;
+}
+
+.tdb_command_body{
+  position: relative;
+}
+
+.this_actual_sequence{
+  position: absolute;
+  width:100%;
+  top:0px;
+  left:0px;
+  min-height:80vh ;
+}
+
+.show_sequence_container{
+  position: relative;
+  width:100%;
+  height:100vh;
+}
+
+.show_sequence{
+  top : 0px;
+  left : 0px;
+  width:100%;
+  height:100vh;
+  position: absolute;
+  background-color: #CCC;
+}
+
+
+
+
 
 .consigneadmin{
   border-left: 5px solid #cb2131;
@@ -1156,6 +1239,9 @@ a.menuright:hover{
 }
 .font16{
   font-size:16px;
+}
+.font30{
+  font-size: 30px;
 }
 
 .get_image   {

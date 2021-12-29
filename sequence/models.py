@@ -46,6 +46,8 @@ class Sequence(ModelWithCode):
     competition      = models.BooleanField(default=0, verbose_name="Compétition ?")
     terminal         = models.BooleanField(default=0, verbose_name="Affichage des diapositives sur le terminal des participants ?")
     displayresult    = models.BooleanField(default=0, verbose_name="Résultats visibles par défaut ?")
+    is_active        = models.BooleanField(default=0, verbose_name="En cours ?", editable=False)    
+    participants     = models.ManyToManyField(Participant,  blank=True,  related_name="sequences" )
 
     def __str__(self):     
         return "{}".format(self.title)

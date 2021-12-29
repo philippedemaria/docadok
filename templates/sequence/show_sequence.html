@@ -1,0 +1,77 @@
+{% extends 'dashboard.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% load item_tags %}
+
+{% block require %}
+ 
+ 
+    <script src="{% static 'js/require.js' %}"   data-main="{% static 'js/common3.js' %}"></script>
+ 
+
+    <script>
+        require(['script/ajax-sequence']);
+    </script> 
+  
+
+{% endblock %} 
+
+
+{% block sequence %}
+<span class="tdb_title_sequence"><i class="bi bi-chevron-right"></i>  {{ sequence.title }} </span>
+{% endblock %}
+
+
+
+
+{% block nav %}
+{% endblock %}
+
+
+
+{% block body %}  
+<section class="content_main">
+    <div class="show_sequence_container" >
+        <!-- div start -->
+        <div class="show_sequence" id="start">
+            <div class="row">
+                <div class="col-sm-12" align="center">
+                    <h1 >Comment participer ?</h1>
+                </div>
+            </div>
+         
+            <div class="row" style="margin-top:  100px">
+                <div class="col-sm-12 col-md-4 col-lg-3">
+                    {{ show_qr|safe }}
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-2" style="padding-top: 50px;margin-top: 40px;font-size: 100px" align="center"  >
+                    <i class="bi bi-globe" class="sacado_color_text"></i>
+                    <span style="font-size: 60px"  >WEB</span>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-7" class="font30" style="margin-top: 100px;" >
+                    <h2 class="thin">1. Connectez-vous sur <b>https://docadok.org/{{ sequence.code}}</b></h2>
+                    <h2 class="thin">2. Participez</h2>
+                </div>
+            </div>
+        </div>
+        <!-- div start -->
+        {% for activity in activities %}
+        <div class="show_sequence no_visu_on_load" id="this_activity{{ activity.id }}">
+            <div class="row">
+ 
+            </div>
+        </div>
+        {% endfor %}
+
+
+
+   </div>
+</section>   
+{% endblock %}
+
+
+{% block modales %}
+ 
+{% endblock %}      
+ 
+ 

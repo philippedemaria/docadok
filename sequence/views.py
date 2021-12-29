@@ -3,11 +3,16 @@ from django.http import JsonResponse
 from django.core import serializers
 from django.template.loader import render_to_string
 from django.forms import inlineformset_factory
-
+from django.contrib import messages
 from sequence.models import Sequence, Folder , Activity , Choice
 from sequence.forms import SequenceForm, FolderForm, ActivityForm , CodeActivityForm  , CodeSequenceForm
 
-from django.contrib import messages
+
+
+import qrcode
+import qrcode.image.svg
+from io import BytesIO
+
 ####################################################################################################
 ####################################################################################################
 ####################    folder
@@ -227,6 +232,63 @@ def import_sequence(request):
             nf = form.save()
             return redirect('index')
 
+
+
+def tdb_sequence(request,ids):
+
+    sequence = Sequence.objects.get(id=ids)
+    activities = sequence.activities.order_by("ranking")
+    organisateur = request.user.organisateur
+    participants = sequence.participants.order_by("user__last_name")
+ 
+
+
+    context = {  'sequence': sequence, 'activities' : activities, 'participants' : participants ,  }
+
+    return render(request, 'sequence/tdb_sequence.html', context )
+
+
+
+def show_sequence(request,ids):
+
+    sequence = Sequence.objects.get(id=ids)
+    activities = sequence.activities.order_by("ranking")
+    organisateur = request.user.organisateur
+    participants = sequence.participants.order_by("user__last_name")
+ 
+    factory = qrcode.image.svg.SvgImage
+    img = qrcode.make('https://play.docadok.org/'+str(sequence.id) , image_factory=factory, box_size=30)
+    stream = BytesIO()
+    img.save(stream)
+    show_qr = stream.getvalue().decode()
+
+
+    context = {  'sequence': sequence, 'activities' : activities, 'participants' : participants , 'show_qr' : show_qr , }
+
+    return render(request, 'sequence/show_sequence.html', context )
+
+
+
+
+def play_sequence(request,ids):
+
+    sequence = Sequence.objects.get(id=ids)
+    activities = sequence.activities.order_by("ranking")
+    organisateur = request.user.organisateur
+    participants = sequence.participants.order_by("user__last_name")
+ 
+    factory = qrcode.image.svg.SvgImage
+    img = qrcode.make('https://play.docadok.org/'+str(sequence.id) , image_factory=factory, box_size=30)
+    stream = BytesIO()
+    img.save(stream)
+    show_qr = stream.getvalue().decode()
+
+
+    context = {  'sequence': sequence, 'activities' : activities, 'participants' : participants , 'show_qr' : show_qr , }
+
+    return render(request, 'sequence/show_sequence.html', context )
+
+
 def ajax_sort_sequences(request):
 
     sequence_ids  = request.POST.getlist("sequences")
@@ -437,10 +499,11 @@ def import_activity(request,ids):
             nf = form.save()
             return redirect('update_sequence', ids)
 
+
+
 def ajax_sort_activities(request):
 
     activity_ids  = request.POST.getlist("activities")
-    print(activity_ids)
     i=0
     for activity_id in activity_ids:
         Activity.objects.filter( pk = activity_id ).update(ranking = i)

@@ -30,7 +30,7 @@
         <div class="col-sm-5 col-md-4 col-lg-4">
             <div class="sacado_color_text input-group" id="sequence_title" >
                 <span id="new_title">{{ sequence.title }}</span>                     
-                <a href="javascript:void();" class="sacado_color"  id="change_title" > <i class="bi bi-pencil"></i></a>
+                <a href="javascript:void();" class="sacado_color"  id="change_title" > <i class="bi bi-pencil edit"></i></a>
             </div>
             <div class="input-group no_visu_on_load" id="sequence_title_form" >
                 {{ form.title |add_class:"form-control-custom"  }}
@@ -45,7 +45,7 @@
             <div class="input-group" id="sequence_code">
                 <span class="sacado_color_text font16"> 
                     Participer : https://docadok.org/<span id="new_code">{{ sequence.code}}</span>
-                    <a href="javascript:void();" class="sacado_color"   id="change_code" > <i class="bi bi-pencil"></i></a>
+                    <a href="javascript:void();" class="sacado_color"   id="change_code" > <i class="bi bi-pencil edit"></i></a>
                 </span>
  
             </div>            
@@ -144,6 +144,11 @@
             <a href="javascript:void();" class="edit" id="show_hide_menu_activities"><i class="bi bi-plus-circle-dotted"></i> Ajouter une activité</a>
         </div>
         <div class="col-sm-6 col-md-6" align="right">
+            {% if sequence.is_active %}
+                <span class="btn btn-new-violet is_active"><i class="bi bi-webcam"></i> En cours</span>
+            {% else %}
+                <a href="{% url 'tdb_sequence' sequence.id %}" class="btn btn-new-violet"> <i class="bi bi-play"></i> Lancer</a>
+            {% endif %}
             <a href="javascript:void();" data-toggle='modal' data-target='#import_activity'  class="btn btn-new-violet"><i class="bi bi-plus-circle-fill"></i> Importer une activité</a>
         </div>
     </div>
@@ -157,10 +162,12 @@
                 <li class="list_sequence_index font16 activity_sorter"  data-activity_id = "{{ activity.id }}" >
 
                     <span class="classement_item"><i class="bi bi-grip-vertical"></i></span>
-                    <span class="sequence_title"><i class="{{ activity.icon }}"></i> <span class="number_list">{{ forloop.counter }}</span>. {{ activity.title }}</span>
+                    <span class="sequence_title" style="width: 70%"><i class="{{ activity.icon }}"></i> <span class="number_list">{{ forloop.counter }}</span>. {{ activity.title }}</span>
                     <span class="sequence_property">[{{ activity.code}}]</span>
                     <span class="sequence_property"><a href="{% url 'update_activity' sequence.id activity.atype activity.id %}">Modifier</a></span>
+                    {% comment %}
                     <span class="sequence_property"><a href="{% url 'show_activity'  sequence.id  activity.id %}"  class="btn btn-new-violet" style="padding:2px 10px"><i class="bi bi-play"></i> Lancer</a></span> 
+                    {% endcomment %}
                     <span class="sequence_vertical"> 
                         <span href="#" class="helper_tip"><i class="bi bi-three-dots-vertical"  style="font-size: 20px"></i>
                             <div class="helper_tip_text" style="width: 120px">
@@ -175,7 +182,7 @@
 
                 </li>
                 {% empty %}
-                <li>
+                <li class="list_sequence_index font16">
                     Aucune activité créée
                 </li>
                 {% endfor %}
