@@ -286,7 +286,7 @@ def play_sequence(request,ids):
 
     context = {  'sequence': sequence, 'activities' : activities, 'participants' : participants , 'show_qr' : show_qr , }
 
-    return render(request, 'sequence/show_sequence.html', context )
+    return render(request, 'sequence/play_sequence.html', context )
 
 
 def ajax_sort_sequences(request):
@@ -309,8 +309,7 @@ def ajax_include_folders(request):
     data = {}
     return JsonResponse(data) 
 
-
-
+ 
 
 
 ####################################################################################################

@@ -427,8 +427,7 @@ li.menu_document:hover, li.menu_document:hover > a {
 
 .tdb_command_buttons{
   border-bottom:1px dotted #CCC;
-  line-height: 20px;
-  padding : 10px;
+  line-height: 30px;
 }
 
 
@@ -473,9 +472,27 @@ li.menu_document:hover, li.menu_document:hover > a {
   width:100%;
   height:100vh;
   /*position: absolute;*/
- 
   padding: 15px;   
 }
+
+.over_top{
+  position: relative;
+   height:10px;
+   font-size: 8px;
+   color:#CCC;
+   text-align: center;
+   color:  #f1eef7;
+   background-color: #5d4391;
+   border-radius: 10px 10px 0 0 ;
+   padding:0;
+}
+.over_top_label{
+  position: absolute;
+  top:-10px;
+  width: 100%;
+  text-align:center;
+}
+
   /********************************************************************************************************************************************/
   /********************************************************************************************************************************************/
   /* activity options */

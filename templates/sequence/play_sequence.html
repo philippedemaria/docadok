@@ -4,137 +4,56 @@
 {% load item_tags %}
 
 {% block require %}
- 
- 
     <script src="{% static 'js/require.js' %}"   data-main="{% static 'js/common3.js' %}"></script>
- 
-
     <script>
-        require(['script/ajax-sequence']);
+        require(['script/ajax-play']);
     </script> 
-  
-
 {% endblock %} 
 
 
 {% block sequence %}
-<span class="tdb_title_sequence"><i class="bi bi-chevron-right"></i>  {{ sequence.title }} <i class="bi bi-chevron-right"></i> Participer : https://docadok.org/{{ sequence.code}}</span>
+{% endblock %}
+
+
+{% block nav %}
 {% endblock %}
 
 
 {% block body %}  
 <section class="content_main">
-  
- 
- 
-    <div class="row">
-        <div class="col-sm-12 col-md-4 col-lg-3" id="left_col">
-            <div class="tdb_title_col">Participants</div>
-            <table class="table">
-                {% for p in participants %}
-                <tr id="tr_{{ p.user.id }}">
-                    <td>
-                        {{ forloop.counter }}. {{ p }}
-                    </td>
-                    <td  id="td_answer_activity_active_{{ p.user.id }}">
-                        
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td>
-                        Aucun participant n'est arrivé
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
+    {% for activity in activities %}
+        <div class="show_sequence {% comment %}no_visu_on_load{% endcomment %}"  id="this_activity{{ activity.id }}">
+            <div class="row">
+                {% if activity.imagefile %}
+                    <div class="col-sm-4" align="center">
+                        <h2 class="activity_title_img"  id ="activity_title">{{ activity.title }}  </h2>
+                    </div>
+                    <div class="col-sm-8" align="left">
+                        <img src="{{ activity.imagefile.url }}" height="300px" />
+                    </div>
+                {% else %}
+                    <div class="col-sm-12" align="center">
+                        <h1 class="activity_title"  id="activity_title">{{ activity.title }} </h1>
+                    </div>
+                {% endif %} 
+            </div>
+            {% with  template_name=activity.atype|create_template %}
+                {% include template_name  with act=activity %}
+            {% endwith %}
         </div>
-        <div class="col-sm-12 col-md-4 col-lg-6" id="body_col">
+        <div class="show_sequence {% comment %}no_visu_on_load{% endcomment %}"  id="this_activity_result{{ activity.id }}">
+            <div class="row">
+                <div class="col-sm-12" align="center">
 
-            <div class="row tdb_command_buttons">
-                <div class="col-sm-3">
-                    <a href="javascript:void();" class="font30" title="Activité précédente"  /><i class="bi bi-skip-start-btn"></i></a>
-                </div>
-                <div class="col-sm-6">
-                    <a href="javascript:void();" class="btn_command_sequence font16" title="Scores" /><i class="bi bi-trophy"></i></a> {{ show_qr|safe }}
-                </div>
-                <div class="col-sm-3">
-                    <a href="javascript:void();" class="font30" title="Activité suivante" /><i class="bi bi-skip-end-btn"></i></a>
                 </div>
             </div>
-
-            <div class="tdb_command_body">
-
- 
-
-            </div>
         </div>
-        <div class="col-sm-12 col-md-4 col-lg-3" id="right_col">
-            <div class="tdb_title_col">Activités préparées</div>
-            {% for activity in activities %}
-            <li class="list_sequence_index font16"  data-activity_id = "{{ activity.id }}" >
-                <i class="{{ activity.icon }}"></i> {{ forloop.counter }}. {{ activity.title }}
-                <span class="sequence_property">[{{ activity.code}}]</span>
-            </li>
-            {% empty %}
-            <li class="list_sequence_index font16">
-                Aucune activité créée
-            </li>
-            {% endfor %} 
-        </div>
-    </div>
-    <!-- Fin de gestion des activités -->
-
-
-
-
-    </form>      
+    {% endfor %}
 </section>   
 {% endblock %}
 
 
 {% block modales %}
-<div class="modal fade" id="import_activity" tabindex="-1" role="dialog" aria-labelledby="import_activity">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content" >
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>                 
-                <h2>Importer une séquence</h2>              
-            </div>
-            <div class="modal-body">
-                <form action="{% url 'import_activity' sequence.id %}" method="POST" enctype='multipart/form-data'>
-                {{ form_code.sequence }}    
-                {% csrf_token %}          
-                <div class="row" align="center">
-                    <div class="col-sm-12">    
-                        <label>Entrer le code de l'activité</label>
-                    </div>
-                </div>
-                <div class="row justify-content-center marginbottom50" align="center">
-                    <div class="col-sm-3"></div>
-                    <div class="col-sm-6">
-                        {{ form_code.code |add_class:"form-control fill_the_code"|attr:"placeholder:Code" }}
-                        {{ form_code.code.errors }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6 col-md-6 col-lg-6" align="left">    
-                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close">
-                            Annuler
-                        </button> 
-                    </div>
-                    <div class="col-sm-6 col-md-6 col-lg-6" align="right">    
-                        <div class="form-group">
-                            <input value="Importer" type="submit"  class="btn btn-new-violet" /> 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> 
-</div>
 {% endblock %}      
  
  

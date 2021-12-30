@@ -30,7 +30,6 @@ urlpatterns = [
     path('delete_activity/<int:ids>/<int:ida>', delete_activity, name='delete_activity'),
     path('show_activity/<int:ida>', show_activity, name='show_activity'),
 
-
     path('export_activity/<int:ids>/<int:ida>', export_activity, name='export_activity'),
     path('clone_activity/<int:ids>/<int:ida>', clone_activity, name='clone_activity'),
     path('copy_link_activity/<int:ids>/<int:ida>', copy_link_activity, name='copy_link_activity'),
