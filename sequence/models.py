@@ -142,13 +142,13 @@ class Choice(models.Model):
 
 
 class Play(models.Model):
-    sequence=models.ForeignKey(Sequence, on_delete=models.CASCADE)
-    org_channel=models.CharField(max_length=60, null=True, help_text="channel de l'organisateur")
-    status=models.SmallIntegerField(default=0)
+    sequence    = models.ForeignKey(Sequence, on_delete=models.CASCADE)
+    org_channel = models.CharField(max_length=60, null=True, help_text="channel de l'organisateur")
+    status      = models.SmallIntegerField(default=0)
     #0 : par encore ouvert , 1 : ouvert, 2 : clos
-    date_start=models.DateTimeField(blank=True)
-    date_end=models.DateTimeField(blank=True)
-    ranking=models.IntegerField(default=-1,help_text="la numero de la dernière activité terminée") 
+    date_start  = models.DateTimeField(blank=True)
+    date_end    = models.DateTimeField(blank=True)
+    ranking     = models.IntegerField(default=-1,help_text="la numero de la dernière activité terminée") 
 
 
 
