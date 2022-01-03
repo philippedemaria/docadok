@@ -55,7 +55,6 @@ class Sequence(ModelWithCode):
  
 
 
-
 class Activity(ModelWithCode):
  
     title        = models.CharField(max_length=255, null=True, blank=True,  verbose_name="Ecrire la question que vous souhaitez poser à votre audience")
@@ -95,6 +94,15 @@ class Activity(ModelWithCode):
 
 
 
+    def sorter(self):
+        sorter = False 
+        if self.atype == 6 or  self.atype == 9 or  self.atype == 10  : 
+            sorter = True
+        return sorter
+ 
+
+
+
 class Choice(models.Model):
     """
     Modèle représentant un associé.
@@ -108,9 +116,6 @@ class Choice(models.Model):
     textarea       = models.TextField( default='', null=True,  blank=True, verbose_name="Texte")
     def __str__(self):
         return self.label 
-
-
- 
 
     def get_details(self):
         nb_answers     = Answerplayer.objects.filter( activity=self.activity).count()
@@ -131,15 +136,37 @@ class Choice(models.Model):
 
 
 
+
+
+
+
+
+class Play(models.Model):
+    sequence=models.ForeignKey(Sequence, on_delete=models.CASCADE)
+    org_channel=models.CharField(max_length=60, null=True, help_text="channel de l'organisateur")
+    status=models.SmallIntegerField(default=0)
+    #0 : par encore ouvert , 1 : ouvert, 2 : clos
+    date_start=models.DateTimeField(blank=True)
+    date_end=models.DateTimeField(blank=True)
+    ranking=models.IntegerField(default=-1,help_text="la numero de la dernière activité terminée") 
+
+
+
 class Answerplayer(models.Model):
 
-    participant = models.ForeignKey(Participant,  null=True, blank=True,   related_name='answers_player', on_delete=models.CASCADE,  editable= False)
-    activity    = models.ForeignKey(Activity,  null=True, blank=True, related_name='answers_player', on_delete=models.CASCADE, editable= False)
-    choice      = models.ForeignKey(Choice,  null=True, blank=True, related_name='answers_player', on_delete=models.CASCADE, editable= False)
-    answer      = models.CharField( max_length=255, null=True, blank=True,  verbose_name="Réponse")  
-    score       = models.PositiveIntegerField(default=0, editable=False)
-    timer       = models.CharField(max_length=255, editable=False)  
+    participant = models.ForeignKey(Participant,  null=True, blank=True,   related_name='answers_player', on_delete=models.CASCADE )
+    activity    = models.ForeignKey(Activity,  null=True, blank=True, related_name='answers_player', on_delete=models.CASCADE )
+    choice      = models.ForeignKey(Choice,  null=True, blank=True, related_name='answers_player', on_delete=models.CASCADE )
+    play        = models.ForeignKey(Play,  null=True, blank=True, related_name='answers_player', on_delete=models.CASCADE )
+    answer      = models.CharField(max_length=1024, null=True, blank=True,  verbose_name="Réponse")  
+    score       = models.IntegerField(default=0, editable=False)
+    duration    = models.CharField(max_length=255, default=0 , editable=False,  verbose_name="durée")   
     is_correct  = models.BooleanField(default=0, editable=False) 
 
     def __str__(self):
         return self.participant.user.last_name
+
+
+
+ 
+ 

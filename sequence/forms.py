@@ -1,6 +1,6 @@
 import datetime
 from django import forms
-from .models import Folder, Sequence , Activity
+from .models import Folder, Sequence , Activity 
 from account.models import Participant , Organisateur
  
 from bootstrap_datepicker_plus import DatePickerInput, DateTimePickerInput
@@ -117,3 +117,5 @@ class CodeActivityForm(forms.ModelForm):
 
         self.fields['sequence'].initial = sequence
         self.fields['sequence'].widget  = forms.HiddenInput()
+
+

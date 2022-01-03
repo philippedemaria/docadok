@@ -481,8 +481,8 @@ li.menu_document:hover, li.menu_document:hover > a {
    font-size: 8px;
    color:#CCC;
    text-align: center;
-   color:  #f1eef7;
-   background-color: #5d4391;
+   color: #5d4391;
+   background-color:  #f1eef7;
    border-radius: 10px 10px 0 0 ;
    padding:0;
 }

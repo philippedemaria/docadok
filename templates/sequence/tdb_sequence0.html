@@ -4,22 +4,11 @@
 {% load item_tags %}
 
 {% block require %}
- 
- 
     <script src="{% static 'js/require.js' %}"   data-main="{% static 'js/common3.js' %}"></script>
- 
-
     <script>
-      require(['script/ajax-sequence']);
-      require(['asynchrone/openWS']);
-
-
-
-
-
- </script> 
-  
-
+        require(['script/ajax-sequence']);
+        require(['asynchrone/openWS']);
+    </script> 
 {% endblock %} 
 
 
@@ -34,11 +23,10 @@
         <div class="col-sm-12 col-md-3 col-lg-3" id="left_col">
             <div class="tdb_title_col" align="center">
                 <a href="javascript:void();" class="btn_command_sequence font12 pull-right reduce_sequence_col" title="Réduire la liste des participants" id="reduce_left_col"  ><i class="bi bi-chevron-bar-left"></i> </a>
-                    Participants 
-                    
+                    Participants  
             </div>
             <div class="body_left_col">
-                <table class="table" id="table_participants">
+                <table class="table">
                     {% for p in participants %}
                     <tr id="tr_{{ p.user.id }}">
                         <td>
@@ -49,7 +37,7 @@
                         </td>
                     </tr>
                     {% empty %}
-                    <tr id="personne">
+                    <tr>
                         <td>
                             Aucun participant n'est arrivé
                         </td>
@@ -73,13 +61,19 @@
                         <a href="javascript:void();" class="btn_command_sequence font12 "><i class="bi bi-trophy"></i> Bilan</a>
                     </div>                                     
                 </div>
-                <div class="col-sm-8" align="center">
+                <div class="col-sm-6" align="center">
                     <div class="over_top"><div class="over_top_label">Activités</div></div>
                     <div>
                         <a href="javascript:void();"  class="btn_command_sequence font12 " title="Activité précédente" ><i class="bi bi-skip-start-fill"></i></a>
+                        <a href="javascript:void();" class="btn_command_sequence font12 " title="Stop" ><i class="bi bi-stop"></i></a> 
                         <a href="javascript:void();" class="btn_command_sequence font12 " title="Activité suivante" ><i class="bi bi-skip-end-fill"></i></a> 
                         <a href="{% url 'show_sequence' sequence.id %}" class="btn_command_sequence font12 " target="_blank" ><i class="bi bi-check2-circle"></i> Bonnes réponses</a>            
                         <a href="javascript:void();" class="btn_command_sequence font12 " ><i class="bi bi-bar-chart-steps"></i> Résultats</a>
+                    </div> 
+                </div>
+                <div class="col-sm-2" align="center">
+                    <div class="over_top"><div class="over_top_label">Plein écran</div></div>
+                    <div>
                         <a href="javascript:void();" class="btn_command_sequence font12 expand_page" title="Pleine largeur" id="full_screen"  ><i class="bi bi-chevron-bar-left"></i><i class="bi bi-chevron-bar-right"></i> </a>
                     </div> 
                 </div>
@@ -170,71 +164,6 @@
         </div>
     </div> 
 </div>
-
-
-<script src="{% static 'js/asynchrone/openWS.js' %}"></script> 
-<script>
-
-var socket=newWebSocket('/RT/Cons/');
-window.socket.onopen = function () {
-       console.log("Connected to socket");
-       socket.send(JSON.stringify({
-       "command":"connexion_org_tdb",
-	   "sequence": {{ sequence.id }} }));
-};		  ;
-
-// Handle incoming messages                                              
-socket.onmessage = function (message) {
-     var data = JSON.parse(message.data);
-     // Handle errors                                                                        
-    if (data.error) {
-	console.log("erreur reception des données");
-	return;}
-    console.log("recu :",data);
-    if (data.command=="connexionPA"){
-	// connexion d'un participant anonyme
-	console.log("participant anonyme connecté");
-	t=document.getElementById("table_participants");
-	//insertion du participant dans le tableau à sa place alphabetique
-	ligne=document.createElement("tr");
-	col1=document.createElement("td");
-	col1.innerHTML=data.from;
-	ligne.appendChild(col1);
-	i=0;
-	while (i<t.childNodes.length &&
-	       (data.pseudo>t.childNodes[i].pseudo))
-	{i=i+1;}
-	t.appendChild(ligne);
-	for (j=i;j<t.childNodes.length;j++) {
-	    t.childNodes[i+1]=t.childNodes[i];
-	    }
-	t.childNodes[i]=ligne;
-	if (t.childNodes.length==1)
-	  {personne=$('#personne');
-	   personne.addClass("no_visu_on_load");
-	  }
-	
-    }
-    else if (data.command=="connexionP"){// conexion d'un participant authentifié
-	console.log("participant "+data.user.fname+" "+data.user.lname);
-	t=document.getElementById("table_participants");
-	//insertion du participant dans le tableau à sa place alphabetique
-	ligne=document.createElement("tr");
-	i=0;
-	while (i<t.childNodes.length &&
-	       (data.user.lname>t.childNodes[i].lname
-		|| (data.user.lname=t.ChildNodes[i].lname && data.user.fname>t.ChildNodes[i].fname)))
-	{i=i+1;}
-	t.appendChild(ligne);
-	for (j=i;j<t.childNodes.length;j++) {
-	    t.childNodes[i+1]=t.childNodes[i];
-	    }
-	t.childNodes[i]=ligne;
-    }
-}
-  
-	    
-</script>
 {% endblock %}      
  
  

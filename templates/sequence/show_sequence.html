@@ -27,6 +27,7 @@
 {% block body %}  
 <section class="content_main">
     <div class="show_sequence_container" >
+        {% block show_sequence %}
         <!-- div start -->
         <div class="show_sequence" id="start">
             <div class="row">
@@ -44,25 +45,27 @@
                     <span style="font-size: 60px"  >WEB</span>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-7" class="font30" style="margin-top: 100px;" >
-                    <h2 class="thin">1. Connectez-vous sur <b>https://docadok.org/{{ sequence.code}}</b></h2>
+                    <h2 class="thin">1. Connectez-vous sur <b>https://play.docadok.org/{{ sequence.code}}</b></h2>
                     <h2 class="thin">2. Participez</h2>
                 </div>
             </div>
         </div>
+        {% endblock %}
         <!-- div start -->
+ 
         {% for activity in activities %}
-        <div class="show_sequence {% comment %}no_visu_on_load{% endcomment %}"  id="this_activity{{ activity.id }}">
+        <div class="show_sequence {% if activity.sorter %}activity_sorter{% endif %} {% comment %}no_visu_on_load{% endcomment %}"  id="this_activity{{ activity.id }}">
             <div class="row">
                 <div class="col-sm-12" align="center">
                     {% if activity.imagefile %}
                         <div class="col-sm-4" align="center">
-                            <h2 class="activity_title_img"  id ="activity_title">{{ activity.title }}  </h2>
+                            <h2 class="activity_title_img"  id ="activity_title{{ activity.id }}">{{ activity.title }}  </h2>
                         </div>
                         <div class="col-sm-8" align="left">
                             <img src="{{ activity.imagefile.url }}" height="300px" />
                         </div>
                     {% else %}
-                        <h1 class="activity_title"  id="activity_title">{{ activity.title }} </h1>
+                        <h1 class="activity_title"  id="activity_title{{ activity.id }}">{{ activity.title }} </h1>
                     {% endif %} 
                 </div>
             </div>
@@ -71,7 +74,7 @@
             {% endwith %}
         </div>
         {% endfor %}
-
+ 
 
 
    </div>

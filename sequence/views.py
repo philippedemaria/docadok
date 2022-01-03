@@ -278,7 +278,7 @@ def play_sequence(request,ids):
     participants = sequence.participants.order_by("user__last_name")
  
     factory = qrcode.image.svg.SvgImage
-    img = qrcode.make('https://play.docadok.org/'+str(sequence.id) , image_factory=factory, box_size=30)
+    img = qrcode.make('https://play.docadok.org/'+str(sequence.code) , image_factory=factory, box_size=30)
     stream = BytesIO()
     img.save(stream)
     show_qr = stream.getvalue().decode()
