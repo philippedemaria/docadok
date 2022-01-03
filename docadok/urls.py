@@ -25,7 +25,7 @@ urlpatterns = [
                   path('account/', include('account.urls')),
                   path('sequence/', include('sequence.urls')),
                   path('setup/', include('setup.urls')),
- 
+                  path('realtime/', include('realtime.urls')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
