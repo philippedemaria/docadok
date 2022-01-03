@@ -23,10 +23,7 @@ def validation_file(content):
 	    return content
 
 
- 
 
-
- 
 
 class FolderForm(forms.ModelForm):
     class Meta:
