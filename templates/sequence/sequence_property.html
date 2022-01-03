@@ -7,7 +7,7 @@
 {% if sequence.is_active %}
     <span class="sequence_live is_active">En cours</span>
 {% else %}
-    <a href="{% url 'tdb_sequence' sequence.id %}" class="sequence_live"><i class="bi bi-play"></i> Lancer</a>
+    <a href="{% url 'tdb_sequence' sequence.code %}" class="sequence_live"><i class="bi bi-play"></i> Lancer</a>
 {% endif %}
 <span class="sequence_property">[{{ sequence.code}}]</span>
 <span class="sequence_property">{{ sequence.date|date:"d N Y"}}</span>

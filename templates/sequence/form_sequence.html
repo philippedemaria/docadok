@@ -142,7 +142,7 @@
             {% if sequence.is_active %}
                 <span class="btn btn-new-violet is_active"><i class="bi bi-webcam"></i> En cours</span>
             {% else %}
-                <a href="{% url 'tdb_sequence' sequence.id %}" class="btn btn-new-violet"> <i class="bi bi-play"></i> Lancer la séquence</a>
+                <a href="{% url 'tdb_sequence' sequence.code %}" class="btn btn-new-violet"> <i class="bi bi-play"></i> Lancer la séquence</a>
             {% endif %}
             <a href="javascript:void();" data-toggle='modal' data-target='#import_activity'  class="btn btn-new-violet"><i class="bi bi-plus-circle-fill"></i> Importer une activité</a>
         </div>

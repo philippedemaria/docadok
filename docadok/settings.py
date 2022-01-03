@@ -106,7 +106,7 @@ INSTALLED_APPS = [
     'account',
     'channels',
     'sequence',
-    'RT',
+    'realtime',
     ]
 
 

@@ -11,7 +11,7 @@ urlpatterns = [
     path('create_sequence/<int:ids>', create_sequence, name='create_sequence'),
     path('update_sequence/<int:ids>', update_sequence, name='update_sequence'),
     path('delete_sequence/<int:ids>', delete_sequence, name='delete_sequence'),
-    path('tdb_sequence/<int:ids>', tdb_sequence, name='tdb_sequence'),
+    path('tdb_sequence/<slug:code>', tdb_sequence, name='tdb_sequence'),
     path('show_sequence/<int:ids>', show_sequence, name='show_sequence'),
     path('play_sequence/<int:ids>', play_sequence, name='play_sequence'),
 

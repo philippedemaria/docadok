@@ -234,9 +234,9 @@ def import_sequence(request):
 
 
 
-def tdb_sequence(request,ids):
+def tdb_sequence(request,code):
 
-    sequence = Sequence.objects.get(id=ids)
+    sequence = Sequence.objects.get(code=code)
     activities = sequence.activities.order_by("ranking")
     organisateur = request.user.organisateur
     participants = sequence.participants.order_by("user__last_name")
