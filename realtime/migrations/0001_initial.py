@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('reponse', models.CharField(blank=True, max_length=100)),
                 ('score', models.IntegerField(default=0)),
                 ('activity', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='sequence.Activity')),
-                ('connexion', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='RT.Connexion')),
+                ('connexion', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='realtime.Connexion')),
             ],
         ),
     ]
