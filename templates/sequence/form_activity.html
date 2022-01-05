@@ -30,7 +30,9 @@
                         <div class="form-group">
 
                             <h3>{{ title_activity }}</h3>
+                            {% block question_label %}
                             <label class="label_complement">Ecrire la question que vous souhaitez poser à votre audience</label>
+                            {% endblock %} 
                             <div class="input-group marginbottom10"  id="spanner00">
                                 <span class="input-group-addon input-group-addon-left get_image">
                                     <i class="bi bi-image" id="bi-image00"></i>{{ form.imagefile|add_class:"choose_imagefile" }} 

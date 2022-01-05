@@ -1,0 +1,60 @@
+{% extends 'sequence/form_activity.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load item_tags %}
+
+
+
+{% block question %}
+    {{ form.title|add_class:"form-control radius-right padding20"|attr:"placeholder: Les enjeux climatiques" }}
+{% endblock %} 
+
+
+
+{% block question_label %}
+<label class="label_complement">Ecrire le titre de votre mur.</label>
+{% endblock %}
+
+
+
+{% block clone %}
+<script id="rowToClone" type="text/template">
+    <div id="duplicate"> 
+        <div class="row" >
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="input-group marginbottom10"  id="spanner">
+                    {{ form_ans.empty_form.label|add_class:"form-control  padding20"|attr:"placeholder:Ecrire votre réponse ici" }}
+                    <span class="input-group-addon input-group-addon-right remove_more"><i class="bi bi-trash"></i></span>
+                </div>
+            </div> 
+        </div>
+        <div class="row" id="cloningZone">                            
+
+        </div>
+    </div>
+</script> 
+{% endblock %}
+
+
+{% block choices %}
+{% endblock %}
+
+{% block more %}
+{% endblock %}       
+
+
+{% block properties %}
+<div class="row" >
+    <div class="col-sm-5 col-md-5">
+        <div class="form-group">
+            <label class="label_complement">Liker ?</label>
+        </div>
+    </div>
+    <div class="col-sm-7 col-md-7">
+        <div class="form-group">
+            {{ form.liker|add_class:"check_sequence"|attr:"data-toggle:toggle" |attr:"data-onstyle:primary"|attr:"data-offstyle:default"|attr:"data-on:Oui"|attr:"data-off:Non"|attr:"data-size:small"}}  
+        </div>
+    </div>
+</div>
+{% endblock %} 
+             
