@@ -55,6 +55,7 @@ class Sequence(ModelWithCode):
  
 
 
+
 class Activity(ModelWithCode):
  
     title        = models.CharField(max_length=255, null=True, blank=True,  verbose_name="Ecrire la question que vous souhaitez poser à votre audience")
@@ -146,8 +147,8 @@ class Play(models.Model):
     org_channel = models.CharField(max_length=60, null=True, help_text="channel de l'organisateur")
     status      = models.SmallIntegerField(default=0)
     #0 : par encore ouvert , 1 : ouvert, 2 : clos
-    date_start  = models.DateTimeField(blank=True)
-    date_end    = models.DateTimeField(blank=True)
+    date_start  = models.DateTimeField(auto_now_add=True)
+    date_end    = models.DateTimeField(blank=True, null=True)
     ranking     = models.IntegerField(default=-1,help_text="la numero de la dernière activité terminée") 
 
 

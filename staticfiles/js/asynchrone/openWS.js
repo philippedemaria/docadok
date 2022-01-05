@@ -7,7 +7,8 @@ function newWebSocket(url) {
   var ws_path = ws_scheme + '://' + window.location.host + url;
   console.log("test de connexion : " + ws_path );
   ws=new WebSocket(ws_path);
-  console.log("connexion au websocket ok...");
+    console.log("connexion au websocket ok...");
+    console.log("state", ws.readyState);
   return ws;
 };
 

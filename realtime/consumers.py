@@ -60,7 +60,9 @@ class Consumer(AsyncJsonWebsocketConsumer):
             printc("connexion d'un participant anonyme")
             if self.scope['user'].is_anonymous :   #en principe inutile
                 pseudo=content.get("pseudo",None)
+                printc("pseudo :", pseudo)
                 sequence=content.get("sequence",None)
+                printc("sequence : ",sequence)
                 if sequence!=None :
                     sequence=await get_sequence_by_id(sequence)
                 if pseudo!=None and sequence !=None :
@@ -68,6 +70,7 @@ class Consumer(AsyncJsonWebsocketConsumer):
                    await database_sync_to_async(q.save)()
                    play=await database_sync_to_async(Play.objects.filter)(sequence=sequence,status__lt=2)
                    long=await sync_to_async(len)(play)
+                   printc("nombre de lignes dans play",long)
                    if long!=0 :
                        p=play[0]
                        await self.channel_layer.send(p.org_channel,
@@ -115,6 +118,7 @@ class Consumer(AsyncJsonWebsocketConsumer):
                         printc("play non ouverte : on l'ouvre")
                         p=Play(sequence=sequence, org_channel=self.channel_name,status=0, ranking=-1)
                         await database_sync_to_async(p.save)()
+                        printc("ok normaleemnt")
                     else :
                         p=play[long-1]
                         p.org_channel=self.channel_name
@@ -168,6 +172,7 @@ class Consumer(AsyncJsonWebsocketConsumer):
 
     async def connexionPA(self,data):
         if self.scope['user'].is_organisateur :
+            printc("entree dans connexionPA")
             await self.send_json({"command":"connexionPA","from":data['from']})
 
     async def connexionP(self,data):

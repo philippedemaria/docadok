@@ -1,0 +1,57 @@
+{% extends 'dashboard.html' %}
+{% load static %}
+{% load item_tags %}
+{% load widget_tweaks %}
+
+
+
+{% block require %}
+    <script src="{% static 'js/require.js' %}" data-main="{% static 'js/common3.js' %}"><
+/script> 
+{% endblock %}
+
+{% block body %}    
+<h1>Participant</h1>
+
+<input id="AS">
+<div id="blocReponse"></div>
+
+<script src="{% static 'js/asynchrone/openWS.js' %}"></script> 
+<script>
+//$(document).ready(function(){
+//    $("#AS").on("change", function(){console.log("toto");});
+	//});
+console.log("coucou");
+socket=newWebSocket("/RT/Cons/");
+console.log("connexion au websocket ok...");
+
+function PostMessage(text){
+	socket.send(JSON.stringify({"command":"message", "message":text}));
+}
+
+AS=document.getElementById("AS");
+AS.onchange=function(){
+     console.log(AS.value);
+     PostMessage(AS.value);
+     AS.value="";  
+  };
+     
+
+socket.onopen = function () {
+  console.log("Connected to socket");
+  socket.send(JSON.stringify({
+      "command":"connexion_pa",
+      "pseudo" : "trucmuche",
+      "sequence" : 5}));
+}
+socket.onmessage = function (message) {
+      var data = JSON.parse(message.data);
+      console.log("message recu :",data);      
+      if (data.error) {return;}
+      if (data.type=="message")
+          {document.getElementById("blocReponse").innerHTML=data.message;}
+	  }
+//});
+	 
+</script>
+{% endblock %}
