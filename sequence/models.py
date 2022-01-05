@@ -84,7 +84,7 @@ class Activity(ModelWithCode):
 
 
     def icon(self):
-        icons = ["question-circle","clipboard-data","cloud","card-image","images","camera","bezier2","boxes","ladder","list-ol","bricks","reception-0"]
+        icons = ["question-circle","clipboard-data","cloud","card-image","images","camera","bezier2","boxes","ladder","list-ol","bricks","reception-0","columns-gap"]
         return "bi bi-"+icons[self.atype] 
  
 
