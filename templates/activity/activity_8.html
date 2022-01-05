@@ -17,8 +17,11 @@
 	            	<img src="{{ c.imageanswer.url }}" height="100px" />
 	            {% endif %}
 	        </div>
-	   		<div class="col-sm-2">
-	   			<input name="choice" class="brainstorming_div font16 this_choice_answer" placeholder="Notez entre 1 et {{ act.score }}" /> 
+	   		<div class="col-sm-2" align="center">
+	   			<span class="font12">Evaluez entre 1 et {{ act.score }} </span>
+	   			<input name="choice" class="ladder_div this_choice_answer" placeholder="5" 
+	   									data-choice_id="{{ choice.id}}" data-activity_id="{{ sequence.id}}"
+	   								 	data-play_id="{{ play.id}}" /> 
 	   		</div>	
 	    </div>
 	</div> 

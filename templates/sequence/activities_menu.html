@@ -1,50 +1,55 @@
-<li class="activity_menu_li no_visu_on_load">
+{% load widget_tweaks %}
+{% load static %}
+{% load item_tags %}
+<li class="activity_menu_li">
     <a href="{% url 'create_activity' sequence.id 0 0 %}"><i class="bi bi-question-circle this_function"></i>  QCM </a>
     <span class="pull-right hover_mouse"><i class="bi bi-plus-circle-dotted"></i></span>
 </li>
-<li class="activity_menu_li no_visu_on_load">
+<li class="activity_menu_li">
     <a href="{% url 'create_activity' sequence.id  1 0 %}"><i class="bi bi-clipboard-data this_function"></i> Sondage</a>
     <span class="pull-right hover_mouse"><i class="bi bi-plus-circle-dotted"></i></span>
 </li>
-<li class="activity_menu_li no_visu_on_load">
+<li class="activity_menu_li">
     <a href="{% url 'create_activity' sequence.id  2 0 %}"><i class="bi bi-cloud this_function"></i> Nuage de mots </a>
     <span class="pull-right hover_mouse"><i class="bi bi-plus-circle-dotted"></i></span>
 </li>
-<li class="activity_menu_li no_visu_on_load">
+<li class="activity_menu_li">
     <a href="{% url 'create_activity' sequence.id  3 0 %}"><i class="bi bi-card-image this_function"></i> Légender une image</a>
     <span class="pull-right hover_mouse"><i class="bi bi-plus-circle-dotted"></i></span>
 </li>
-<li class="activity_menu_li no_visu_on_load">
+<li class="activity_menu_li">
     <a href="{% url 'create_activity' sequence.id  4 0 %}"><i class="bi bi-images this_function"></i> Trouver l'image</a>
     <span class="pull-right hover_mouse"><i class="bi bi-plus-circle-dotted"></i></span>
 </li>
-<li class="activity_menu_li no_visu_on_load">
+<li class="activity_menu_li">
     <a href="{% url 'create_activity' sequence.id  5 0 %}"><i class="bi bi-camera"></i> Capture d'image</a>
     <span class="pull-right hover_mouse"><i class="bi bi-plus-circle-dotted"></i></span>
 </li>
-<li class="activity_menu_li no_visu_on_load">
+<li class="activity_menu_li">
     <a href="{% url 'create_activity' sequence.id  6 0 %}"><i class="bi bi-bezier2 this_function"></i> Association</a>
     <span class="pull-right hover_mouse"><i class="bi bi-plus-circle-dotted"></i></span>
 </li>
-<li class="activity_menu_li no_visu_on_load">
+<li class="activity_menu_li">
     <a href="{% url 'create_activity' sequence.id  7 0 %}"><i class="bi bi-boxes this_function"></i> Brainstorming </a>
     <span class="pull-right hover_mouse"><i class="bi bi-plus-circle-dotted"></i></span>
 </li>
-<li class="activity_menu_li no_visu_on_load">
+<li class="activity_menu_li">
     <a href="{% url 'create_activity' sequence.id  8 0 %}"><i class="bi bi-ladder"></i> Echelle</a>
     <span class="pull-right hover_mouse"><i class="bi bi-plus-circle-dotted"></i></span>
 </li> 
-<li class="activity_menu_li no_visu_on_load">
+<li class="activity_menu_li">
     <a href="{% url 'create_activity' sequence.id  9 0 %}"><i class="bi bi-list-ol"></i> Classement </a>
     <span class="pull-right hover_mouse"><i class="bi bi-plus-circle-dotted"></i></span>
 </li>
-<li class="activity_menu_li no_visu_on_load">
+<li class="activity_menu_li">
     <a href="{% url 'create_activity' sequence.id  10 0 %}"><i class="bi bi-bricks"></i> Priorisation</a>
     <span class="pull-right hover_mouse"><i class="bi bi-plus-circle-dotted"></i></span>
 </li>
-<li class="activity_menu_li no_visu_on_load">
+<li class="activity_menu_li">
     <a href="{% url 'create_activity' sequence.id  11 0 %}"><i class="bi bi-reception-0"></i> Texte à trous</a>
     <span class="pull-right hover_mouse"><i class="bi bi-plus-circle-dotted"></i></span>
 </li>
-
-
+<li class="activity_menu_li">
+    <a href="{% url 'create_activity' sequence.id  12 0 %}"><i class="bi bi-columns-gap"></i> Mur de Post-it</a>
+    <span class="pull-right hover_mouse"><i class="bi bi-plus-circle-dotted"></i></span>
+</li>

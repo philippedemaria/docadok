@@ -15,7 +15,9 @@ define(['jquery', 'bootstrap', 'ui', 'ui_sortable'], function ($) {
 
 
 
-    click_DivAppear($("#show_hide_menu_activities"), $(".activity_menu_li"));
+    click_DivAppear($("#show_hide_menu_activities"), $("#show_menu_activities"));
+
+
     var show = 0 ;
     function click_DivAppear($toggle, $item ) {
                 $toggle.click(function () {

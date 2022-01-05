@@ -378,11 +378,17 @@ def get_form(atype,new) :
         else : extra=0
         formSet  = inlineformset_factory( Activity , Choice , fields=('textarea',) , extra=extra)
         template = 'sequence/form_fill_the_blanks.html'
+    elif atype == 12 :
+        formSet  = inlineformset_factory( Activity , Choice , fields=('is_correct',) , extra=0)
+        template = 'sequence/form_post_it.html'
+
+
+
     return formSet, template
 
 
 def title_activity(atype) :
-    titles_activity = ['Créer une question à choix multiple','Sondage','Nuage de mots','Légender une image',"Trouver l'image","Capture d'image",'Association','Brainstorming','Echelle','Classement','Priorisation','Texte à trous']
+    titles_activity = ['Créer une question à choix multiple','Sondage','Nuage de mots','Légender une image',"Trouver l'image","Capture d'image",'Association','Brainstorming','Echelle','Classement','Priorisation','Texte à trous','Mur de post-it']
     title = titles_activity[atype]
     return title 
 

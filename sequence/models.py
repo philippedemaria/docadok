@@ -85,7 +85,7 @@ class Activity(ModelWithCode):
 
 
     def icon(self):
-        icons = ["question-circle","clipboard-data","cloud","card-image","images","camera","bezier2","boxes","ladder","list-ol","bricks","reception-0"]
+        icons = ["question-circle","clipboard-data","cloud","card-image","images","camera","bezier2","boxes","ladder","list-ol","bricks","reception-0","columns-gap"]
         return "bi bi-"+icons[self.atype] 
  
 
@@ -138,10 +138,6 @@ class Choice(models.Model):
 
 
 
-
-
-
-
 class Play(models.Model):
     sequence    = models.ForeignKey(Sequence, on_delete=models.CASCADE)
     org_channel = models.CharField(max_length=60, null=True, help_text="channel de l'organisateur")
@@ -150,6 +146,7 @@ class Play(models.Model):
     date_start  = models.DateTimeField(auto_now_add=True)
     date_end    = models.DateTimeField(blank=True, null=True)
     ranking     = models.IntegerField(default=-1,help_text="la numero de la dernière activité terminée") 
+
 
 
 
