@@ -32,14 +32,15 @@
 <section class="content_main">
     <div class="show_sequence_container" >
         <!-- div start -->        
-        {% block introduction_sequence %}
-            <div class="show_sequence" id="start">
-            {% include 'sequence/introduction_sequence.html' %}
-            </div>
+        {% block show_sequence %}
         {% endblock %}
         <!-- div start -->
  
-        {% include 'sequence/all_activities.html' %}
+        {% block general_sequence %}
+        {% include 'sequence/schedule_sequence.html' %}
+        {% endblock %}
+
+
    </div>
 </section>   
 {% endblock %}

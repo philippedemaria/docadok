@@ -701,7 +701,10 @@ li.menu_document:hover, li.menu_document:hover > a {
 } 
 
 
-
+.this_activity_activated{
+  background-color: #5d4391;
+  color: #FFF;
+}
 
 
 

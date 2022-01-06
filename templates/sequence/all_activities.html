@@ -1,0 +1,26 @@
+{% load widget_tweaks %}
+{% load static %}
+{% load item_tags %}
+
+
+{% for activity in activities %}
+<div class="show_sequence {% if activity.sorter %}activity_sorter{% endif %} {% comment %}no_visu_on_load{% endcomment %}"  id="this_activity{{ activity.id }}">
+    <div class="row">
+        {% if activity.imagefile %}
+            <div class="col-sm-4" align="center">
+                <h2 class="activity_title_img"  id ="activity_title{{ activity.id }}">{{ activity.title }}  </h2>
+            </div>
+            <div class="col-sm-8" align="left">
+                <img src="{{ activity.imagefile.url }}" height="300px" />
+            </div>
+        {% else %}
+            <div class="col-sm-12" align="center">
+                <h1 class="activity_title"  id="activity_title{{ activity.id }}">{{ activity.title }} </h1>
+            </div>
+        {% endif %} 
+    </div>
+    {% with  template_name=activity.atype|create_template %}
+        {% include template_name  with act=activity %}
+    {% endwith %}
+</div>
+{% endfor %}

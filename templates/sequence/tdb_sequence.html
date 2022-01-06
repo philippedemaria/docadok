@@ -4,28 +4,20 @@
 {% load item_tags %}
 
 {% block require %}
- 
- 
     <script src="{% static 'js/require.js' %}"   data-main="{% static 'js/common3.js' %}"></script>
- 
-
     <script>
       require(['script/ajax-sequence']);
       require(['asynchrone/openWS']);
-
-
-
-
-
- </script> 
-  
-
+    </script> 
 {% endblock %} 
 
 
 {% block sequence %}
-<span class="tdb_title_sequence"><i class="bi bi-chevron-right"></i>  {{ sequence.title }} <i class="bi bi-chevron-right"></i> Participer : https://docadok.org/{{ sequence.code}}</span>
+<span class="tdb_title_sequence"><i class="bi bi-chevron-right"></i>  {{ sequence.title }} <i class="bi bi-chevron-right"></i> Participer : https://docadok.org/c/{{ sequence.code}}</span>
 {% endblock %}
+
+
+
 
 
 {% block body %}  
@@ -67,14 +59,21 @@
 
             <div class="row tdb_command_buttons">
                 <div class="col-sm-4"  align="center"> 
-                    <div class="over_top"><div class="over_top_label">Séquence</div></div> 
+                    <div class="over_top">
+                        <div class="over_top_label">
+                            Séquence
+                        </div>
+                    </div> 
                     <div>
                         <a href="{% url 'show_sequence' sequence.id %}" class="btn_command_sequence font12 " target="_blank" ><i class="bi bi-webcam"></i> DEMARRER</a> 
                         <a href="javascript:void();" class="btn_command_sequence font12 "><i class="bi bi-trophy"></i> Bilan</a>
                     </div>                                     
                 </div>
                 <div class="col-sm-8" align="center">
-                    <div class="over_top"><div class="over_top_label">Activités</div></div>
+                    <div class="over_top">
+                        <div class="over_top_label">
+                            Activités
+                        </div></div>
                     <div>
                         <a href="javascript:void();"  class="btn_command_sequence font12 " title="Activité précédente" ><i class="bi bi-skip-start-fill"></i></a>
                         <a href="javascript:void();" class="btn_command_sequence font12 " title="Activité suivante" ><i class="bi bi-skip-end-fill"></i></a> 
@@ -85,18 +84,20 @@
                 </div>
             </div>
             <div class="tdb_command_body">
-                <div class="this_actual_sequence" id="this_sequence_display">
+                <div class="this_actual_sequence">
+
+
+                    {% include 'sequence/introduction_sequence.html' %}
+ 
+                    {% include 'sequence/all_activities.html' %}
+
                     
-     
-
                 </div>
-                <div class="this_actual_sequence" id="this_sequence_results">
+               
+                <div class="this_actual_sequence">
                     
-     
-
                 </div>
-
-            </div>
+            </div> 
         </div>
         <div class="col-sm-12 col-md-3 col-lg-3" id="right_col">
             <div class="tdb_title_col">

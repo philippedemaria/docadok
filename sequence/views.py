@@ -58,6 +58,7 @@ def ajax_sort_folders(request):
     sequence_ids  = request.POST.getlist("sequences")
     i=0
     for folder_id in sequence_ids:
+        print(folder_id)
         Folder.objects.filter( pk = folder_id ).update(ranking = i)
         i+=1
     data = {}
@@ -241,8 +242,6 @@ def tdb_sequence(request,code):
     organisateur = request.user.organisateur
     participants = sequence.participants.order_by("user__last_name")
  
-
-
     context = {  'sequence': sequence, 'activities' : activities, 'participants' : participants ,  }
 
     return render(request, 'sequence/tdb_sequence.html', context )
