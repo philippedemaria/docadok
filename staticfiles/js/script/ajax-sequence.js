@@ -320,7 +320,7 @@ define(['jquery', 'bootstrap', 'ui', 'ui_sortable'], function ($) {
             $('#this_activity'+activity_id).removeClass("no_visu_on_load");
             $(this).removeClass("no_visu_on_load");
             $('#start_tdb').addClass("no_visu_on_load");
-
+            $('#on_air'+activity_id).html("<i class='bi bi-broadcast'></i>");
 
         }); 
 

@@ -65,23 +65,34 @@
                         </div>
                     </div> 
                     <div>
-                        <a href="{% url 'show_sequence' sequence.id %}" class="btn_command_sequence font12 " target="_blank" ><i class="bi bi-webcam"></i> DEMARRER</a> 
-                        <a href="javascript:void();" class="btn_command_sequence font12 "><i class="bi bi-trophy"></i> Bilan</a>
+                        <a href="{% url 'show_sequence' sequence.id %}" class="btn_command_sequence font12" target="_blank"  title="DEMARRER"  ><i class="bi bi-webcam"></i> <span class="no_visu_md">DEMARRER</span></a> 
+                        <a href="javascript:void();" class="btn_command_sequence font12"  title="Bilan" ><i class="bi bi-trophy"></i> <span class="no_visu_md">Bilan</span></a>
                     </div>                                     
                 </div>
-                <div class="col-sm-8" align="center">
+                <div class="col-sm-6" align="center">
                     <div class="over_top">
                         <div class="over_top_label">
                             Activités
-                        </div></div>
+                        </div>
+                    </div>
                     <div>
-                        <a href="javascript:void();"  class="btn_command_sequence font12 " title="Activité précédente" ><i class="bi bi-skip-start-fill"></i></a>
+                        <a href="javascript:void();" class="btn_command_sequence font12 " title="Activité précédente" ><i class="bi bi-skip-start-fill"></i></a>
                         <a href="javascript:void();" class="btn_command_sequence font12 " title="Activité suivante" ><i class="bi bi-skip-end-fill"></i></a> 
-                        <a href="{% url 'show_sequence' sequence.id %}" class="btn_command_sequence font12 " target="_blank" ><i class="bi bi-check2-circle"></i> Bonnes réponses</a>            
-                        <a href="javascript:void();" class="btn_command_sequence font12 " ><i class="bi bi-bar-chart-steps"></i> Résultats</a>
-                        <a href="javascript:void();" class="btn_command_sequence font12 expand_page" title="Pleine largeur" id="full_screen"  ><i class="bi bi-chevron-bar-left"></i><i class="bi bi-chevron-bar-right"></i> </a>
+                        <a href="javascript:void();" class="btn_command_sequence font12 " title="Votes"><i class="bi bi-person-check"></i> <span class="no_visu_md">Votes</span></a>
+                        <a href="javascript:void();" class="btn_command_sequence font12 " title="Bonnes réponses" ><i class="bi bi-check2-circle"></i> <span class="no_visu_md">Bonnes réponses</span></a>            
+                        <a href="javascript:void();" class="btn_command_sequence font12 " title="Résultats "><i class="bi bi-bar-chart-steps"></i> <span class="no_visu_md">Résultats</span></a>
                     </div> 
                 </div>
+                <div class="col-sm-2" align="center">
+                    <div class="over_top">
+                        <div class="over_top_label">
+                            Format
+                        </div>
+                    </div>
+                    <div>
+                        <a href="javascript:void();" class="btn_command_sequence font12 expand_page" title="Pleine largeur" id="full_screen"  ><i class="bi bi-chevron-bar-left"></i><i class="bi bi-chevron-bar-right"></i> </a>
+                    </div> 
+                </div> 
             </div>
             <div class="tdb_command_body">
                 <div class="this_actual_sequence">
@@ -93,7 +104,6 @@
 
                     
                 </div>
-               
                 <div class="this_actual_sequence">
                     
                 </div>
@@ -109,6 +119,7 @@
                 <li class="list_sequence_index font16 activity_choice"  data-activity_id = "{{ activity.id }}" >
                     <i class="{{ activity.icon }}"></i> {{ forloop.counter }}. {{ activity.title }}
                     <span class="sequence_property">[{{ activity.code}}]</span>
+                    <span class="pull-right" id="on_air{{ activity.id }}"></span>
                 </li>
                 {% empty %}
                 <li class="list_sequence_index font16">
