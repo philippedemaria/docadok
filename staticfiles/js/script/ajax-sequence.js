@@ -305,7 +305,30 @@ define(['jquery', 'bootstrap', 'ui', 'ui_sortable'], function ($) {
                 }
 
         sorter_choices('.show_sequence_div' , ".choice_div");
-});
+
+
+
+
+
+        $("body").on('click', '.activity_choice' , function () { 
+
+            $('.activity_choice').removeClass("this_activity_activated");
+            $(this).addClass("this_activity_activated"); 
+
+            var activity_id = $(this).data("activity_id");
+            $('.show_sequence').addClass("no_visu_on_load");
+            $('#this_activity'+activity_id).removeClass("no_visu_on_load");
+            $(this).removeClass("no_visu_on_load");
+            $('#start_tdb').addClass("no_visu_on_load");
+
+
+        }); 
+
+
+
+
+    });
+
 
 });
 

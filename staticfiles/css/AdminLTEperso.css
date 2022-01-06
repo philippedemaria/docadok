@@ -701,6 +701,14 @@ li.menu_document:hover, li.menu_document:hover > a {
 } 
 
 
+.activity_choice{
+  color: #998fa6 ;
+  cursor:pointer;
+  padding-left:5px;
+}
+
+
+
 .this_activity_activated{
   background-color: #5d4391;
   color: #FFF;

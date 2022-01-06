@@ -4,7 +4,7 @@
 
 
 {% for activity in activities %}
-<div class="show_sequence {% if activity.sorter %}activity_sorter{% endif %} {% comment %}no_visu_on_load{% endcomment %}"  id="this_activity{{ activity.id }}">
+<div class="show_sequence {% if activity.sorter %}activity_sorter{% endif %} no_visu_on_load"  id="this_activity{{ activity.id }}">
     <div class="row">
         {% if activity.imagefile %}
             <div class="col-sm-4" align="center">

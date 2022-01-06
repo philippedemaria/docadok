@@ -7,13 +7,13 @@
     <script src="{% static 'js/require.js' %}"   data-main="{% static 'js/common3.js' %}"></script>
     <script>
       require(['script/ajax-sequence']);
-      require(['asynchrone/openWS']);
+
     </script> 
 {% endblock %} 
 
 
 {% block sequence %}
-<span class="tdb_title_sequence"><i class="bi bi-chevron-right"></i>  {{ sequence.title }} <i class="bi bi-chevron-right"></i> Participer : https://docadok.org/c/{{ sequence.code}}</span>
+<span class="tdb_title_sequence"><i class="bi bi-chevron-right"></i>  {{ sequence.title }} <i class="bi bi-chevron-right"></i> Participer : https://docadok.xyz/c/{{ sequence.code}}</span>
 {% endblock %}
 
 
@@ -86,9 +86,9 @@
             <div class="tdb_command_body">
                 <div class="this_actual_sequence">
 
-
+                    <div class="show_sequence" id="start_tdb">
                     {% include 'sequence/introduction_sequence.html' %}
- 
+                    </div>
                     {% include 'sequence/all_activities.html' %}
 
                     
@@ -106,7 +106,7 @@
             </div>  
             <div class="body_right_col">
                 {% for activity in activities %}
-                <li class="list_sequence_index font16"  data-activity_id = "{{ activity.id }}" >
+                <li class="list_sequence_index font16 activity_choice"  data-activity_id = "{{ activity.id }}" >
                     <i class="{{ activity.icon }}"></i> {{ forloop.counter }}. {{ activity.title }}
                     <span class="sequence_property">[{{ activity.code}}]</span>
                 </li>

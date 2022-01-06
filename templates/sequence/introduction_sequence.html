@@ -3,24 +3,25 @@
 {% load item_tags %}
 
 
+<div class="row">
+    <div class="col-sm-12" align="center">
+        <h1 >Comment participer ?</h1>
+    </div>
+</div>
 
-    <div class="row">
-        <div class="col-sm-12" align="center">
-            <h1 >Comment participer ?</h1>
-        </div>
+
+<div class="row" style="margin-top:{% if tdb_sequence %}50{% else %}100{% endif %}px">
+    <div class="col-sm-12 col-md-4 col-lg-3">
+        {{ show_qr|safe }}
     </div>
- 
-    <div class="row" style="margin-top:  100px">
-        <div class="col-sm-12 col-md-4 col-lg-3">
-            {{ show_qr|safe }}
-        </div>
-        <div class="col-sm-12 col-md-2 col-lg-2" style="padding-top: 50px;margin-top: 40px;font-size: 100px" align="center"  >
-            <i class="bi bi-globe" class="sacado_color_text"></i>
-            <span style="font-size: 60px"  >WEB</span>
-        </div>
-        <div class="col-sm-12 col-md-6 col-lg-7" class="font30" style="margin-top: 100px;" >
-            <h2 class="thin">1. Connectez-vous sur <b>https://play.docadok.org/{{ sequence.code}}</b></h2>
-            <h2 class="thin">2. Participez</h2>
-        </div>
+    <div class="col-sm-12 col-md-2 col-lg-2" style="{% if tdb_sequence %}padding-top: 10px;font-size: 60px{% else %}padding-top: 50px;margin-top: 40px;font-size: 150px{% endif %}" align="center"  >
+        <i class="bi bi-globe" class="sacado_color_text"></i>
+        <span style="{% if tdb_sequence %}font-size: 30px{% else %}font-size: 60px{% endif %}"  >WEB</span>
     </div>
+    <div class="col-sm-12 col-md-6 col-lg-7" class="font30" style="{% if tdb_sequence %}margin-top: 0px;{% else %}margin-top: 100px;{% endif %}" >
+        <h2 class="thin">1. Connectez-vous sur <b>https://docadok.xyz/c/{{ sequence.code}}</b></h2>
+        <h2 class="thin">2. Participez</h2>
+    </div>
+</div>
+
  
