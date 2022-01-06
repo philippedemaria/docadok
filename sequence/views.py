@@ -58,6 +58,7 @@ def ajax_sort_folders(request):
     sequence_ids  = request.POST.getlist("sequences")
     i=0
     for folder_id in sequence_ids:
+        print(folder_id)
         Folder.objects.filter( pk = folder_id ).update(ranking = i)
         i+=1
     data = {}
@@ -234,16 +235,26 @@ def import_sequence(request):
 
 
 
+def qr_code_creator(sequence,size):
+    factory = qrcode.image.svg.SvgImage
+    img = qrcode.make('https://docadok.org/c/'+str(sequence.id) , image_factory=factory, box_size=size)
+    stream = BytesIO()
+    img.save(stream)
+    show_qr = stream.getvalue().decode()
+    return show_qr
+
+
+
 def tdb_sequence(request,code):
 
     sequence = Sequence.objects.get(code=code)
     activities = sequence.activities.order_by("ranking")
     organisateur = request.user.organisateur
     participants = sequence.participants.order_by("user__last_name")
- 
+    show_qr = qr_code_creator(sequence,10) 
+    tdb_sequence = True
 
-
-    context = {  'sequence': sequence, 'activities' : activities, 'participants' : participants ,  }
+    context = {  'sequence': sequence, 'activities' : activities, 'participants' : participants , 'show_qr' : show_qr , 'tdb_sequence' : tdb_sequence ,  }
 
     return render(request, 'sequence/tdb_sequence.html', context )
 
@@ -255,15 +266,10 @@ def show_sequence(request,ids):
     activities = sequence.activities.order_by("ranking")
     organisateur = request.user.organisateur
     participants = sequence.participants.order_by("user__last_name")
- 
-    factory = qrcode.image.svg.SvgImage
-    img = qrcode.make('https://play.docadok.org/'+str(sequence.id) , image_factory=factory, box_size=30)
-    stream = BytesIO()
-    img.save(stream)
-    show_qr = stream.getvalue().decode()
+    tdb_sequence = False
+    show_qr = qr_code_creator(sequence,30) 
 
-
-    context = {  'sequence': sequence, 'activities' : activities, 'participants' : participants , 'show_qr' : show_qr , }
+    context = {  'sequence': sequence, 'activities' : activities, 'participants' : participants , 'show_qr' : show_qr , 'tdb_sequence' : tdb_sequence ,}
 
     return render(request, 'sequence/show_sequence.html', context )
 

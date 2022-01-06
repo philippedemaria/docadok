@@ -578,7 +578,60 @@ li.menu_document:hover, li.menu_document:hover > a {
   text-align: center;
 }
 
- 
+
+
+.show_sequence .ladder_div{
+  border:2px solid #CCC;
+  border-radius: 4px;
+  background-color: #FFF;
+  height: 60px;
+  width: 60px;
+  overflow-y: auto;
+  overflow-x: hidden;
+    color:#5d4391;
+  padding:10px;
+  font-size: 30px;
+  text-align: center;
+}
+
+
+.show_sequence .answer_percent{
+  border-radius: 10px 0px 0px 10px;
+  background-color: #fff ;   
+  color:#5d4391;
+  font-size:15px;
+  margin-top : 10px ;
+}
+  
+
+.show_sequence .participant_percent{
+  border-radius: 0px 10px 10px 0px;
+  background-color: #fff ;   
+  color:#5d4391;
+  font-size:15px;
+  margin : 10px 0px;
+  padding :  5px  ;
+}
+
+
+ @media (max-width:1500px){
+    .no_visu_md{
+      display:none;
+     }
+
+    .btn_command_sequence{margin-right: 10px}
+    
+
+    .font12{
+      font-size:10px;
+    }
+    .font16{
+      font-size:12px;
+    }
+    .font30{
+      font-size: 15px;
+    }
+}
 
 .get_choice{
   border-radius: 20px;
@@ -701,7 +754,19 @@ li.menu_document:hover, li.menu_document:hover > a {
 } 
 
 
+.activity_choice{
+  color: #998fa6 ;
+  cursor:pointer;
+  padding-left:5px;
+  padding-right:5px;
+}
 
+
+
+.this_activity_activated{
+  background-color: #5d4391;
+  color: #FFF;
+}
 
 
 
@@ -1653,6 +1718,9 @@ a.menuright:hover{
 .font30{
   font-size: 30px;
 }
+.font50{
+  font-size: 50px;
+}
 
 .get_image   {
   position: relative;
@@ -1700,6 +1768,30 @@ a.menuright:hover{
 
 }
 
+
+ @media (max-width:1500px){
+    .no_visu_md{
+      display:none;
+     }
+
+    .btn_command_sequence{margin-right: 10px}
+    
+
+    .font12{
+      font-size:10px;
+    }
+    .font16{
+      font-size:12px;
+    }
+    .font30{
+      font-size: 15px;
+    }
+
+    .font50{
+      font-size: 17px;
+    }
+
+}
 
 
 

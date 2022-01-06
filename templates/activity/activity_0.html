@@ -1,10 +1,6 @@
-
 {% load widget_tweaks %}
 {% load static %}
 {% load item_tags %}
-
- 
-
 
  
 {% for c in act.choices.all %} 
@@ -21,8 +17,8 @@
 	            {% endif %}
 	        </div>
 	        <div class="col-sm-2 vcenter" align="right">
-	            <span class="answer_percent"      id="answer_percent">{{ c.get_details.answers }}%</span>
-	            <span class="participant_percent" id="participant_percent">{{ c.get_details.answer_this_choice }} <i class="bi bi-people-fill"></i></span>
+	            <span class="answer_percent"      id="answer_percent" > {{ c.get_details.answers }}% </span>
+	            <span class="participant_percent" id="participant_percent" > {{ c.get_details.answer_this_choice }} <i class="bi bi-people-fill"></i></span>
 	        </div>
 	    </div>
 	</div> 

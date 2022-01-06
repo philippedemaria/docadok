@@ -1,9 +1,7 @@
 /docadok/settings.py
-
-
-docadok/asgi.py
-docadok/routing.py
-docadok/setting.py~
-docadok/settings.py
-installation.txt
-installation.txt~
+/docadok/asgi.py
+/docadok/routing.py
+/docadok/setting.py~
+/docadok/settings.py
+/installation.txt
+/installation.txt~
