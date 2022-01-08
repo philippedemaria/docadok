@@ -14,7 +14,7 @@ requirejs.config({
         bootstrap_popover: ["https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min", 'lib/popper.min'], 
         toggle: ["lib/bootstrap-toggle.min"],
 
-        asynchrone: "asynchrone/OpenWS",
+        asynchrone: "asynchrone/openWS",
 
         colorpicker: "lib/bootstrap-colorpicker.min",
         bcPicker: "lib/bcPicker",        
