@@ -1,25 +1,12 @@
 from django.urls import path
-from realtime.consumers import Consumer
+from qcm.consumers import TableauConsumer
 
 
-"""ws_urlpatterns = [path('/RT/Cons/', Consumer.as_asgi())]
-"""
+ws_urlpatterns = [
 
-
-from django.urls import path
-
-#from channels.http import AsgiHandler
-from channels.routing import ProtocolTypeRouter, URLRouter
-from channels.auth import AuthMiddlewareStack
-
-application = ProtocolTypeRouter({
-    "websocket": AuthMiddlewareStack(
-        URLRouter([
-            path("RT/Cons/", Consumer.as_asgi()),
-        ]),
-    ),
-
-})
+	path('qcm/tableau/', TableauConsumer.as_asgi())
+	
+]
 
 
 
