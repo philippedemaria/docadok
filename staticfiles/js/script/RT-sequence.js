@@ -16,11 +16,10 @@ $("body").on('change', '#activity_running' , function () {
 	socket.send(JSON.stringify({
 		"command":"changeActivity",
 		"activity_id" : activity_id}));
-		
 });
 // Handle incoming messages                                              
 socket.onmessage = function (message) {
-     var data = JSON.parse(message.data);
+     var data = JSON.parse(message.data); 
      // Handle errors                                                                        
     if (data.error) {
 	console.log("erreur reception des données");
