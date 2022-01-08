@@ -20,7 +20,7 @@ socket.onopen = function () {
        console.log("Connected to socket");
        socket.send(JSON.stringify({
        "command":"connexion_org_tdb",
-	   "sequence": sequence_id }));
+	   "sequence": sequence_id })); 
 };
 //$("body").on("change","input#activity_id",function()
 //{console.log("toto");});
