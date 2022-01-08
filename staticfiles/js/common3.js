@@ -14,7 +14,7 @@ requirejs.config({
         bootstrap_popover: ["https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min", 'lib/popper.min'], 
         toggle: ["lib/bootstrap-toggle.min"],
 
-        asynchrone: "asynchrone/openWS",
+        asynchroner: "asynchrone/openWS",
 
         colorpicker: "lib/bootstrap-colorpicker.min",
         bcPicker: "lib/bcPicker",        
@@ -39,7 +39,7 @@ requirejs.config({
 
     },
     shim: {
-        "asynchrone": {
+        "asynchroner": {
             deps: ['jquery',]
         },
         "bootstrap": {
@@ -93,5 +93,5 @@ requirejs.config({
 });
 
 require(['jquery', 'bootstrap', 'uploader', 'bootstrap_popover', 'bcPicker', 'mathjax',  'datatables', 'datatables_bootstrap',  'uploader', 'config_select2', 
-    'config_datepicker', 'config_toggle',  'config_colorpicker', 'fonctions_jquery', 'tex' , 'websocket' , 'asynchrone',
+    'config_datepicker', 'config_toggle',  'config_colorpicker', 'fonctions_jquery', 'tex' , 'websocket' , 'asynchroner',
     'fonctions',   'config_datatable', 'multiselect', 'ui',]);

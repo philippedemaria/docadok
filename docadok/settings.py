@@ -7,59 +7,26 @@ from django.conf import global_settings
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-PRODUCTION = os.environ.get('PRODUCTION')
-
 
 #########################################################################################
+DEBUG = True # True en développement
+ALLOWED_HOSTS = ["*"]
+SECRET_KEY = '91+$bnz4t@8tgz!5o(zyix2&e$_gl7z&k0#ww)tp0=@7l7eaa8'
 
-if PRODUCTION:
-    # configuration production
-    DEBUG = os.environ.get('DEBUG') == 'True'
-    SECRET_KEY =  "tfnn%*5i8ak_d@pv^t3m_)pvli+c%v451bc^c%253cnb*cu)p-qdm$$6%(kak$3m4s=5qz6fs-1b^tf^_69m" #os.environ.get('SECRET_KEY')  
-    ALLOWED_HOSTS = ['sacado.xyz', 'ressources.sacado.xyz']
+# configuation bdd
+MYSQL_DATABASE = 'docadok' #   base_test
+MYSQL_USER = 'root'
+MYSQL_PASSWORD = 'root'
+MYSQL_PORT = 3306
+DEFAULT_FROM_EMAIL = 'info@sacado.xyz'
+# configuration email : affichés dans la console
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-    # configuation bdd
-    MYSQL_DATABASE = os.environ.get('MYSQL_DATABASE')
-    MYSQL_USER = os.environ.get('MYSQL_USER')
-    MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD')
-    MYSQL_PORT = os.environ.get('MYSQL_PORT')
-
-    # configuration email
-    EMAIL_HOST = os.environ.get('EMAIL_HOST')
-    EMAIL_PORT = os.environ.get('EMAIL_PORT')
-    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-    EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
-    DEFAULT_FROM_EMAIL = 'info@sacado.xyz'
- 
-    SESSION_COOKIE_SECURE = os.environ.get('SESSION_COOKIE_SECURE')
-    SECURE_SSL_REDIRECT = True
-    CSRF_COOKIE_SECURE = os.environ.get('CSRF_COOKIE_SECURE')
-    SECURE_REFERRER_POLICY = os.environ.get('SECURE_REFERRER_POLICY')
-    CONN_MAX_AGE = os.environ.get('CONN_MAX_AGE')
-    SESSION_SAVE_EVERY_REQUEST = True
-
-else:
-    # configuration développement
-    #DEBUG = False # False comme en production
-    DEBUG = True # True en développement
-    ALLOWED_HOSTS = ["*"]
-    SECRET_KEY = '91+$bnz4t@8tgz!5o(zyix2&e$_gl7z&k0#ww)tp0=@7l7eaa8'
-
-    # configuation bdd
-    MYSQL_DATABASE = 'docadok' #   base_test
-    MYSQL_USER = 'root'
-    MYSQL_PASSWORD = 'root'
-    MYSQL_PORT = 3306
-    DEFAULT_FROM_EMAIL = 'info@sacado.xyz'
-    # configuration email : affichés dans la console
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-    SESSION_COOKIE_SECURE = False
-    SECURE_SSL_REDIRECT = False
-    CSRF_COOKIE_SECURE = False
-    CONN_MAX_AGE = 3600
-    SECURE_REFERRER_POLICY = 'same-origin'
+SESSION_COOKIE_SECURE = False
+SECURE_SSL_REDIRECT = False
+CSRF_COOKIE_SECURE = False
+CONN_MAX_AGE = 3600
+SECURE_REFERRER_POLICY = 'same-origin'
 
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY =  "113696222188-t68bstg3ib3fdli4757ulsju98e0kg4t.apps.googleusercontent.com"
@@ -84,9 +51,6 @@ DIR_TMP_TEX       = DIR_TEX+r'\tmp_tex'
 TEX_PREAMBULE_FILE= DIR_PREAMBULE_TEX+r'\preambule.tex'
 TEX_PREAMBULE_PDF_FILE= DIR_PREAMBULE_TEX+r'\preambulepdf.tex'
 ########################################################################################################################
-
-
-
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' 
 
@@ -125,32 +89,30 @@ MIDDLEWARE = [
 
 
 
-if PRODUCTION:
-    pass
-else:
-    INSTALLED_APPS += ['debug_toolbar', ]
-    MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware', ]
-    INTERNAL_IPS = ['127.0.0.1', ]
 
-    DEBUG_TOOLBAR_PANELS = [
-        'debug_toolbar.panels.versions.VersionsPanel',
-        'debug_toolbar.panels.timer.TimerPanel',
-        'debug_toolbar.panels.settings.SettingsPanel',
-        'debug_toolbar.panels.headers.HeadersPanel',
-        'debug_toolbar.panels.request.RequestPanel',
-        'debug_toolbar.panels.sql.SQLPanel',
-        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-        'debug_toolbar.panels.templates.TemplatesPanel',
-        'debug_toolbar.panels.cache.CachePanel',
-        'debug_toolbar.panels.signals.SignalsPanel',
-        'debug_toolbar.panels.logging.LoggingPanel',
-        'debug_toolbar.panels.redirects.RedirectsPanel',
+INSTALLED_APPS += ['debug_toolbar', ]
+MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware', ]
+INTERNAL_IPS = ['127.0.0.1', ]
 
-    ]
+DEBUG_TOOLBAR_PANELS = [
+    'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.logging.LoggingPanel',
+    'debug_toolbar.panels.redirects.RedirectsPanel',
 
-    DEBUG_TOOLBAR_CONFIG = {
-        'INTERCEPT_REDIRECTS': False,
-    }
+]
+
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': False,
+}
 
  
 ROOT_URLCONF = 'docadok.urls'
@@ -341,27 +303,7 @@ CKEDITOR_CONFIGS = {
 
 
 ########################################################################################################################
-if PRODUCTION :
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'handlers': {
-            'file': {
-                'level': 'DEBUG',
-                'class': 'logging.handlers.RotatingFileHandler',
-                'filename': 'logs/debug.log',
-                'backupCount': 10,  # keep at most 10 log files
-                'maxBytes': 1048576,  # 1*1024*1024 bytes (1MB)
-            },
-        },
-        'loggers': {
-            'django': {
-                'handlers': ['file'],
-                'level': 'DEBUG',
-                'propagate': True,
-            },
-        },
-    }
+
 
 
 ########################################################################################################################

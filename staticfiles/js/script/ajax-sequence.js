@@ -13,8 +13,6 @@ define(['jquery', 'bootstrap', 'ui', 'ui_sortable'], function ($) {
     clickOneDivAppear($("#open_properties"), $("#properties"));
     clickOneDivAppear($(".close_properties"), $("#properties"));
 
-
-
     click_DivAppear($("#show_hide_menu_activities"), $("#show_menu_activities"));
 
 
@@ -350,7 +348,7 @@ define(['jquery', 'bootstrap', 'ui', 'ui_sortable'], function ($) {
             var int_activity_ranking = parseInt(activity_ranking, 10);
             var int_step             = parseInt(step, 10);
             var new_step             = int_activity_ranking+int_step ;
-            var activity_choice_len  = $(".activity_choice").size()-1 ; 
+            var activity_choice_len  = $(".activity_choice").length-1 ; 
   
             if ((int_activity_ranking == -1) && (int_step == 1)){
                 $("#activity_ranking").val(0)  ;
