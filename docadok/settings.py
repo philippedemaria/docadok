@@ -8,7 +8,7 @@ from django.conf import global_settings
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 PRODUCTION = os.environ.get('PRODUCTION')
-
+PRODUCTION=False
 
 #########################################################################################
 
@@ -49,7 +49,7 @@ else:
     # configuation bdd
     MYSQL_DATABASE = 'docadok' #   base_test
     MYSQL_USER = 'root'
-    MYSQL_PASSWORD = 'root'
+    MYSQL_PASSWORD = 'bebito'
     MYSQL_PORT = 3306
     DEFAULT_FROM_EMAIL = 'info@sacado.xyz'
     # configuration email : affichés dans la console
@@ -182,7 +182,7 @@ TEMPLATES = [
 ########################################################################################################################
  
 
-ASGI_APPLICATION = 'docadok.asgi.application'
+ASGI_APPLICATION = 'docadok.routing.application'
 
 CHANNEL_LAYERS = {
     "default": {
