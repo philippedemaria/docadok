@@ -1,4 +1,4 @@
-define(['jquery', 'bootstrap', 'ui', 'ui_sortable'], function ($) {
+define(['jquery', 'asynchrone'], function ($) {
  $(document).ready(function () {
   console.log("chargement JS ajax-sequence.js OK");
         
