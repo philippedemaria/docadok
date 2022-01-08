@@ -22,119 +22,123 @@
 
 {% block body %}  
 <section class="content_main">
-    <div class="row">
-        <div class="col-sm-12 col-md-3 col-lg-3" id="left_col">
-            <div class="tdb_title_col" align="center">
-                <a href="javascript:void();" class="btn_command_sequence font12 pull-right reduce_sequence_col" title="Réduire la liste des participants" id="reduce_left_col"  ><i class="bi bi-chevron-bar-left"></i> </a>
-                    Participants 
-                    
-            </div>
-            <div class="body_left_col">
-                <table class="table" id="table_participants">
-                    {% for p in participants %}
-                    <tr id="tr_{{ p.user.id }}">
-                        <td>
-                            {{ forloop.counter }}. {{ p }}
-                        </td>
-                        <td  id="td_answer_activity_active_{{ p.user.id }}">
-                            
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr id="personne">
-                        <td>
-                            Aucun participant n'est arrivé
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-1 col-lg-1 no_visu_on_load" id="no_visu_left_col">   
-            <div class="tdb_title_col">
-                <a href="javascript:void();" class="btn_command_sequence font12 reduce_sequence_col"  id="augment_left_col" ><i class="bi bi-chevron-bar-right"></i> </a>
-            </div>     
-        </div>
-        <div class="col-sm-12 col-md-6 col-lg-6" id="body_col">
+    <form action="#" >
+        <input type="hidden" name="activity_id" id="activity_id" value="0" />
+        <input type="hidden" name="activity_running" id="activity_running" value=-1 />
+        <input type="hidden" name="activities" id="activities" value="{{ activities_list }}" />
 
-            <div class="row tdb_command_buttons">
-                <div class="col-sm-4"  align="center"> 
-                    <div class="over_top">
-                        <div class="over_top_label">
-                            Séquence
-                        </div>
-                    </div> 
-                    <div>
-                        <a href="{% url 'show_sequence' sequence.id %}" class="btn_command_sequence font12" target="_blank"  title="DEMARRER"  ><i class="bi bi-webcam"></i> <span class="no_visu_md">DEMARRER</span></a> 
-                        <a href="javascript:void();" class="btn_command_sequence font12"  title="Bilan" ><i class="bi bi-trophy"></i> <span class="no_visu_md">Bilan</span></a>
-                    </div>                                     
+        <div class="row">
+            <div class="col-sm-12 col-md-3 col-lg-3" id="left_col">
+                <div class="tdb_title_col" align="center">
+                    <a href="javascript:void();" class="btn_command_sequence font12 pull-right reduce_sequence_col" title="Réduire la liste des participants" id="reduce_left_col"  ><i class="bi bi-chevron-bar-left"></i> </a>
+                        Participants 
+                        
                 </div>
-                <div class="col-sm-6" align="center">
-                    <div class="over_top">
-                        <div class="over_top_label">
-                            Activités
-                        </div>
+                <div class="body_left_col">
+                    <table class="table" id="table_participants">
+                        {% for p in participants %}
+                        <tr id="tr_{{ p.user.id }}">
+                            <td>
+                                {{ forloop.counter }}. {{ p }}
+                            </td>
+                            <td  id="td_answer_activity_active_{{ p.user.id }}">
+                                
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr id="personne">
+                            <td>
+                                Aucun participant n'est arrivé
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-1 col-lg-1 no_visu_on_load" id="no_visu_left_col">   
+                <div class="tdb_title_col">
+                    <a href="javascript:void();" class="btn_command_sequence font12 reduce_sequence_col"  id="augment_left_col" ><i class="bi bi-chevron-bar-right"></i> </a>
+                </div>     
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6" id="body_col">
+
+                <div class="row tdb_command_buttons">
+                    <div class="col-sm-4"  align="center"> 
+                        <div class="over_top">
+                            <div class="over_top_label">
+                                Séquence
+                            </div>
+                        </div> 
+                        <div>
+                            <a href="{% url 'show_sequence' sequence.id %}" class="btn_command_sequence font12" target="_blank"  title="DEMARRER"  ><i class="bi bi-webcam"></i> <span class="no_visu_md">DEMARRER</span></a> 
+                            <a href="javascript:void();" class="btn_command_sequence font12"  title="Bilan" ><i class="bi bi-trophy"></i> <span class="no_visu_md">Bilan</span></a>
+                        </div>                                     
                     </div>
-                    <div>
-                        <a href="javascript:void();" class="btn_command_sequence font12 " title="Activité précédente" ><i class="bi bi-skip-start-fill"></i></a>
-                        <a href="javascript:void();" class="btn_command_sequence font12 " title="Activité suivante" ><i class="bi bi-skip-end-fill"></i></a> 
-                        <a href="javascript:void();" class="btn_command_sequence font12 " title="Votes"><i class="bi bi-person-check"></i> <span class="no_visu_md">Votes</span></a>
-                        <a href="javascript:void();" class="btn_command_sequence font12 " title="Bonnes réponses" ><i class="bi bi-check2-circle"></i> <span class="no_visu_md">Bonnes réponses</span></a>            
-                        <a href="javascript:void();" class="btn_command_sequence font12 " title="Résultats "><i class="bi bi-bar-chart-steps"></i> <span class="no_visu_md">Résultats</span></a>
+                    <div class="col-sm-6" align="center">
+                        <div class="over_top">
+                            <div class="over_top_label">
+                                Activités
+                            </div>
+                        </div>
+                        <div>
+                            <a href="javascript:void();" class="btn_command_sequence font12" title="Activité précédente" id="prev_activity" ><i class="bi bi-skip-start-fill"></i></a>
+                            <a href="javascript:void();" class="btn_command_sequence font12" title="Activité suivante" id="next_activity" ><i class="bi bi-skip-end-fill"></i></a> 
+                            <a href="javascript:void();" class="btn_command_sequence font12" title="Votes" id="vote_activity" ><i class="bi bi-person-check"></i> <span class="no_visu_md">Votes</span></a>
+                            <a href="javascript:void();" class="btn_command_sequence font12" title="Bonnes réponses" id="good_choices_activity" ><i class="bi bi-check2-circle"></i> <span class="no_visu_md">Bonnes réponses</span></a>            
+                            <a href="javascript:void();" class="btn_command_sequence font12" title="Résultats " id="results_activity" ><i class="bi bi-bar-chart-steps"></i> <span class="no_visu_md">Résultats</span></a>
+                        </div> 
+                    </div>
+                    <div class="col-sm-2" align="center">
+                        <div class="over_top">
+                            <div class="over_top_label">
+                                Format
+                            </div>
+                        </div>
+                        <div>
+                            <a href="javascript:void();" class="btn_command_sequence font12 expand_page" title="Pleine largeur" id="full_screen"  ><i class="bi bi-chevron-bar-left"></i><i class="bi bi-chevron-bar-right"></i> </a>
+                        </div> 
                     </div> 
                 </div>
-                <div class="col-sm-2" align="center">
-                    <div class="over_top">
-                        <div class="over_top_label">
-                            Format
+                <div class="tdb_command_body">
+                    <div class="this_actual_sequence">
+
+                        <div class="show_sequence" id="start_tdb">
+                        {% include 'sequence/introduction_sequence.html' %}
                         </div>
+                        {% include 'sequence/all_activities.html' %}
+
+                        
                     </div>
-                    <div>
-                        <a href="javascript:void();" class="btn_command_sequence font12 expand_page" title="Pleine largeur" id="full_screen"  ><i class="bi bi-chevron-bar-left"></i><i class="bi bi-chevron-bar-right"></i> </a>
-                    </div> 
+                    <div class="this_actual_sequence">
+                        
+                    </div>
                 </div> 
             </div>
-            <div class="tdb_command_body">
-                <div class="this_actual_sequence">
-
-                    <div class="show_sequence" id="start_tdb">
-                    {% include 'sequence/introduction_sequence.html' %}
-                    </div>
-                    {% include 'sequence/all_activities.html' %}
-
-                    
-                </div>
-                <div class="this_actual_sequence">
-                    
-                </div>
-            </div> 
+            <div class="col-sm-12 col-md-3 col-lg-3" id="right_col">
+                <div class="tdb_title_col">
+                    Activités 
+                    <a href="javascript:void();" class="btn_command_sequence font12 pull-right reduce_sequence_col" title="Réduire la liste des activités" id="reduce_right_col" ><i class="bi bi-chevron-bar-right"></i> </a>   
+                </div>  
+                <div class="body_right_col">
+                    {% for activity in activities %}
+                    <li class="list_sequence_index font16 activity_choice"  data-running = "{{ forloop.counter0 }}" data-activity_id = "{{ activity.id }}" id = "activity_choice{{ activity.id }}" >
+                        <i class="{{ activity.icon }}"></i> {{ forloop.counter }}. {{ activity.title }}
+                        <span class="sequence_property">[{{ activity.code}}]</span>
+                        <span class="pull-right" id="on_air{{ activity.id }}" ></span>
+                    </li>
+                    {% empty %}
+                    <li class="list_sequence_index font16">
+                        Aucune activité créée
+                    </li>
+                    {% endfor %}
+                </div> 
+            </div>
+            <div class="col-sm-12 col-md-1 col-lg-1 no_visu_on_load" id="no_visu_right_col">
+                <div class="tdb_title_col">
+                    <a href="javascript:void();" class="btn_command_sequence font12 reduce_sequence_col" title="Réduire la liste des activités"   id="augment_right_col"  ><i class="bi bi-chevron-bar-left"></i> </a>      
+                </div>  
+            </div>
         </div>
-        <div class="col-sm-12 col-md-3 col-lg-3" id="right_col">
-            <div class="tdb_title_col">
-                Activités 
-                <a href="javascript:void();" class="btn_command_sequence font12 pull-right reduce_sequence_col" title="Réduire la liste des activités" id="reduce_right_col" ><i class="bi bi-chevron-bar-right"></i> </a>   
-            </div>  
-            <div class="body_right_col">
-                {% for activity in activities %}
-                <li class="list_sequence_index font16 activity_choice"  data-activity_id = "{{ activity.id }}" >
-                    <i class="{{ activity.icon }}"></i> {{ forloop.counter }}. {{ activity.title }}
-                    <span class="sequence_property">[{{ activity.code}}]</span>
-                    <span class="pull-right" id="on_air{{ activity.id }}"></span>
-                </li>
-                {% empty %}
-                <li class="list_sequence_index font16">
-                    Aucune activité créée
-                </li>
-                {% endfor %}
-            </div> 
-        </div>
-        <div class="col-sm-12 col-md-1 col-lg-1 no_visu_on_load" id="no_visu_right_col">
-            <div class="tdb_title_col">
-                <a href="javascript:void();" class="btn_command_sequence font12 reduce_sequence_col" title="Réduire la liste des activités"   id="augment_right_col"  /><i class="bi bi-chevron-bar-left"></i> </a>      
-            </div>  
-        </div>
-    </div>
-    <!-- Fin de gestion des activités -->
     </form>      
 </section>   
 {% endblock %}

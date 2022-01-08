@@ -253,9 +253,16 @@ def tdb_sequence(request,code):
     participants = sequence.participants.order_by("user__last_name")
     show_qr = qr_code_creator(sequence,10) 
     tdb_sequence = True
+    activities_list = ""
+    act_ids = sequence.activities.values_list("id",flat=True).order_by("ranking")
+    for act_id in act_ids :
+        activities_list += str(act_id)+"-"
 
-    context = {  'sequence': sequence, 'activities' : activities, 'participants' : participants , 'show_qr' : show_qr , 'tdb_sequence' : tdb_sequence ,  }
 
+    print(activities_list)
+ 
+
+    context = {  'sequence': sequence, 'activities' : activities, 'participants' : participants , 'show_qr' : show_qr , 'tdb_sequence' : tdb_sequence , 'activities_list' : activities_list  }
     return render(request, 'sequence/tdb_sequence.html', context )
 
 

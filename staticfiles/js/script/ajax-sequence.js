@@ -311,18 +311,105 @@ define(['jquery', 'bootstrap', 'ui', 'ui_sortable'], function ($) {
 
 
         $("body").on('click', '.activity_choice' , function () { 
-
-            $('.activity_choice').removeClass("this_activity_activated");
-            $(this).addClass("this_activity_activated"); 
-
             var activity_id = $(this).data("activity_id");
+            var running = $(this).data("running");
+            change_menu(activity_id, running) ;
+        }); 
+
+        function change_menu(activity_id, running){
+  
+            $("#activity_id").val(activity_id);
+            $("#activity_running").val(running); 
+                       
+            $('.activity_choice').removeClass("this_activity_activated");
+            $("#activity_choice"+activity_id).addClass("this_activity_activated"); 
+            
             $('.show_sequence').addClass("no_visu_on_load");
             $('#this_activity'+activity_id).removeClass("no_visu_on_load");
-            $(this).removeClass("no_visu_on_load");
+            $("#activity_choice"+activity_id).removeClass("no_visu_on_load");
             $('#start_tdb').addClass("no_visu_on_load");
             $('#on_air'+activity_id).html("<i class='bi bi-broadcast'></i>");
+        }
 
+
+
+        $("body").on('click', '#prev_activity' , function () {
+            up_and_down_menu(-1) ;
         }); 
+
+        $("body").on('click', '#next_activity' , function () { 
+             up_and_down_menu(1) ;
+        }); 
+
+        function up_and_down_menu(step){
+
+            var activity_id          = $("#activity_id").val() ;
+            var activity_running     = $("#activity_running").val() ;
+            var activities           = $("#activities").val() ;
+            var activities_tab       = activities.split("-");
+            var int_activity_running = parseInt(activity_running, 10);
+            var int_step             = parseInt(step, 10);
+            var new_step             = int_activity_running+int_step ;
+            var activity_choice_len  = $(".activity_choice").size()-1 ; 
+  
+            if ((int_activity_running == -1) && (int_step == 1)){
+                $("#activity_running").val(0)  ;
+                change_menu(activities_tab[0], 0)  ;
+            }
+            else if ( (int_activity_running == 0) && (int_step == -1) )
+            {
+                $('#start_tdb').removeClass("no_visu_on_load");
+                $(".activity_choice").removeClass("this_activity_activated"); 
+                $("#activity_running").val(-1)  ;
+                $("#activity_id").val(0);
+            }
+            else if ((int_activity_running >-1) && (int_activity_running < activity_choice_len)){
+                $("#activity_running").val(new_step);
+                change_menu(activities_tab[new_step], new_step)  ;
+            }
+            else if ((int_step == -1) && (int_activity_running == activity_choice_len)){
+                $("#activity_running").val(new_step);
+                change_menu(activities_tab[new_step], new_step)  ;
+            }
+        }
+
+
+
+
+
+
+
+        $("body").on('click', '#vote_activity' , function () { 
+           
+            var activity_id = $("#activity_id").val();
+            show_this_detail_of_activity("vote",activity_id) ;
+ 
+        }); 
+
+
+
+        // $("body").on('click', '#good_choices_activity' , function () { 
+        //     var activity_id = $("#activity_id").val();
+        //     show_this_detail_of_activity("choices",activity_id) ;
+        // });         
+
+
+
+        $("body").on('click', '#results_activity' , function () { 
+            var activity_id = $("#activity_id").val();
+            show_this_detail_of_activity("results",activity_id) ;
+        });         
+
+
+ 
+        function show_this_detail_of_activity(detail, activity_id){
+
+            $('.show_sequence').addClass("no_visu_on_load");
+            $('#start_tdb').addClass("no_visu_on_load");                      
+            $("#activity_"+detail+activity_id).removeClass("no_visu_on_load");
+ 
+
+        }
 
 
 
