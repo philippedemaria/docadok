@@ -16,7 +16,6 @@ $("body").on('change', '#activity_running' , function () {
 	socket.send(JSON.stringify({
 		"command":"changeActivity",
 		"activity_id" : activity_id}));
-		
 });
 // Handle incoming messages                                              
 socket.onmessage = function (message) {
