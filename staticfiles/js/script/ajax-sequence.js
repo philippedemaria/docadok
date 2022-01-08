@@ -312,14 +312,14 @@ define(['jquery', 'bootstrap', 'ui', 'ui_sortable'], function ($) {
 
         $("body").on('click', '.activity_choice' , function () { 
             var activity_id = $(this).data("activity_id");
-            var running = $(this).data("running");
-            change_menu(activity_id, running) ;
+            var ranking = $(this).data("ranking");
+            change_menu(activity_id, ranking) ;
         }); 
 
-        function change_menu(activity_id, running){
+        function change_menu(activity_id, ranking){
   
             $("#activity_id").val(activity_id);
-            $("#activity_running").val(running); 
+            $("#activity_ranking").val(ranking); 
                        
             $('.activity_choice').removeClass("this_activity_activated");
             $("#activity_choice"+activity_id).addClass("this_activity_activated"); 
@@ -344,31 +344,31 @@ define(['jquery', 'bootstrap', 'ui', 'ui_sortable'], function ($) {
         function up_and_down_menu(step){
 
             var activity_id          = $("#activity_id").val() ;
-            var activity_running     = $("#activity_running").val() ;
+            var activity_ranking     = $("#activity_ranking").val() ;
             var activities           = $("#activities").val() ;
             var activities_tab       = activities.split("-");
-            var int_activity_running = parseInt(activity_running, 10);
+            var int_activity_ranking = parseInt(activity_ranking, 10);
             var int_step             = parseInt(step, 10);
-            var new_step             = int_activity_running+int_step ;
+            var new_step             = int_activity_ranking+int_step ;
             var activity_choice_len  = $(".activity_choice").size()-1 ; 
   
-            if ((int_activity_running == -1) && (int_step == 1)){
-                $("#activity_running").val(0)  ;
+            if ((int_activity_ranking == -1) && (int_step == 1)){
+                $("#activity_ranking").val(0)  ;
                 change_menu(activities_tab[0], 0)  ;
             }
-            else if ( (int_activity_running == 0) && (int_step == -1) )
+            else if ( (int_activity_ranking == 0) && (int_step == -1) )
             {
                 $('#start_tdb').removeClass("no_visu_on_load");
                 $(".activity_choice").removeClass("this_activity_activated"); 
-                $("#activity_running").val(-1)  ;
+                $("#activity_ranking").val(-1)  ;
                 $("#activity_id").val(0);
             }
-            else if ((int_activity_running >-1) && (int_activity_running < activity_choice_len)){
-                $("#activity_running").val(new_step);
+            else if ((int_activity_ranking >-1) && (int_activity_ranking < activity_choice_len)){
+                $("#activity_ranking").val(new_step);
                 change_menu(activities_tab[new_step], new_step)  ;
             }
-            else if ((int_step == -1) && (int_activity_running == activity_choice_len)){
-                $("#activity_running").val(new_step);
+            else if ((int_step == -1) && (int_activity_ranking == activity_choice_len)){
+                $("#activity_ranking").val(new_step);
                 change_menu(activities_tab[new_step], new_step)  ;
             }
         }

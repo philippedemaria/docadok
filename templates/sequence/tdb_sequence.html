@@ -23,7 +23,7 @@
 <section class="content_main">
     <form action="#" >
         <input type="hidden" name="activity_id" id="activity_id" value="0" />
-        <input type="hidden" name="activity_running" id="activity_running" value=-1 />
+        <input type="hidden" name="activity_ranking" id="activity_ranking" value=-1 />
         <input type="hidden" name="activities" id="activities" value="{{ activities_list }}" />
 
         <div class="row">
@@ -120,7 +120,7 @@
                 </div>  
                 <div class="body_right_col">
                     {% for activity in activities %}
-                    <li class="list_sequence_index font16 activity_choice"  data-running = "{{ forloop.counter0 }}" data-activity_id = "{{ activity.id }}" id = "activity_choice{{ activity.id }}" >
+                    <li class="list_sequence_index font16 activity_choice"  data-ranking = "{{ forloop.counter0 }}" data-activity_id = "{{ activity.id }}" id = "activity_choice{{ activity.id }}" >
                         <i class="{{ activity.icon }}"></i> {{ forloop.counter }}. {{ activity.title }}
                         <span class="sequence_property">[{{ activity.code}}]</span>
                         <span class="pull-right" id="on_air{{ activity.id }}" ></span>
