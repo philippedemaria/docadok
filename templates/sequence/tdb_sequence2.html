@@ -6,7 +6,8 @@
 {% block require %}
     <script src="{% static 'js/require.js' %}"   data-main="{% static 'js/common3.js' %}"></script>
     <script>
-        require(['script/ajax-sequence','script/RT-sequence']);
+      require(['script/ajax-sequence']);
+
     </script> 
 {% endblock %} 
 
@@ -23,13 +24,13 @@
 <section class="content_main">
     <form action="#" >
         <input type="hidden" name="activity_id" id="activity_id" value="0" />
-        <input type="hidden" name="activity_ranking" id="activity_ranking" value=-1 />
+        <input type="hidden" name="activity_running" id="activity_running" value=-1 />
         <input type="hidden" name="activities" id="activities" value="{{ activities_list }}" />
 
         <div class="row">
             <div class="col-sm-12 col-md-3 col-lg-3" id="left_col">
                 <div class="tdb_title_col" align="center">
-                    <a href="javascript:void();" class="btn_command_sequence font12 pull-right reduce_sequence_col" title="Réduire la liste des participants" id="reduce_left_col"  ><i class="bi bi-chevron-bar-left"></i> </a>
+                    <a href="javascript:void()" class="btn_command_sequence font12 pull-right reduce_sequence_col" title="Réduire la liste des participants" id="reduce_left_col"  ><i class="bi bi-chevron-bar-left"></i> </a>
                         Participants 
                         
                 </div>
@@ -56,7 +57,7 @@
             </div>
             <div class="col-sm-12 col-md-1 col-lg-1 no_visu_on_load" id="no_visu_left_col">   
                 <div class="tdb_title_col">
-                    <a href="javascript:void();" class="btn_command_sequence font12 reduce_sequence_col"  id="augment_left_col" ><i class="bi bi-chevron-bar-right"></i> </a>
+                    <a href="javascript:void()" class="btn_command_sequence font12 reduce_sequence_col"  id="augment_left_col" ><i class="bi bi-chevron-bar-right"></i> </a>
                 </div>     
             </div>
             <div class="col-sm-12 col-md-6 col-lg-6" id="body_col">
@@ -70,7 +71,7 @@
                         </div> 
                         <div>
                             <a href="{% url 'show_sequence' sequence.id %}" class="btn_command_sequence font12" target="_blank"  title="DEMARRER"  ><i class="bi bi-webcam"></i> <span class="no_visu_md">DEMARRER</span></a> 
-                            <a href="javascript:void();" class="btn_command_sequence font12"  title="Bilan" ><i class="bi bi-trophy"></i> <span class="no_visu_md">Bilan</span></a>
+                            <a href="javascript:void()" class="btn_command_sequence font12"  title="Bilan" ><i class="bi bi-trophy"></i> <span class="no_visu_md">Bilan</span></a>
                         </div>                                     
                     </div>
                     <div class="col-sm-6" align="center">
@@ -80,11 +81,11 @@
                             </div>
                         </div>
                         <div>
-                            <a href="#" class="btn_command_sequence font12" title="Activité précédente" id="prev_activity" ><i class="bi bi-skip-start-fill"></i></a>
-                            <a href="#" class="btn_command_sequence font12" title="Activité suivante" id="next_activity" ><i class="bi bi-skip-end-fill"></i></a> 
-                            <a href="#" class="btn_command_sequence font12" title="Votes" id="vote_activity" ><i class="bi bi-person-check"></i> <span class="no_visu_md">Votes</span></a>
-                            <a href="#" class="btn_command_sequence font12" title="Bonnes réponses" id="good_choices_activity" ><i class="bi bi-check2-circle"></i> <span class="no_visu_md">Bonnes réponses</span></a>            
-                            <a href="javascript:void();" class="btn_command_sequence font12" title="Résultats " id="results_activity" ><i class="bi bi-bar-chart-steps"></i> <span class="no_visu_md">Résultats</span></a>
+                            <a href="javascript:void()" class="btn_command_sequence font12" title="Activité précédente" id="prev_activity" ><i class="bi bi-skip-start-fill"></i></a>
+                            <a href="javascript:void()" class="btn_command_sequence font12" title="Activité suivante" id="next_activity" ><i class="bi bi-skip-end-fill"></i></a> 
+                            <a href="javascript:void()" class="btn_command_sequence font12" title="Votes" id="vote_activity" ><i class="bi bi-person-check"></i> <span class="no_visu_md">Votes</span></a>
+                            <a href="javascript:void()" class="btn_command_sequence font12" title="Bonnes réponses" id="good_choices_activity" ><i class="bi bi-check2-circle"></i> <span class="no_visu_md">Bonnes réponses</span></a>            
+                            <a href="javascript:void()" class="btn_command_sequence font12" title="Résultats " id="results_activity" ><i class="bi bi-bar-chart-steps"></i> <span class="no_visu_md">Résultats</span></a>
                         </div> 
                     </div>
                     <div class="col-sm-2" align="center">
@@ -94,7 +95,7 @@
                             </div>
                         </div>
                         <div>
-                            <a href="#" class="btn_command_sequence font12 expand_page" title="Pleine largeur" id="full_screen"  ><i class="bi bi-chevron-bar-left"></i><i class="bi bi-chevron-bar-right"></i> </a>
+                            <a href="javascript:void()" class="btn_command_sequence font12 expand_page" title="Pleine largeur" id="full_screen"  ><i class="bi bi-chevron-bar-left"></i><i class="bi bi-chevron-bar-right"></i> </a>
                         </div> 
                     </div> 
                 </div>
@@ -116,11 +117,11 @@
             <div class="col-sm-12 col-md-3 col-lg-3" id="right_col">
                 <div class="tdb_title_col">
                     Activités 
-                    <a href="#" class="btn_command_sequence font12 pull-right reduce_sequence_col" title="Réduire la liste des activités" id="reduce_right_col" ><i class="bi bi-chevron-bar-right"></i> </a>   
+                    <a href="javascript:void()" class="btn_command_sequence font12 pull-right reduce_sequence_col" title="Réduire la liste des activités" id="reduce_right_col" ><i class="bi bi-chevron-bar-right"></i> </a>   
                 </div>  
                 <div class="body_right_col">
                     {% for activity in activities %}
-                    <li class="list_sequence_index font16 activity_choice"  data-ranking = "{{ forloop.counter0 }}" data-activity_id = "{{ activity.id }}" id = "activity_choice{{ activity.id }}" >
+                    <li class="list_sequence_index font16 activity_choice"  data-running = "{{ forloop.counter0 }}" data-activity_id = "{{ activity.id }}" id = "activity_choice{{ activity.id }}" >
                         <i class="{{ activity.icon }}"></i> {{ forloop.counter }}. {{ activity.title }}
                         <span class="sequence_property">[{{ activity.code}}]</span>
                         <span class="pull-right" id="on_air{{ activity.id }}" ></span>
@@ -134,7 +135,7 @@
             </div>
             <div class="col-sm-12 col-md-1 col-lg-1 no_visu_on_load" id="no_visu_right_col">
                 <div class="tdb_title_col">
-                    <a href="#" class="btn_command_sequence font12 reduce_sequence_col" title="Réduire la liste des activités"   id="augment_right_col"  ><i class="bi bi-chevron-bar-left"></i> </a>      
+                    <a href="javascript:void()" class="btn_command_sequence font12 reduce_sequence_col" title="Réduire la liste des activités"   id="augment_right_col"  ><i class="bi bi-chevron-bar-left"></i> </a>      
                 </div>  
             </div>
         </div>
@@ -189,4 +190,92 @@
 
 <script src="{% static 'js/asynchrone/openWS.js' %}"></script> 
 <script>
+var socket=newWebSocket('/RT/Cons/');
+window.socket.onopen = function () {
+       console.log("Connected to socket");
+       socket.send(JSON.stringify({
+       "command":"connexion_org_tdb",
+	   "sequence": {{ sequence.id }} }));
+};		  ;
+ 
+$("body").on('change', '#activity_running' , function () { 
+	console.log("changement d'activité");
+	socket.send(JSON.stringify({
+		"command":"changeActivity",
+		"activity_id" : activity_id}));
+		
+});
+// Handle incoming messages                                              
+socket.onmessage = function (message) {
+     var data = JSON.parse(message.data);
+     // Handle errors                                                                        
+    if (data.error) {
+	console.log("erreur reception des données");
+	return;}
+    console.log("recu :",data);
+    if (data.command=="connexionPA"){
+		// connexion d'un participant anonyme
+		console.log("participant anonyme connecté", data.pseudo);
+		t=document.getElementById("table_participants");
+		//insertion du participant dans le tableau à sa place alphabetique
+		ligne=document.createElement("tr");
+		ligne.setAttribute("id",data.channel_name);
+		col1=document.createElement("td");
+		col1.innerHTML=data.pseudo;
+		ligne.appendChild(col1);
+		ligne.appendChild(document.createElement("td"));
+		console.log(ligne) 
+		i=2; // les deux premières lignes du tableau sont hors sujet
+		while (i<t.childNodes.length &&
+			   (data.pseudo>t.childNodes[i].childNodes[0].innerHTML))
+		  {i=i+1;}
+		if (i==t.childNodes.length)
+		{t.append(ligne);}  
+		else {t.insertBefore(ligne,t.childNodes[i]);}   
+		personne=$('#personne');
+		if (t.childNodes.length>2)
+		  {personne.addClass("no_visu_on_load");}
+		else 
+		 {personne.removeClass("no_visu_on_load");}
+		} // fin connexion anonyme
+	
+	else if (data.command=="deconnexionPA") {
+        t=document.getElementById("table_participants");
+        i=2;
+        console.log("deconnexion du participant de channel : ",data.channel_name);
+        while (i<t.childNodes.length){
+			if (t.childNodes[i].id==data.channel_name)
+			    {t.removeChild(t.childNodes[i]); }
+			i++;    
+			}
+		if (t.childNodes.length>2)
+		  {personne.addClass("no_visu_on_load");}
+		else 
+		 {personne.removeClass("no_visu_on_load");}
+		
+		}
+    else if (data.command=="connexionP"){// conexion d'un participant authentifié
+	console.log("participant "+data.user.fname+" "+data.user.lname);
+	t=document.getElementById("table_participants");
+	//insertion du participant dans le tableau à sa place alphabetique
+	ligne=document.createElement("tr");
+	i=0;
+	while (i<t.childNodes.length &&
+	       (data.user.lname>t.childNodes[i].lname
+		|| (data.user.lname=t.ChildNodes[i].lname && data.user.fname>t.ChildNodes[i].fname)))
+	{i=i+1;}
+	t.appendChild(ligne);
+	for (j=i;j<t.childNodes.length;j++) {
+	    t.childNodes[i+1]=t.childNodes[i];
+	    }
+	t.childNodes[i]=ligne;
+    }
+}
+  
+	    
 
+	    
+</script>
+{% endblock %}      
+ 
+ 
