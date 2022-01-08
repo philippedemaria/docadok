@@ -6,7 +6,7 @@
 {% block require %}
     <script src="{% static 'js/require.js' %}"   data-main="{% static 'js/common3.js' %}"></script>
     <script>
-        require(['script/ajax-sequence','script/RT-sequence']);
+        require(['script/ajax-sequence','script/rt-sequence']);
     </script> 
 {% endblock %} 
 
@@ -22,7 +22,8 @@
 {% block body %}  
 <section class="content_main">
     <form action="#" >
-        <input type="hidden" name="activity_id" id="activity_id" value="0" />
+		<input type="hidden" name="sequence_id" id="sequence_id" value="{{sequence.id}}"/>
+        <input type="hidden" onchange="console.log('event')" name="activity_id" id="activity_id" value="0" />
         <input type="hidden" name="activity_ranking" id="activity_ranking" value=-1 />
         <input type="hidden" name="activities" id="activities" value="{{ activities_list }}" />
 

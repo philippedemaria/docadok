@@ -9,7 +9,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 PRODUCTION = os.environ.get('PRODUCTION')
 
-
+PRODUCTION=False
 #########################################################################################
 
 if PRODUCTION:
@@ -59,7 +59,7 @@ else:
     SECURE_SSL_REDIRECT = False
     CSRF_COOKIE_SECURE = False
     CONN_MAX_AGE = 3600
-    SECURE_REFERRER_POLICY = 'same-origin'
+    SECURE_REFERRER_POLICY = 'same-origin' 
 
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY =  "113696222188-t68bstg3ib3fdli4757ulsju98e0kg4t.apps.googleusercontent.com"
@@ -182,7 +182,7 @@ TEMPLATES = [
 ########################################################################################################################
  
 
-ASGI_APPLICATION = 'docadok.asgi.application'
+ASGI_APPLICATION = 'docadok.routing.application'
 
 CHANNEL_LAYERS = {
     "default": {

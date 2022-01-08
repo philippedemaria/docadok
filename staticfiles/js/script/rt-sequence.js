@@ -1,22 +1,45 @@
-define(['jquery', 'asynchrone'], function ($) {
+define(['jquery'], function ($) {
  $(document).ready(function () {
-  console.log("chargement JS ajax-sequence.js OK");
+ console.log("chargement JS ajax-sequence.js OK");
         
         
+function newWebSocket(url) {
+  var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+  var ws_path = ws_scheme + '://' + window.location.host + url;
+  console.log("test de connexion : " + ws_path );
+  ws=new WebSocket(ws_path);
+    console.log("connexion au websocket ok...");
+    console.log("state", ws.readyState);
+  return ws;
+};
+        
+var sequence_id=$("#sequence_id").val();
+console.log("toto2 sequence : ", sequence_id);
 var socket=newWebSocket('/RT/Cons/');
-window.socket.onopen = function () {
+socket.onopen = function () {
        console.log("Connected to socket");
        socket.send(JSON.stringify({
        "command":"connexion_org_tdb",
-	   "sequence": {{ sequence.id }} }));
-};		  
+	   "sequence": sequence_id }));
+};
+//$("body").on("change","input#activity_id",function()
+//{console.log("toto");});
 
-$("body").on('change', '#activity_running' , function () { 
-	console.log("changement d'activité");
-	socket.send(JSON.stringify({
-		"command":"changeActivity",
-		"activity_id" : activity_id}));
-});
+
+//t=$("#input#activity_id");
+//t.attr("onchange","function() {console.log('toto');}");
+//t=document.getElementById("activity_id");
+//t.onchange=function() {console.log("toto");};
+
+chAct=function() {console.log("peortiepi");};
+
+//$("#activity_id").change(function() { 
+//	console.log("changement d'activité");
+	//socket.send(JSON.stringify({
+	//	"command":"changeActivity",
+	//	"activity_id" : $("#activity_id").val()}));
+//});
+console.log($("#activity_id"));
 // Handle incoming messages                                              
 socket.onmessage = function (message) {
      var data = JSON.parse(message.data); 
@@ -66,6 +89,7 @@ socket.onmessage = function (message) {
 	t.childNodes[i]=ligne;
     }
 }
+
   
-)});	    
+})});
  
