@@ -377,12 +377,12 @@ define(['jquery', 'bootstrap', 'ui', 'ui_sortable'], function ($) {
 
 
 
-        $("body").on('click', '#vote_activity' , function () { 
+        // $("body").on('click', '#vote_activity' , function () { 
            
-            var activity_id = $("#activity_id").val();
-            show_this_detail_of_activity("vote",activity_id) ;
+        //     var activity_id = $("#activity_id").val();
+        //     show_this_detail_of_activity("vote",activity_id) ;
  
-        }); 
+        // }); 
 
 
 

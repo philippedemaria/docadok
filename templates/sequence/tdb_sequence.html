@@ -22,14 +22,14 @@
 {% block body %}  
 <section class="content_main">
     <form action="#" >
-        <input type="text" name="activity_id" id="activity_id" value="0" />
+        <input type="hidden" name="activity_id" id="activity_id" value="0" />
         <input type="hidden" name="activity_ranking" id="activity_ranking" value=-1 />
         <input type="hidden" name="activities" id="activities" value="{{ activities_list }}" />
 
         <div class="row">
             <div class="col-sm-12 col-md-3 col-lg-3" id="left_col">
                 <div class="tdb_title_col" align="center">
-                    <a href="javascript:void();" class="btn_command_sequence font12 pull-right reduce_sequence_col" title="Réduire la liste des participants" id="reduce_left_col"  ><i class="bi bi-chevron-bar-left"></i> </a>
+                    <a href="#" class="btn_command_sequence font12 pull-right reduce_sequence_col" title="Réduire la liste des participants" id="reduce_left_col"  ><i class="bi bi-chevron-bar-left"></i> </a>
                         Participants 
                         
                 </div>
@@ -82,7 +82,6 @@
                         <div>
                             <a href="#" class="btn_command_sequence font12" title="Activité précédente" id="prev_activity" ><i class="bi bi-skip-start-fill"></i></a>
                             <a href="#" class="btn_command_sequence font12" title="Activité suivante" id="next_activity" ><i class="bi bi-skip-end-fill"></i></a> 
-                            <a href="#" class="btn_command_sequence font12" title="Votes" id="vote_activity" ><i class="bi bi-person-check"></i> <span class="no_visu_md">Votes</span></a>
                             <a href="#" class="btn_command_sequence font12" title="Bonnes réponses" id="good_choices_activity" ><i class="bi bi-check2-circle"></i> <span class="no_visu_md">Bonnes réponses</span></a>            
                             <a href="javascript:void();" class="btn_command_sequence font12" title="Résultats " id="results_activity" ><i class="bi bi-bar-chart-steps"></i> <span class="no_visu_md">Résultats</span></a>
                         </div> 
