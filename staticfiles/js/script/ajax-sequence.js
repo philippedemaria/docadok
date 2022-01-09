@@ -315,7 +315,7 @@ define(['jquery', 'bootstrap', 'ui', 'ui_sortable'], function ($) {
         }); 
 
         function change_menu(activity_id, ranking){
-            document.getElementById("activity_id").onchange();
+  
             $("#activity_id").val(activity_id);
             $("#activity_ranking").val(ranking); 
                        
