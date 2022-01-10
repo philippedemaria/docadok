@@ -327,6 +327,8 @@ define(['jquery', 'bootstrap', 'ui', 'ui_sortable'], function ($) {
             $("#activity_choice"+activity_id).removeClass("no_visu_on_load");
             $('#start_tdb').addClass("no_visu_on_load");
             $('#on_air'+activity_id).html("<i class='bi bi-broadcast'></i>");
+            
+            $("#activity_id").change();
         }
 
 
@@ -369,6 +371,7 @@ define(['jquery', 'bootstrap', 'ui', 'ui_sortable'], function ($) {
                 $("#activity_ranking").val(new_step);
                 change_menu(activities_tab[new_step], new_step)  ;
             }
+           
         }
 
 

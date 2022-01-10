@@ -13,14 +13,14 @@ function newWebSocket(url) {
   return ws;
 };
         
-var sequence_id=$("#sequence_id").val();
+var sequenceId=$("#sequence_id").val();
 
 var socket=newWebSocket('/RT/Cons/');
 socket.onopen = function () {
        console.log("Connected to socket");
        socket.send(JSON.stringify({
-       "command":"connexion_org_tdb",
-	   "sequence": sequence_id })); 
+       "command":"connexionOrgTdb",
+	   "sequenceId": sequenceId })); 
 };
 
 var lastAct=-10;
@@ -30,7 +30,7 @@ chAct=function() {
 	if (newAct != lastAct)
 	  {socket.send(JSON.stringify({
 		"command":"chAct",
-	    "activity_id" : newAct }))
+	    "activityId" : newAct }))
       };
       };
 

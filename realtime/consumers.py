@@ -69,10 +69,10 @@ class Consumer(AsyncJsonWebsocketConsumer):
             if self.scope['user'].is_anonymous :   #en principe inutile
                 pseudo=content.get("pseudo",None)
                 printc("pseudo :", pseudo)
-                sequence=content.get("sequence",None)
-                printc("sequence : ",sequence)
-                if sequence!=None :
-                    sequence=await get_sequence_by_id(sequence)
+                sequenceId=content.get("sequenceId",None)
+                printc("sequence : ",sequenceId)
+                if sequenceId!=None :
+                    sequence=await get_sequence_by_id(sequenceId)
                 if pseudo!=None and sequence !=None :
                    q=Connexion(user=None, pseudo=pseudo, sequence=sequence,channel=self.channel_name)
                    await database_sync_to_async(q.save)()
@@ -116,14 +116,14 @@ class Consumer(AsyncJsonWebsocketConsumer):
 
                        
                              
-        elif command=="connexion_org_tdb" :
+        elif command=="connexionOrgTdb" :
             printc("l'organisateur a lancé la sequence : connexion de la fenetre tdb")
             if self.scope['user'].is_organisateur :
                 printc("c'est bien un organisateur")
-                sequence=content.get("sequence",None)
-                if sequence!=None :
-                    printc("recherche de la sequence ", sequence, "dans la bdd")
-                    sequence=await get_sequence_by_id(sequence)
+                sequenceId=content.get("sequenceId",None)
+                if sequenceId!=None :
+                    printc("recherche de la sequence id ", sequenceId, "dans la bdd")
+                    sequence=await get_sequence_by_id(sequenceId)
                     printc("sequence trouvée")
                 if sequence!=None :
                     #on cherche si cette même séquence est deja ouverte

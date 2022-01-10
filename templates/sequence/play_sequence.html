@@ -6,7 +6,7 @@
 {% block require %}
     <script src="{% static 'js/require.js' %}"   data-main="{% static 'js/common3.js' %}"></script>
     <script>
-        require(['script/ajax-play-sequence']);
+        require(['script/ajax-play-sequence','script/rt-play-sequence']);
     </script> 
 {% endblock %} 
 
@@ -24,6 +24,13 @@
 
 
 {% block body %}  
+<input type="hidden" name="sequence_id" id="sequence_id" value="{{ sequence.id }}"/>   
+<!--{ if user.is_authenticated }
+   <input type="hidden" id="user_id" value="{ user.id }"/> 
+{ else } -->
+    <input type="hidden" id="pseudo" value="trucmuche"/> <!-- user.pseudo --> 
+<!-- { endif } -->
+
 <section class="content_main">
     <div class="show_sequence_container" >
         <!-- div start -->        
