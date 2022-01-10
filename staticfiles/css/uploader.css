@@ -1,6 +1,8 @@
-#id_imagefile{
+#id_imagefile, #id_legendimage{
   display: none;
 }
+
+ 
  
  
 .drop-zone {

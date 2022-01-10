@@ -39,14 +39,14 @@
         <div class="col-sm-6 col-md-6 col-lg-6">
             <div class="input-group" id="sequence_code">
                 <span class="sacado_color_text font16"> 
-                    Participer : https://docadok.org/<span id="new_code">{{ sequence.code}}</span>
+                    Participer : https://docadok.org/play/<span id="new_code">{{ sequence.code}}</span>
                     <a href="javascript:void();" class="sacado_color"   id="change_code" > <i class="bi bi-pencil edit"></i></a>
                 </span>
  
             </div>            
             <div class="form-group no_visu_on_load" id="sequence_code_form">
                 <span class="color_gray font16" > 
-                    Participer : https://docadok.org/<span class="input-group-addon-borderless inline">{{ form.code|add_class:"form-control-custom "  }}</span>
+                    Participer : https://docadok.org/play/<span class="input-group-addon-borderless inline">{{ form.code|add_class:"form-control-custom "  }}</span>
                 </span>
                 <a href="javascript:void();" class="btn btn-form text-danger size20"  id="close_sequence_code_form"><i class="bi bi-x-lg"></i></a>
                 <a href="javascript:void();" class="btn btn-form text-success size20 save_sequence" data-sequence_id="{{ sequence.id}}"  data-champ="code"><i class="bi bi-check"></i></a>

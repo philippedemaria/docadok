@@ -4,7 +4,11 @@
 
 
 {% for activity in activities %}
-<div class="show_sequence {% if activity.sorter %}activity_sorter{% endif %} "  id="this_activity{{ activity.id }}" >
+<div class="show_sequence no_visu_on_load"  id="this_activity{{ activity.id }}" >
+        <span class="activity_atype">{{ activity.atype  }}. {{ activity.atype|type_activity }}</span>
+
+
+
     <div class="row">
         {% if activity.imagefile %}
             <div class="col-sm-4" align="center">
@@ -19,8 +23,8 @@
             </div>
         {% endif %} 
     </div>
-    <div class="activity_choices" id="activity_choices{{ activity.id }}">
-    {% with  template_name=activity.atype|create_template %}
+    <div class="activity_choices {% if activity.sorter %}activity_sorter{% endif %}" id="activity_choices{{ activity.id }}">
+    {% with  template_name=activity.atype|play_template %}
         {% include template_name  with act=activity %}
     {% endwith %}
     </div>

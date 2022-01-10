@@ -1,0 +1,29 @@
+{% load widget_tweaks %}
+{% load static %}
+{% load item_tags %}
+
+ 
+
+
+ 
+{% for c in act.choices.all %} 
+<div class="choice_div">
+	<div class="col-sm-12">
+		<div class="row get_choice">
+	        <div class="col-sm-12">
+	            <h1>{{ c.textarea|fill_the_blank_input|safe }}</h1>
+	        </div>
+	    </div>
+	</div> 
+	<div class="break"></div>
+</div> 
+{% endfor %} 
+       
+ 
+
+
+ 
+ 
+  
+ 
+ 

@@ -4,19 +4,26 @@
 {% load item_tags %}
 
 
+
+{% block question_label %}
+<label class="label_complement">Ecrire la question que vous souhaitez poser à votre audience</label>
+{% endblock %} 
+
+
+{% block question %}
+{{ form.title|add_class:"form-control radius-right padding20"|attr:"placeholder: Où est Paris sur cette image ?" }}
+{% endblock %}  
+
+
+             
 {% block clone %}
 <script id="rowToClone" type="text/template">
     <div id="duplicate"> 
         <div class="row" >
-            <div class="col-sm-12 col-md-12 col-lg-12">
+            <div class="col-sm-12 col-md-4 col-lg-4">
                 <div class="input-group marginbottom10"  id="spanner">
-                    <span class="input-group-addon input-group-addon-left">{{ form_ans.empty_form.is_correct }}</span>
-                    <span class="input-group-addon get_image">
-                        <i class="bi bi-image" id="bi-image{{ forloop.counter0 }}"></i>{{ form_ans.empty_form.imageanswer|add_class:"choose_imagefile" }} 
-                        <img src="{% if form_ans.imageanswer.url %}{{ form_ans.empty_form.imageanswer.url }}{% endif %}" height="20px" class="preview" id="preview" >
-                    </span>
                     {{ form_ans.empty_form.label|add_class:"form-control  padding20"|attr:"placeholder:Ecrire votre réponse ici" }}
-                    <span class="input-group-addon input-group-addon-right remove_more"><i class="bi bi-trash"></i></span>
+                    <span class="input-group-addon remove_more"><i class="bi bi-trash"></i></span>
                 </div>
             </div> 
         </div>
@@ -28,21 +35,49 @@
 {% endblock %}
 
 
+
+
 {% block choices %}
-<div class="input-group marginbottom10"  id="spanner{{ forloop.counter0 }}">
-    <span class="input-group-addon input-group-addon-left">{{ form.is_correct }}</span>
+    <div class="input-group marginbottom10"  id="spanner{{ forloop.counter0 }}">
+        {{ form.label|add_class:"form-control padding20"|attr:"placeholder:Ecrire votre réponse ici" }}
+    </div>
+{% endblock %}
+
+      
+
+
+{% block image_for_activity %}
+ 
+
+    <span class="input-group-addon get_image">
+        <i class="bi bi-image" id="bi-image{{ forloop.counter0 }}"></i>{{ form.legendimage|add_class:"choose_imageanswer" }} 
+        <img src="{% if form.imageanswer.url %}{{ form.imageanswer.url }}{% endif %}" height="20px" class="preview" id="preview{{ forloop.counter0 }}"/> 
+        {% if act.legendimage  %}
+            <p  style="font-size:18px">Remplacer votre image ici. MAX : 700px par 600px (500ko)</p>
+            <img src="{{ act.legendimage.url }}" width="300px" />
+        {% else %} 
+            <p class="title">Déposer votre image ici <div style="font-size:20px">MAX : 700px par 600px (500ko)</div></p>
+        {% endif %} 
+    </span>
+
+
+                        
+                               
+                            
+
+
+
+ 
+{% endblock %}    
+
+ 
     <span class="input-group-addon get_image">
         <i class="bi bi-image" id="bi-image{{ forloop.counter0 }}"></i>{{ form.imageanswer|add_class:"choose_imageanswer" }} 
         <img src="{% if form.imageanswer.url %}{{ form.imageanswer.url }}{% endif %}" height="20px" class="preview" id="preview{{ forloop.counter0 }}" >
     </span>
 
-    {{ form.label|add_class:"form-control radius-right padding20"|attr:"placeholder:Ecrire votre réponse ici" }}
-</div>
-{% endblock %}
-
-           
-
+ 
+ 
 
 {% block properties %}
 {% endblock %} 
-             

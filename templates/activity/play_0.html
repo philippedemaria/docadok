@@ -1,0 +1,31 @@
+{% load widget_tweaks %}
+{% load static %}
+{% load item_tags %}
+
+ 
+{% for c in act.choices.all %} 
+<div class="choice_div">
+	<div class="choice_identifier"> 
+    	{% cycle '1' '2' '3' '4'  '5' '6' '7' '8' %} 
+	</div> 
+	<div class="col-sm-12">
+		<div class="row get_choice click_choice_activity" data-activity_id="{{ activity.id }}" data-choice_id="{{ c.id }}">
+	        <div class="col-sm-12" >
+	            <h1>{{ c }}</h1>
+	            {% if c.imageanswer %}
+	            	<img src="{{ c.imageanswer.url }}" height="100px" />
+	            {% endif %}
+	        </div>
+	    </div>
+	</div> 
+	<div class="break"></div>
+</div> 
+{% endfor %}         
+ 
+
+
+ 
+ 
+  
+ 
+ 

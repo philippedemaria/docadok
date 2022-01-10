@@ -4,6 +4,11 @@
 {% load item_tags %}
 
 
+{% block python %}
+ 
+{% endblock %}
+
+
 {% block require %}
     <script src="{% static 'js/require.js' %}"   data-main="{% static 'js/common4.js' %}"></script>
     <script>
@@ -28,7 +33,6 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-12">
                         <div class="form-group">
-
                             <h3>{{ title_activity }}</h3>
                             {% block question_label %}
                             <label class="label_complement">Ecrire la question que vous souhaitez poser à votre audience</label>
@@ -42,9 +46,13 @@
                                 {{ form.title|add_class:"form-control radius-right padding20"|attr:"placeholder: Ecrire votre question" }}
                                 {% endblock %}                                
                             </div>
-                       </div>
+                        </div>
                     </div>
-                </div> 
+                </div>
+
+                {% block image_for_activity %}
+                {% endblock %}    
+
                 <hr/>
 
 

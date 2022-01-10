@@ -65,7 +65,7 @@ class Activity(ModelWithCode):
     is_score     = models.BooleanField(default=0, verbose_name="Score ?")
     score        = models.PositiveIntegerField( default=1000,  blank=True, null=True )
     atype        = models.PositiveIntegerField( default=0)
-
+    legendimage  = models.ImageField(upload_to=question_directory_path, null=True, blank=True,  verbose_name="Image à legender", default="")
 
     is_share     = models.BooleanField(default=0, verbose_name="Mutualisé ?")
     is_timer     = models.BooleanField(default=0, verbose_name="Compte à rebours ?")

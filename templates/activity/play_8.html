@@ -1,0 +1,39 @@
+{% load widget_tweaks %}
+{% load static %}
+{% load item_tags %}
+
+ 
+ 
+{% for c in act.choices.all %} 
+<div class="choice_div move_div" data-choice_id={{ c.id}}>
+	<div class="{% cycle 'choice_identifier' 'choice_identifier_orange' 'choice_identifier_green' 'choice_identifier_blue' 'choice_identifier_red'  'choice_identifier_yellow' 'choice_identifier_gray' 'choice_identifier_mauve' %}"> 
+    	{% cycle '1' '2' '3' '4'  '5' '6' '7' '8' %} 
+	</div> 
+	<div class="col-sm-12">
+		<div class="row {% cycle 'get_choice' 'get_choice_orange' 'get_choice_green' 'get_choice_blue' 'get_choice_red'  'get_choice_yellow' 'get_choice_gray' 'get_choice_mauve' %}">
+	        <div class="col-sm-10">
+	            <h1>{{ c }}</h1>
+	            {% if c.imageanswer %}
+	            	<img src="{{ c.imageanswer.url }}" height="100px" />
+	            {% endif %}
+	        </div>
+	   		<div class="col-sm-2" align="center">
+	   			<span class="font12">Evaluez entre 1 et {{ act.score }} </span>
+	   			<input name="choice" class="ladder_div this_choice_answer" placeholder="5" 
+	   									data-choice_id="{{ choice.id}}" data-activity_id="{{ sequence.id}}"
+	   								 	data-play_id="{{ play.id}}" /> 
+	   		</div>	
+	    </div>
+	</div> 
+	<div class="break"></div>
+</div> 
+{% endfor %} 
+       
+ 
+
+
+ 
+ 
+  
+ 
+ 
