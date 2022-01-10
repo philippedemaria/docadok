@@ -51,12 +51,20 @@ class Consumer(AsyncJsonWebsocketConsumer):
         elif self.scope['user'].is_organisateur :
             await self.accept()
             printc("ouverture websocket d'un organisateur acceptée")
+            #printc("channel : ",self.channel_name)
     async def disconnect(self, close_code):
+        printc("qq'un se deconnecte")
+        if self.scope['user'].is_anonymous :
+            printc("channel de l'organisateur : ",self.scope['org_channel'])
+            await self.channel_layer.send(self.scope['org_channel'], 
+              {"type":"toOrga", 
+              "command":"deconnexionPA", 
+              "channel_name":self.channel_name})
         printc("deconnexion")
     async def receive_json(self,content):
         printc("message recu", content)
-        command=content.get("command",None)
-        if command=="connexion_pa" :
+        command=content.get("command",None) 
+        if command=="connexionPA" :
             printc("connexion d'un participant anonyme")
             if self.scope['user'].is_anonymous :   #en principe inutile
                 pseudo=content.get("pseudo",None)
@@ -73,13 +81,20 @@ class Consumer(AsyncJsonWebsocketConsumer):
                    printc("nombre de lignes dans play",long)
                    if long!=0 :
                        p=play[0]
+                       printc("channel de l'organisateur",p.org_channel)
                        await self.channel_layer.send(p.org_channel,
-                            {"type":"connexionPA",
-                             "from" : content.get("pseudo",None)})
+                            {"type":"toOrga",
+                             "command":"connexionPA",
+                             "pseudo" : pseudo,
+                             "channel_name" : self.channel_name});
                        await self.channel_layer.group_add("{}-{}".format(sequence.id,p.id), self.channel_name)
-                       
-                    
-        elif command=="connexion_p" :
+                       printc("message envoyé à l'organisateur")
+                       printc("channel :",self.channel_name)
+                   self.scope['pseudo']=pseudo       
+                   self.scope['org_channel']=p.org_channel
+                   #printc(self.scope)
+                   printc("traitement connexionPA terminé")           
+        elif command=="connexionP" :
             printc("connexion d'un participant authentifié")
             if self.scope['user'].is_participant :  #en principe : inutile
                 pseudo=content.get("pseudo",None)
@@ -95,7 +110,7 @@ class Consumer(AsyncJsonWebsocketConsumer):
                    if long!=0 : #play deja initié, ce qui est le comportement normal
                        p=play[0]
                        await self.channel_layer.send(p.org_channel,
-                            {"type":"connexionP",
+                            {"type":"toOrg",
                              "from" : self.scope['user']})
                        await self.channel_layer.group_add("tdb-{}-{}".format(sequence.id,p.id), self.channel_name)
 
@@ -118,11 +133,15 @@ class Consumer(AsyncJsonWebsocketConsumer):
                         printc("play non ouverte : on l'ouvre")
                         p=Play(sequence=sequence, org_channel=self.channel_name,status=0, ranking=-1)
                         await database_sync_to_async(p.save)()
-                        printc("ok normaleemnt")
+                        printc("ok normalement")
+ 
                     else :
                         p=play[long-1]
                         p.org_channel=self.channel_name
                         await database_sync_to_async(p.save)()
+                        self.scope['playId']=p.id
+                        self.scope['sequenceId']=sequence.id
+                        
                     await self.send_json({"type":"play.open","play":p.id})
                     await self.channel_layer.group_add("tdb-{}-{}".format(sequence.id,p.id),self.channel_name)
         elif command=="connexion_org_play" :
@@ -157,24 +176,18 @@ class Consumer(AsyncJsonWebsocketConsumer):
                     data={"type":"activity.stop","ranking":0,"activity":get_activity_by_rank(sequence,0)}
                     await self.channel_layer.group_send("{}-{}".format(sequence.id,play.id),data)
                     await self.channel_layer.group_send("play-{}-{}".format(sequence.id,play.id),data)
-        elif command=="next_activity" :
-            printc("activité suivante")
-            play=content.get("play_id",None)
-            if play!=None :
-                play=get_play_by_id(play)
-                if play !=None and self.scope['user']==play.sequence.organisateur :
-                    r=play.ranking
-                    next_a=get_activity_by_rank(play.sequence,r+1)
-                    if next_a !=None : 
-                       data={"type":"activity.next","ranking":r+1,"activity":next_a}
-                       await self.channel_layer.group_send("{}-{}".format(sequence.id,play.id),data)
-                       await self.channel_layer.group_send("play-{}-{}".format(sequence.id,play.id),data)
-
-    async def connexionPA(self,data):
+        elif command=="chAct" :   #changement d'activité, envoyé par l'organisateur
+            printc("changement d'activité")
+            printc("on commence par stopper l'activité")
+            if self.scope['user'].is_organisateur :
+                printc(self.scope)
+                data={"type":"toParti","activityStop":True}
+                printc("on envoie au groupe : ","{}-{}".format(self.scope['sequenceId'],self.scope['playId']))
+                await self.channel_layer.group_send("{}-{}".format(self.scope['sequenceId'],self.scope['playId']),data)
+           
+    async def toOrga(self,data):
         if self.scope['user'].is_organisateur :
-            printc("entree dans connexionPA")
-            await self.send_json({"command":"connexionPA","from":data['from']})
-
-    async def connexionP(self,data):
-        if self.scope['user'].is_organisateur :
-            await self.send_json({"command":"connexionP","from":data['from']})
+            await self.send_json(data)
+    async def toParti(self,data):
+        await self.send_json(data)
+               

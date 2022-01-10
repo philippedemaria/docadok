@@ -14,7 +14,7 @@ function newWebSocket(url) {
 };
         
 var sequence_id=$("#sequence_id").val();
-console.log("toto2 sequence : ", sequence_id);
+
 var socket=newWebSocket('/RT/Cons/');
 socket.onopen = function () {
        console.log("Connected to socket");
@@ -22,24 +22,18 @@ socket.onopen = function () {
        "command":"connexion_org_tdb",
 	   "sequence": sequence_id })); 
 };
-//$("body").on("change","input#activity_id",function()
-//{console.log("toto");});
 
+var lastAct=-10;
+chAct=function() {
+	console.log("changement d'activité");
+	newAct=$("#activity_id").val();
+	if (newAct != lastAct)
+	  {socket.send(JSON.stringify({
+		"command":"chAct",
+	    "activity_id" : newAct }))
+      };
+      };
 
-//t=$("#input#activity_id");
-//t.attr("onchange","function() {console.log('toto');}");
-//t=document.getElementById("activity_id");
-//t.onchange=function() {console.log("toto");};
-
-chAct=function() {console.log("peortiepi");};
-
-//$("#activity_id").change(function() { 
-//	console.log("changement d'activité");
-	//socket.send(JSON.stringify({
-	//	"command":"changeActivity",
-	//	"activity_id" : $("#activity_id").val()}));
-//});
-console.log($("#activity_id"));
 // Handle incoming messages                                              
 socket.onmessage = function (message) {
      var data = JSON.parse(message.data); 
@@ -50,27 +44,45 @@ socket.onmessage = function (message) {
     console.log("recu :",data);
     if (data.command=="connexionPA"){
 	// connexion d'un participant anonyme
-	console.log("participant anonyme connecté");
-	t=document.getElementById("table_participants");
-	//insertion du participant dans le tableau à sa place alphabetique
-	ligne=document.createElement("tr");
-	col1=document.createElement("td");
-	col1.innerHTML=data.from;
-	ligne.appendChild(col1);
-	i=0;
-	while (i<t.childNodes.length &&
-	       (data.pseudo>t.childNodes[i].pseudo))
-	{i=i+1;}
-	t.appendChild(ligne);
-	for (j=i;j<t.childNodes.length;j++) {
-	    t.childNodes[i+1]=t.childNodes[i];
-	    }
-	t.childNodes[i]=ligne;
-	if (t.childNodes.length==1)
-	  {personne=$('#personne');
-	   personne.addClass("no_visu_on_load");
-	  }
 	
+		console.log("participant anonyme connecté", data.pseudo);
+		t=document.getElementById("table_participants");
+		//insertion du participant dans le tableau à sa place alphabetique
+		ligne=document.createElement("tr");
+		ligne.setAttribute("id",data.channel_name);
+		col1=document.createElement("td");
+		col1.innerHTML=data.pseudo;
+		ligne.appendChild(col1);
+		ligne.appendChild(document.createElement("td"));
+		console.log(ligne) 
+		i=2; // les deux premières lignes du tableau sont hors sujet
+		while (i<t.childNodes.length &&
+			   (data.pseudo>t.childNodes[i].childNodes[0].innerHTML))
+		  {i=i+1;}
+		if (i==t.childNodes.length)
+		{t.append(ligne);}  
+		else {t.insertBefore(ligne,t.childNodes[i]);}   
+		personne=$('#personne');
+		if (t.childNodes.length>2)
+		  {personne.addClass("no_visu_on_load");}
+		else 
+		 {personne.removeClass("no_visu_on_load");}
+		} // fin connexion anonyme
+	
+	else if (data.command=="deconnexionPA") {
+        t=document.getElementById("table_participants");
+        i=2;
+        console.log("deconnexion du participant de channel : ",data.channel_name);
+        while (i<t.childNodes.length){
+			if (t.childNodes[i].id==data.channel_name)
+			    {t.removeChild(t.childNodes[i]); }
+			i++;    
+			}
+		if (t.childNodes.length>2)
+		  {personne.addClass("no_visu_on_load");}
+		else 
+		 {personne.removeClass("no_visu_on_load");}
+		
     }
     else if (data.command=="connexionP"){// conexion d'un participant authentifié
 	console.log("participant "+data.user.fname+" "+data.user.lname);
