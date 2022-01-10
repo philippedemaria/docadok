@@ -4,7 +4,7 @@
 
 
 {% for activity in activities %}
-<div class="show_sequence {% if activity.sorter %}activity_sorter{% endif %} no_visu_on_load"  id="this_activity{{ activity.id }}" >
+<div class="show_sequence {% if activity.sorter %}activity_sorter{% endif %} "  id="this_activity{{ activity.id }}" >
     <div class="row">
         {% if activity.imagefile %}
             <div class="col-sm-4" align="center">
@@ -28,14 +28,14 @@
 </div>
 
 
-<div class="show_sequence" id="activity_vote{{ activity.id }}">
+<div class="show_sequence no_visu_on_load" id="activity_vote{{ activity.id }}">
 
         <h1>vote  {{ activity.id }}</h1>
         dfvvdfvdvddvdfv
 
 </div>
 
-<div class="show_sequence" id="activity_results{{ activity.id }}">
+<div class="show_sequence  no_visu_on_load" id="activity_results{{ activity.id }}">
     <div class="">
         Participation  {{ activity.id }}
     </div>

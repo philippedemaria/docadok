@@ -22,7 +22,7 @@ console.log("coucou");
 socket=newWebSocket("/RT/Cons/");
 
 function PostMessage(text){
-        socket.send(JSON.stringify({"command":"connexionPA", "pseudo":text, "sequence":1}));
+        socket.send(JSON.stringify({"command":"message", "message":text}));
 }
 
 AS=document.getElementById("AS");
@@ -35,6 +35,11 @@ AS.onchange=function(){
 
 socket.onopen = function () {
   console.log("Connected to socket");
+  socket.send(JSON.stringify({
+      "command":"connexion_pa",
+      "pseudo": "trucmuche3",
+      "sequence":1}));
+    console.log("connexion anonyme envoye");
 }
 socket.onmessage = function (message) {
       var data = JSON.parse(message.data);

@@ -498,9 +498,17 @@ li.menu_document:hover, li.menu_document:hover > a {
   /* activity options */
   /********************************************************************************************************************************************/
   /********************************************************************************************************************************************/
+.activity_atype{
+  font-size:30px;
+  padding: 10px;
+  border-radius: 10px;
+  border : 5px solid  #f1eef7;
+  color: #f1eef7;
+}
+
 .activity_title{
-  font-size:70px;
-  margin : 30px 0px;
+  font-size:50px;
+  margin : 35px 0px;
 }
 
 .activity_title_img{
@@ -544,6 +552,50 @@ li.menu_document:hover, li.menu_document:hover > a {
 .choice_div{
   position: relative;
   width: 100%;
+}
+
+.choice_input{
+  padding: 10px;
+  width: 100%;
+  border-bottom: 1px solid #ddd;  
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  font-size: 25px ;  
+  box-shadow: 1px 1px 2px rgba(79, 73, 66, .255);
+  border-radius: 5px;
+}
+
+.title_play{
+  font-size: 45px ; 
+}
+
+.click_choice_activity{
+  cursor:pointer;
+}
+
+.click_choice_activity:active{
+    -webkit-box-shadow: inset 0 3px 5px rgb(0 0 0 / 13%);
+    -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    box-shadow: inset 0 3px 5px rgb(0 0 0 / 13%);
+}
+
+.cloud_word{
+  line-height: 70px;
+  font-size: 35px ; 
+}
+
+.fill_the_blank_input{
+  padding: 5px;
+  border-bottom: 1px solid #ddd;  
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  font-size: 20px ;  
+  box-shadow: 1px 1px 2px rgba(79, 73, 66, .255);
+  border-radius: 3px;
+  text-align:center;    
+  vertical-align: middle;
 }
 
 

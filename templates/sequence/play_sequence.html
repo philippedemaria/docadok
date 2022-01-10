@@ -18,13 +18,27 @@
 {% block nav %}
 {% endblock %}
 
-{% block introduction_sequence %}
+
+ 
+
+
+
+{% block body %}  
+<section class="content_main">
+    <div class="show_sequence_container" >
+        <!-- div start -->        
+        {% block introduction_sequence %}
+            <div class="show_sequence" id="start">
+            {% include 'sequence/introduction_sequence.html' %}
+            </div>
+        {% endblock %}
+        <!-- div start -->
+        {% include 'sequence/play_activities.html' %}
+   </div>
+</section>   
 {% endblock %}
-
-
 
 
 {% block modales %}
 {% endblock %}      
- 
 

@@ -58,6 +58,9 @@ define(['jquery', 'bootstrap', 'ui', 'ui_sortable'], function ($) {
                 }
 
         sorter_choices('.activity_sorter' , ".move_div");
+ 
+
+
 });
 
 });

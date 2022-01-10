@@ -1,0 +1,49 @@
+{% load widget_tweaks %}
+{% load static %}
+{% load item_tags %}
+
+
+{% for activity in activities %}
+<div class="show_sequence no_visu_on_load"  id="this_activity{{ activity.id }}" >
+        <span class="activity_atype">{{ activity.atype  }}. {{ activity.atype|type_activity }}</span>
+
+
+
+    <div class="row">
+        {% if activity.imagefile %}
+            <div class="col-sm-4" align="center">
+                <h2 class="activity_title_img"  id ="activity_title{{ activity.id }}">{{ activity.title }}  </h2>
+            </div>
+            <div class="col-sm-8" align="left">
+                <img src="{{ activity.imagefile.url }}" height="300px" />
+            </div>
+        {% else %}
+            <div class="col-sm-12" align="center">
+                <h1 class="activity_title"  id="activity_title{{ activity.id }}">{{ activity.title }} </h1>
+            </div>
+        {% endif %} 
+    </div>
+    <div class="activity_choices {% if activity.sorter %}activity_sorter{% endif %}" id="activity_choices{{ activity.id }}">
+    {% with  template_name=activity.atype|play_template %}
+        {% include template_name  with act=activity %}
+    {% endwith %}
+    </div>
+  
+</div>
+
+
+<div class="show_sequence no_visu_on_load" id="activity_vote{{ activity.id }}">
+
+        <h1>vote  {{ activity.id }}</h1>
+        dfvvdfvdvddvdfv
+
+</div>
+
+<div class="show_sequence  no_visu_on_load" id="activity_results{{ activity.id }}">
+    <div class="">
+        Participation  {{ activity.id }}
+    </div>
+</div> 
+
+
+{% endfor %}

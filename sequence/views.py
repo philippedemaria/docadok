@@ -283,23 +283,19 @@ def show_sequence(request,ids):
 
 
 
-def play_sequence(request,ids):
+def play_sequence(request,code):
 
-    sequence = Sequence.objects.get(id=ids)
+    sequence = Sequence.objects.get(code=code)
     activities = sequence.activities.order_by("ranking")
-    organisateur = request.user.organisateur
-    participants = sequence.participants.order_by("user__last_name")
- 
-    factory = qrcode.image.svg.SvgImage
-    img = qrcode.make('https://play.docadok.org/'+str(sequence.code) , image_factory=factory, box_size=30)
-    stream = BytesIO()
-    img.save(stream)
-    show_qr = stream.getvalue().decode()
+    user = request.user
+    tdb_sequence = False
+    show_qr = qr_code_creator(sequence,30) 
 
-
-    context = {  'sequence': sequence, 'activities' : activities, 'participants' : participants , 'show_qr' : show_qr , }
+    context = {  'sequence': sequence, 'activities' : activities, 'user' : user , 'show_qr' : show_qr , 'tdb_sequence' : tdb_sequence  }
 
     return render(request, 'sequence/play_sequence.html', context )
+
+
 
 
 def ajax_sort_sequences(request):
@@ -347,12 +343,12 @@ def get_form(atype,new) :
         formSet  = inlineformset_factory( Activity , Choice , fields=('is_correct',) , extra=0)
         template = 'sequence/form_cloud.html'
     elif atype == 3 : # TODO
-        if new : extra=2
+        if new : extra=1
         else : extra=0
         formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','is_correct') , extra=extra)
         template = 'sequence/form_legend_image.html'
     elif atype == 4 : # TODO
-        if new : extra=2
+        if new : extra=1
         else : extra=0
         formSet  = inlineformset_factory( Activity , Choice , fields=('label','imageanswer','is_correct') , extra=extra)
         template = 'sequence/form_find_image.html'
@@ -394,8 +390,6 @@ def get_form(atype,new) :
     elif atype == 12 :
         formSet  = inlineformset_factory( Activity , Choice , fields=('is_correct',) , extra=0)
         template = 'sequence/form_post_it.html'
-
-
 
     return formSet, template
 
