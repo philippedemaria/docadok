@@ -506,6 +506,22 @@ li.menu_document:hover, li.menu_document:hover > a {
   color: #f1eef7;
 }
 
+.preview_this_image, .choose_legendimage{
+  display:none;
+}
+
+.get_this_image input[type="file"]{
+  visibility: hidden;
+}
+
+
+.get_this_image{
+  border-radius: 10px ;
+  border : 2 dashed #5d4391 ;
+  cursor:pointer;
+}
+
+
 .activity_title{
   font-size:50px;
   margin : 35px 0px;

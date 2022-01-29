@@ -1,6 +1,6 @@
 define(['jquery', 'bootstrap','uploader' ], function ($) {
     $(document).ready(function () {
-        console.log("chargement JS ajax-accounting.js OK");
+        console.log("chargement JS ajax-activity.js OK");
 
 
 
@@ -147,37 +147,7 @@ define(['jquery', 'bootstrap','uploader' ], function ($) {
         });
 
 
-
-
-
-
-         function preview_this_image(nb) {
-
-            const preview = $('#preview'+nb);
-            const file = $('#id_choices-'+nb+'-imageanswer')[0].files[0];
-            const reader = new FileReader();
-
-            $("#preview"+nb).val("") ;  
-            $("#bi-image"+nb).addClass("preview") ;
-            $("#preview"+nb).removeClass("preview") ; 
-            $("#delete_img"+nb).removeClass("preview") ;
-            $("#spanner"+nb).prepend("<span class='input-group-addon input-group-addon-left' id='deleter"+nb+"'><a href='#' data-id='"+nb+"' class='delete_img'><i class='bi bi-trash'></i></a></span>") 
-
-            reader.addEventListener("load", function (e) {
-                                                var image = e.target.result ; 
-                                                $("#preview"+nb).attr("src", image );
-                                            }) ;
-
-            if (file) { 
-              reader.readAsDataURL(file);
-            }            
-
-          }
-
-
-
-
-
+ 
 
 
 

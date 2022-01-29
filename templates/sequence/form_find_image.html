@@ -4,6 +4,10 @@
 {% load item_tags %}
 
 
+ 
+
+
+
 
 {% block question_label %}
 <label class="label_complement">Ecrire la question que vous souhaitez poser à votre audience</label>
@@ -48,25 +52,15 @@
 
 {% block image_for_activity %}
  
-
-    <span class="input-group-addon get_image">
-        <i class="bi bi-image" id="bi-image{{ forloop.counter0 }}"></i>{{ form.legendimage|add_class:"choose_imageanswer" }} 
-        <img src="{% if form.imageanswer.url %}{{ form.imageanswer.url }}{% endif %}" height="20px" class="preview" id="preview{{ forloop.counter0 }}"/> 
-        {% if act.legendimage  %}
-            <p  style="font-size:18px">Remplacer votre image ici. MAX : 700px par 600px (500ko)</p>
-            <img src="{{ act.legendimage.url }}" width="300px" />
-        {% else %} 
-            <p class="title">Déposer votre image ici <div style="font-size:20px">MAX : 700px par 600px (500ko)</div></p>
-        {% endif %} 
-    </span>
-
-
-                        
-                               
-                            
-
-
-
+        <div id="drop_zone" class="drop-zone">
+            {% if act.legendimage  %}
+                <p  style="font-size:18px">Remplacer votre image ici. MAX : 700px par 600px (500ko)</p>
+                <img src="{{ question.imagefile.url }}" width="300px" />
+            {% else %} 
+                <p class="title">Déposer votre image ici <div style="font-size:20px">MAX : 700px par 600px (500ko)</div></p>
+            {% endif %}  
+        </div>
+        {{ form.legendimage|attr:"multiple" }}
  
 {% endblock %}    
 

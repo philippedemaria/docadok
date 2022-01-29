@@ -10,7 +10,7 @@
   user-select: none;
   color: #666!important;
   font-size: 18px;
-  width: 400px;
+  width: 700px;
   padding: 10px 0;
   margin: 30px auto;
   border: 2px dashed #5d4391;
@@ -28,8 +28,8 @@
   border-color: #f00;
 }
 .drop-zone.drop {
-  background: #afa;
-  border-color: #00a1ff;
+  background: #FFF;
+  border-color: #FFF;
 }
 .drop-zone.drop > .title {
   display: none;
@@ -37,7 +37,7 @@
 
  
 .preview-container canvas {
-  width: 150px;
+  width: 700px;
 }
 .file-uploader-progress-bar {
   margin: 0 20px;
@@ -51,6 +51,11 @@
 .wrapper.uploading .progress {
   background-color: #8c8c8c;
 }
+
+.fill-name{
+  display: none;
+}
+
 
 
  
